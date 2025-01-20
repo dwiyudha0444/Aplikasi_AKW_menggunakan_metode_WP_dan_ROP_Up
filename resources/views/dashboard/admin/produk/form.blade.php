@@ -25,7 +25,17 @@
                 <section class="hk-sec-wrapper">
                     <h5 class="hk-sec-title">Form Tambah Produk</h5>
                     <p class="mb-40">Isi data produk baru yang akan ditambahkan</p>
+@if (session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
 
+                                @if (session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
                     <!-- Form -->
                     <form action="" method="POST">
                         @csrf

@@ -35,6 +35,17 @@
                         <div class="col-sm">
                             <div class="table-wrap">
                                 <div class="table-responsive">
+                                @if (session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+
+                                @if (session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
                                     <table class="table table-hover table-bordered mb-0">
                                         <thead>
                                             <tr>
