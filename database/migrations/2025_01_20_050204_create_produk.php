@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('nama');
             $table->bigInteger('id_kategori')->unsigned()->nullable();
             $table->integer('harga');
+            $table->integer('stok');
+            $table->integer('stok_masuk')->nullable();
+            $table->integer('stok_keluar')->nullable();
             $table->timestamps();
         });
     }

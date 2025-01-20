@@ -60,20 +60,20 @@
                                             @foreach ($produk as $index => $product)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $product->name }}</td>
-                                                    <td>{{ $product->category }}</td>
-                                                    <td>{{ number_format($product->price, 0, ',', '.') }}</td>
+                                                    <td>{{ $product->nama }}</td>
+                                                    <td>{{ $product->kategori->nama }}</td>
+                                                    <td>{{ number_format($product->harga, 0, ',', '.') }}</td>
                                                     <td>
-                                                        <a href="{{ route('products.edit', $product->id) }}" class="mr-25"
+                                                        <a href="{{ route('edit_admin_produk', $product->id) }}" class="mr-25"
                                                             data-toggle="tooltip" data-original-title="Edit">
                                                             <i class="icon-pencil"></i>
                                                         </a>
-                                                        <a href="{{ route('products.destroy', $product->id) }}",
+                                                        {{-- <a href="{{ route('products.destroy', $product->id) }}",
                                                             class="text-danger" data-toggle="tooltip"
                                                             data-original-title="Hapus"
                                                             onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
                                                             <i class="icon-trash"></i>
-                                                        </a>
+                                                        </a> --}}
                                                     </td>
                                                 </tr>
                                             @endforeach

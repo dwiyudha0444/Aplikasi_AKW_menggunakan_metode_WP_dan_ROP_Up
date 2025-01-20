@@ -60,23 +60,26 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $kategori->nama }}</td>
                                                     <td>
-                                                       <div class="d-flex justify-content-center w-100">
-    <div class="d-flex w-50">
-        <a href="{{ route('edit_admin_kategori', $kategori->id) }}"
-            class="btn btn-warning mr-2" data-toggle="tooltip" data-original-title="Edit">
-            <i class="icon-pencil"></i> Edit
-        </a>
+                                                        <div class="d-flex justify-content-center w-100">
+                                                            <div class="d-flex w-50">
+                                                                <a href="{{ route('edit_admin_kategori', $kategori->id) }}"
+                                                                    class="btn btn-warning mr-2" data-toggle="tooltip"
+                                                                    data-original-title="Edit">
+                                                                    <i class="icon-pencil"></i> Edit
+                                                                </a>
 
-        <form action="{{ route('destroy_admin_kategori', $kategori->id) }}" method="POST"
-            onsubmit="return confirm('Are you sure you want to delete this category?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger ml-2">
-                <i class="icon-trash"></i> Hapus
-            </button>
-        </form>
-    </div>
-</div>
+                                                                <form
+                                                                    action="{{ route('destroy_admin_kategori', $kategori->id) }}"
+                                                                    method="POST"
+                                                                    onsubmit="return confirm('Are you sure you want to delete this category?')">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger ml-2">
+                                                                        <i class="icon-trash"></i> Hapus
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
 
                                                     </td>
                                                 </tr>

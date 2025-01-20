@@ -11,7 +11,12 @@ class Produk extends Model
 
     protected $fillable = [
         'nama',
-        'kategori',
+        'id_kategori',
         'harga'
     ];
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'id_kategori', 'id');
+    }
 }

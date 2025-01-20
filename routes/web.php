@@ -36,6 +36,9 @@ Route::get('/dashboard_admin', [AdminAdminController::class, 'index'])->name('da
 Route::get('/dashboard_admin/daftar_akun', [DaftarAkunController::class, 'index'])->name('admin_daftarakun');
 Route::get('/dashboard_admin/produk', [ProdukController::class, 'index'])->name('admin_produk');
 Route::get('/dashboard_admin/produk/create', [ProdukController::class, 'create'])->name('create_admin_produk');
+Route::post('/dashboard_admin/produk/store', [ProdukController::class, 'store'])->name('store_admin_produk');
+Route::get('/dashboard_admin/produk/edit/{id}', [ProdukController::class, 'edit'])->name('edit_admin_produk');
+Route::put('/dashboard_admin/produk/update/{id}', [ProdukController::class, 'update'])->name('update_admin_produk');
 
 Route::get('/dashboard_admin/kategori', [KategoriController::class, 'index'])->name('admin_kategori');
 Route::get('/dashboard_admin/kategori/create', [KategoriController::class, 'create'])->name('create_admin_kategori');
