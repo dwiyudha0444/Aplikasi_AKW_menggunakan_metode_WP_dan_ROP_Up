@@ -56,13 +56,15 @@
                 <div class="frm-input">
                     <select name="role" class="frm-inp">
                         <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                        <option value="marketing" {{ old('role') == 'marketing' ? 'selected' : '' }}>Marketing</option>
-                        <option value="pelanggan" {{ old('role') == 'pelanggan' ? 'selected' : '' }}>Pelanggan</option>
+                        <option value="kurir" {{ old('role') == 'kurir' ? 'selected' : '' }}>Kurir</option>
+                        <option value="reseller" {{ old('role') == 'reseller' ? 'selected' : '' }}>Reseller</option>
+                        <option value="owner" {{ old('role') == 'owner' ? 'selected' : '' }}>Owner</option>
                     </select>
                     @error('role')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
+
 
 
 
