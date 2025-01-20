@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
+use App\Http\Controllers\dashboard\admin\AdminController as AdminAdminController;
+use App\Http\Controllers\dashboard\adminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,3 +27,5 @@ Route::post('/login_proses', [LoginController::class, 'login_proses'])->name('lo
 Route::get('/register', [RegisterController::class, 'index'])->name('form_register');
 Route::post('/register', [RegisterController::class, 'register_proses'])->name('register');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/dashboard_admin', [AdminAdminController::class, 'index'])->name('dashboard_admin');

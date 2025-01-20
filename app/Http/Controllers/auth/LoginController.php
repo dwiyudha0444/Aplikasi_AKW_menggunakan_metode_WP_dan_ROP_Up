@@ -17,29 +17,37 @@ class LoginController extends Controller
     public function login_proses(Request $request)
     {
         $request->validate([
-            'email'     => 'required',
-            'password'  => 'required',
+            'email'    => 'required|email',
+            'password' => 'required',
         ]);
-
-        $data = [
-            'email'     => $request->email,
-            'password'  => $request->password
+    
+        $credentials = [
+            'email'    => $request->email,
+            'password' => $request->password,
         ];
         
-        if (Auth::attempt($data)) {
+        if (Auth::attempt($credentials)) {
             // Periksa peran pengguna dan arahkan ke rute yang sesuai
-            if (Auth::user()->role == 'admin') {
-                return redirect()->route('dashboard_admin');
-            } elseif (Auth::user()->role == 'pelanggan') {
-                return redirect()->route('landingpage_pelanggan');
-            }  elseif (Auth::user()->role == 'marketing') {
-                return redirect()->route('dashboard_marketing');
-            } 
+            switch (Auth::user()->role) {
+                case 'admin':
+                    return redirect()->route('dashboard_admin');
+                case 'kurir':
+                    return redirect()->route('dashboard_kurir');
+                case 'reseller':
+                    return redirect()->route('dashboard_reseller');
+                case 'owner':
+                    return redirect()->route('dashboard_owner');
+                default:
+                    // Logout jika peran tidak valid
+                    Auth::logout();
+                    return redirect()->route('login')->with('error', 'Akses tidak valid.');
+            }
         } else {
-            
-            return redirect()->route('login')->with('error', 'Email atau Password Salah');
+            // Gagal login
+            return redirect()->route('login')->with('error', 'Email atau Password Salah.');
         }
     }
+    
 
     public function logout()
     {
