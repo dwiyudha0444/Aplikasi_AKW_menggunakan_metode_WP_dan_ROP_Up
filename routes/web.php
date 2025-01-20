@@ -3,6 +3,8 @@
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\dashboard\admin\AdminController as AdminAdminController;
+use App\Http\Controllers\dashboard\admin\DaftarAkunController;
+use App\Http\Controllers\dashboard\admin\ProdukController;
 use App\Http\Controllers\dashboard\adminController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +31,8 @@ Route::post('/register', [RegisterController::class, 'register_proses'])->name('
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard_admin', [AdminAdminController::class, 'index'])->name('dashboard_admin');
+
+Route::get('/dashboard_admin/daftar_akun', [DaftarAkunController::class, 'index'])->name('admin_daftarakun');
+Route::get('/dashboard_admin/produk', [ProdukController::class, 'index'])->name('admin_produk');
+
+
