@@ -16,4 +16,9 @@ class ProdukController extends Controller
         // Kirim data ke view
         return view('dashboard.admin.produk.index', compact('produk'));
     }
+
+    public function create()
+    {
+        return view('dashboard.admin.produk.form');
+    }
 }
