@@ -7,6 +7,7 @@ use App\Http\Controllers\dashboard\admin\DaftarAkunController;
 use App\Http\Controllers\dashboard\admin\KategoriController;
 use App\Http\Controllers\dashboard\admin\ProdukController;
 use App\Http\Controllers\dashboard\adminController;
+use App\Http\Controllers\landingpage\reseller\LandingpageController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PemesananProdukController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard_reseller', [LandingpageController::class, 'index'])->name('dashboard_reseller');
+
 
 //pemesanan
 Route::get('/dashboard_reseller/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
