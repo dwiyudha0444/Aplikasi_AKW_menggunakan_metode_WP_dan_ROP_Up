@@ -1,4 +1,4 @@
-@extends('dashboard.admin.index')
+@extends('dashboard.reseller.layout.index')
 
 @section('content')
     <nav class="hk-breadcrumb" aria-label="breadcrumb">

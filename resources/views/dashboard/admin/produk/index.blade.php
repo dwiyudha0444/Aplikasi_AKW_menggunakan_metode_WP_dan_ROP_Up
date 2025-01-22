@@ -35,17 +35,17 @@
                         <div class="col-sm">
                             <div class="table-wrap">
                                 <div class="table-responsive">
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
+                                    @if (session('success'))
+                                        <div class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
 
-                                @if (session('error'))
-                                    <div class="alert alert-danger">
-                                        {{ session('error') }}
-                                    </div>
-                                @endif
+                                    @if (session('error'))
+                                        <div class="alert alert-danger">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
                                     <table class="table table-hover table-bordered mb-0">
                                         <thead>
                                             <tr>
@@ -53,7 +53,8 @@
                                                 <th>Nama</th>
                                                 <th>Kategori</th>
                                                 <th>Harga</th>
-                                                 <th>Stok</th>
+                                                <th>Stok</th>
+                                                <th>Gambar</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -66,8 +67,18 @@
                                                     <td>{{ number_format($product->harga, 0, ',', '.') }}</td>
                                                     <td>{{ $product->stok }}</td>
                                                     <td>
-                                                        <a href="{{ route('edit_admin_produk', $product->id) }}" class="mr-25"
-                                                            data-toggle="tooltip" data-original-title="Edit">
+                                                        <!-- Menampilkan gambar produk jika ada -->
+                                                        @if ($product->image)
+                                                            <img src="{{ asset('storage/app/public/images' . $product->image) }}"
+                                                                alt="{{ $product->nama }}"
+                                                                style="width: 100px; height: auto;">
+                                                        @else
+                                                            <span>No Image</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('edit_admin_produk', $product->id) }}"
+                                                            class="mr-25" data-toggle="tooltip" data-original-title="Edit">
                                                             <i class="icon-pencil"></i>
                                                         </a>
                                                         {{-- <a href="{{ route('products.destroy', $product->id) }}",

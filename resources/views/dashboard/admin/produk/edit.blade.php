@@ -42,7 +42,8 @@
                         @method('PUT')
                         <div class="form-group">
                             <label for="nama">Nama Produk</label>
-                            <input type="text" class="form-control" id="nama" name="nama" value="{{ $produk->nama }}" placeholder="Nama Produk" required>
+                            <input type="text" class="form-control" id="nama" name="nama"
+                                value="{{ $produk->nama }}" placeholder="Nama Produk" required>
                         </div>
 
                         <div class="form-group">
@@ -50,7 +51,8 @@
                             <select class="form-control" id="id_kategori" name="id_kategori" required>
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($kategori as $kate)
-                                    <option value="{{ $kate->id }}" {{ $produk->id_kategori == $kate->id ? 'selected' : '' }}>
+                                    <option value="{{ $kate->id }}"
+                                        {{ $produk->id_kategori == $kate->id ? 'selected' : '' }}>
                                         {{ $kate->nama }}
                                     </option>
                                 @endforeach
@@ -59,13 +61,33 @@
 
                         <div class="form-group">
                             <label for="harga">Harga</label>
-                            <input type="number" class="form-control" id="harga" name="harga" value="{{ $produk->harga }}" placeholder="Harga Produk" required>
+                            <input type="number" class="form-control" id="harga" name="harga"
+                                value="{{ $produk->harga }}" placeholder="Harga Produk" required>
                         </div>
 
                         <div class="form-group">
                             <label for="stok">Stok</label>
-                            <input type="number" class="form-control" id="stok" name="stok" value="{{ $produk->stok }}" placeholder="Stok Produk" required>
+                            <input type="number" class="form-control" id="stok" name="stok"
+                                value="{{ $produk->stok }}" placeholder="Stok Produk" required>
                         </div>
+
+                        <div class="form-group">
+                            <label for="image">Gambar Produk</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        </div>
+
+                        @if ($produk->image)
+                            <div class="form-group">
+                                <label>Gambar Saat Ini</label>
+                                <img src="{{ asset('storage/app/public/images/' . $produk->image) }}" alt="{{ $produk->nama }}"
+                                    style="width: 100px; height: auto;">
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label>Gambar Saat Ini</label>
+                                <span>No Image</span>
+                            </div>
+                        @endif
 
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                     </form>
