@@ -33,7 +33,11 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard_admin', [AdminAdminController::class, 'index'])->name('dashboard_admin');
 
+Route::delete('/dashboard_admin/daftar_akun/delete/{id}', [DaftarAkunController::class, 'destroy'])->name('admin_deleteakun');
 Route::get('/dashboard_admin/daftar_akun', [DaftarAkunController::class, 'index'])->name('admin_daftarakun');
+Route::get('/dashboard_admin/daftar_akun/edit/{id}', [DaftarAkunController::class, 'edit'])->name('admin_editakun');
+Route::put('/dashboard_admin/daftar_akun/update/{id}', [DaftarAkunController::class, 'update'])->name('admin_updateakun');
+
 Route::get('/dashboard_admin/produk', [ProdukController::class, 'index'])->name('admin_produk');
 Route::get('/dashboard_admin/produk/create', [ProdukController::class, 'create'])->name('create_admin_produk');
 Route::post('/dashboard_admin/produk/store', [ProdukController::class, 'store'])->name('store_admin_produk');
@@ -46,4 +50,3 @@ Route::post('/dashboard_admin/kategori/store', [KategoriController::class, 'stor
 Route::get('/dashboard_admin/kategori/edit/{id}', [KategoriController::class, 'edit'])->name('edit_admin_kategori');
 Route::put('/dashboard_admin/kategori/update/{id}', [KategoriController::class, 'update'])->name('update_admin_kategori');
 Route::delete('/dashboard_admin/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('destroy_admin_kategori');
-
