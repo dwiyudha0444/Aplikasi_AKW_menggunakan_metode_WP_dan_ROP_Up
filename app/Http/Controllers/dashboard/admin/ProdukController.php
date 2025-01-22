@@ -39,16 +39,32 @@ class ProdukController extends Controller
             'id_kategori' => 'required|exists:kategori,id', // Pastikan kategori yang dipilih ada di tabel kategoris
             'harga' => 'required|numeric|min:0', // Harga harus angka dan lebih dari 0
             'stok' => 'required|numeric|min:0', // Stok harus angka dan lebih dari 0
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi file image
         ]);
 
         // Proses penyimpanan produk baru
         try {
+            // Membuat objek produk baru
             $produk = new Produk;
             $produk->nama = $request->input('nama');
             $produk->id_kategori = $request->input('id_kategori');
             $produk->harga = $request->input('harga');
             $produk->stok = $request->input('stok');
-            $produk->save(); // Simpan produk ke database
+
+            // Cek jika ada gambar yang diunggah
+            if ($request->hasFile('image')) {
+                // Ambil file gambar yang diunggah
+                $image = $request->file('image');
+                // Buat nama file unik
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                // Tentukan lokasi penyimpanan gambar
+                $imagePath = $image->storeAs('public/images', $imageName); // Gambar disimpan dalam folder storage/app/public/images
+                // Simpan nama file gambar ke database
+                $produk->image = 'storage/images/' . $imageName; // Simpan path gambar
+            }
+
+            // Simpan produk ke database
+            $produk->save();
 
             // Redirect dengan pesan sukses
             return redirect()->route('admin_produk')->with('success', 'Produk berhasil ditambahkan.');
@@ -58,6 +74,7 @@ class ProdukController extends Controller
         }
     }
 
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -65,25 +82,47 @@ class ProdukController extends Controller
             'id_kategori' => 'required|exists:kategori,id',
             'harga' => 'required|numeric',
             'stok' => 'required|numeric|min:1',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi untuk gambar
         ]);
 
         try {
             // Menemukan produk yang ingin diupdate
             $produk = Produk::findOrFail($id);
 
-            // Update data produk
-            $produk->update([
-                'nama' => $request->nama,
-                'id_kategori' => $request->id_kategori,
-                'harga' => $request->harga,
-                'stok' => $request->stok,
-            ]);
+            // Menyimpan data produk yang lain
+            $produk->nama = $request->nama;
+            $produk->id_kategori = $request->id_kategori;
+            $produk->harga = $request->harga;
+            $produk->stok = $request->stok;
+
+            // Jika ada gambar baru yang diunggah
+            if ($request->hasFile('image')) {
+                // Menghapus gambar lama jika ada
+                if ($produk->image) {
+                    $oldImagePath = public_path('storage/' . $produk->image);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath); // Menghapus gambar lama
+                    }
+                }
+
+                // Proses upload gambar baru
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public/images', $imageName);
+
+                // Simpan path gambar baru
+                $produk->image = 'storage/images/' . $imageName;
+            }
+
+            // Update produk dengan data baru
+            $produk->save();
 
             return redirect()->route('admin_produk')->with('success', 'Produk berhasil diperbarui!');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
 
     // Menghapus produk
     public function destroy($id)
