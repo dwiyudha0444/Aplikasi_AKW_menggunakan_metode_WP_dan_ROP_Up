@@ -7,6 +7,8 @@ use App\Http\Controllers\dashboard\admin\DaftarAkunController;
 use App\Http\Controllers\dashboard\admin\KategoriController;
 use App\Http\Controllers\dashboard\admin\ProdukController;
 use App\Http\Controllers\dashboard\adminController;
+use App\Http\Controllers\PemesananController;
+use App\Http\Controllers\PemesananProdukController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +25,22 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//pemesanan
+Route::get('/dashboard_reseller/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
+Route::get('/dashboard_reseller/pemesanan/create', [PemesananController::class, 'create'])->name('pemesanan.create');
+Route::post('/dashboard_reseller/pemesanan/store', [PemesananController::class, 'store'])->name('pemesanan.store');
+Route::get('/dashboard_reseller/pemesanan/edit/{id}', [PemesananController::class, 'edit'])->name('pemesanan.edit');
+Route::put('/dashboard_reseller/pemesanan/update/{id}', [PemesananController::class, 'update'])->name('pemesanan.update');
+Route::delete('/dashboard_reseller/pemesanan/delete/{id}', [PemesananController::class, 'destroy'])->name('pemesanan.destroy');
+
+// Pemesanan Produk
+Route::get('/dashboard_reseller/pemesanan_produk', [PemesananProdukController::class, 'index'])->name('pemesanan_produk.index');
+Route::get('/dashboard_reseller/pemesanan_produk/create', [PemesananProdukController::class, 'create'])->name('pemesanan_produk.create');
+Route::post('/dashboard_reseller/pemesanan_produk/store', [PemesananProdukController::class, 'store'])->name('pemesanan_produk.store');
+Route::get('/dashboard_reseller/pemesanan_produk/edit/{id}', [PemesananProdukController::class, 'edit'])->name('pemesanan_produk.edit');
+Route::put('/dashboard_reseller/pemesanan_produk/update/{id}', [PemesananProdukController::class, 'update'])->name('pemesanan_produk.update');
+Route::delete('/dashboard_reseller/pemesanan_produk/delete/{id}', [PemesananProdukController::class, 'destroy'])->name('pemesanan_produk.destroy');
 
 //auth
 Route::get('/login', [LoginController::class, 'index'])->name('login');

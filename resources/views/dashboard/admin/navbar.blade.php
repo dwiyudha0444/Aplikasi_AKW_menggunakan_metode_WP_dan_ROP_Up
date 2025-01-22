@@ -111,6 +111,13 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ route('admin_kategori') }}">Kategori</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('pemesanan.index') }}">Pemesanan</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('pemesanan_produk.index') }}">Pemesanan Produk</a>
+                                        </li>
+                                        
                                     </ul>
                                 </li>
                             </ul>

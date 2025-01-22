@@ -30,4 +30,9 @@ License: You must have a valid license purchased only from templatemonster to le
 
     <!-- Custom CSS -->
     <link href="{{ asset('dist/css/style.css')}}" rel="stylesheet" type="text/css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
