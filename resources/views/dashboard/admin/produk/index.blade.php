@@ -69,7 +69,7 @@
                                                     <td>
                                                         <!-- Menampilkan gambar produk jika ada -->
                                                         @if ($product->image)
-                                                            <img src="{{ asset('storage/app/public/images' . $product->image) }}"
+                                                            <img src="{{ $product->image_url }}"
                                                                 alt="{{ $product->nama }}"
                                                                 style="width: 100px; height: auto;">
                                                         @else

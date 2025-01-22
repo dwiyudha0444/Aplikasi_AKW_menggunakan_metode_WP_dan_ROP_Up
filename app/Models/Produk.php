@@ -26,4 +26,15 @@ class Produk extends Model
     {
         return $this->hasMany(PemesananProduk::class, 'id_produk');
     }
+
+    public function getImageUrlAttribute()
+    {
+        // Pastikan file gambar ada dan kembalikan URL yang benar
+        if ($this->image) {
+            return asset($this->image);
+        }
+
+        // Jika gambar tidak ada, kembalikan URL default atau placeholder
+        return asset('storage/images/default.jpg'); // Ganti dengan URL gambar default jika diperlukan
+    }
 }

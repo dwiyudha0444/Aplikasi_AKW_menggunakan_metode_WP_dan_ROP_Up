@@ -79,7 +79,7 @@
                         @if ($produk->image)
                             <div class="form-group">
                                 <label>Gambar Saat Ini</label>
-                                <img src="{{ asset('storage/app/public/images/' . $produk->image) }}" alt="{{ $produk->nama }}"
+                                <img src="{{ $produk->image_url }}"
                                     style="width: 100px; height: auto;">
                             </div>
                         @else
