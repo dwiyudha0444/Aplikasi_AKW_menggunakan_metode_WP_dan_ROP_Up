@@ -17,8 +17,9 @@
                                 <span class="badge badge-success badge-indicator"></span>
                             </div>
                             <div class="media-body">
-                                <span>Madelyn Shane<i class="zmdi zmdi-chevron-down"></i></span>
+                                <span>{{ auth()->user()->name }} <i class="zmdi zmdi-chevron-down"></i></span>
                             </div>
+
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX"
@@ -45,8 +46,14 @@
                             </div>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-power"></i><span>Log
-                                out</span></a>
+                        <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                            @csrf
+                            <button type="submit" class="dropdown-item" style="border: none; background: transparent;">
+                                <i class="dropdown-icon zmdi zmdi-power"></i>
+                                <span>Log out</span>
+                            </button>
+                        </form>
+
                     </div>
                 </li>
             </ul>
@@ -99,10 +106,10 @@
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{route('admin_produk')}}">Produk</a>
+                                            <a class="nav-link" href="{{ route('admin_produk') }}">Produk</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{route('admin_kategori')}}">Kategori</a>
+                                            <a class="nav-link" href="{{ route('admin_kategori') }}">Kategori</a>
                                         </li>
                                     </ul>
                                 </li>

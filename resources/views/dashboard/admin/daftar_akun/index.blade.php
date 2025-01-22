@@ -1,24 +1,18 @@
 @extends('dashboard.admin.index')
 @section('content')
-    <!-- Breadcrumb -->
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Tabel</a></li>
             <li class="breadcrumb-item active" aria-current="page">Daftar Akun</li>
         </ol>
     </nav>
-    <!-- /Breadcrumb -->
 
-    <!-- Container -->
     <div class="container">
-        <!-- Title -->
         <div class="hk-pg-header">
             <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
                             data-feather="archive"></i></span></span>Daftar Akun</h4>
         </div>
-        <!-- /Title -->
 
-        <!-- Row -->
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
@@ -34,7 +28,7 @@
                                                 <th>#</th>
                                                 <th>Nama</th>
                                                 <th>Email</th>
-                                                <th>Peran</th>
+                                                <th>Role</th>
                                                 <th>Status</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -55,19 +49,28 @@
                                                     </td>
                                                     <td>
                                                         @if ($user->id != auth()->id())
-                                                            <a href="{{ route('users.edit', $user->id) }}" class="mr-25"
-                                                                data-toggle="tooltip" data-original-title="Ubah"> <i
-                                                                    class="icon-pencil"></i> </a>
-                                                            <a href="{{ route('users.destroy', $user->id) }}"
-                                                                class="text-danger" data-toggle="tooltip"
-                                                                data-original-title="Hapus"
-                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?')">
+                                                            <a href="{{ route('admin_editakun', $user->id) }}"
+                                                                class="mr-25" data-toggle="tooltip"
+                                                                data-original-title="Ubah">
+                                                                <i class="icon-pencil"></i>
+                                                            </a>
+
+                                                            <a href="javascript:void(0);" class="text-danger"
+                                                                data-toggle="tooltip" data-original-title="Hapus"
+                                                                onclick="event.preventDefault(); if(confirm('Apakah Anda yakin ingin menghapus pengguna ini?')) { document.getElementById('delete-form-{{ $user->id }}').submit(); }">
                                                                 <i class="icon-trash"></i>
                                                             </a>
+                                                            <form id="delete-form-{{ $user->id }}"
+                                                                action="{{ route('admin_deleteakun', $user->id) }}"
+                                                                method="POST" style="display: none;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
                                                         @else
                                                             <span class="text-muted">Tidak Ada Aksi</span>
                                                         @endif
                                                     </td>
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -80,8 +83,5 @@
                 </section>
             </div>
         </div>
-        <!-- /Row -->
-
     </div>
-    <!-- /Container -->
 @endsection
