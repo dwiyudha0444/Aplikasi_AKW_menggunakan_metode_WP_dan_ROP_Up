@@ -43,26 +43,21 @@ class CartController extends Controller
 
         $cart = Session::get('cart', []);
 
-        if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity']++;
-        } else {
-            $cart[$product->id] = [
-                'name' => $product->nama,
-                'price' => $product->harga,
-                'quantity' => 1,
-            ];
-        }
-
-        // Calculate total price
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
-        }
+        $cart[$product->id] = [
+            'id' => $product->id,
+            'name' => $product->nama,
+            'price' => $product->harga,
+            'quantity' => 1,
+            'image_url' => $product->image_url,
+        ];
 
         Session::put('cart', $cart);
 
-        return redirect()->route('cart.index')->with('success', 'Produk berhasil ditambahkan ke keranjang!')->with('total', $total);
+        Log::info('Product added to cart', ['cart' => $cart]);
+
+        return redirect()->route('cart.index')->with('success', 'Product added to cart!');
     }
+
 
     public function destroy($productId)
     {
@@ -84,81 +79,44 @@ class CartController extends Controller
 
     public function checkout()
     {
-        try {
-            $cart = Session::get('cart', []);
+        $cart = Session::get('cart', []);
 
-            if (empty($cart)) {
-                Log::warning('Checkout attempt with empty cart', [
-                    'user_id' => Auth::id(), 
-                    'cart_data' => $cart, 
-                ]);
-                return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
-            }
-
-            $total = 0;
-            foreach ($cart as $item) {
-                $total += $item['price'] * $item['quantity'];
-            }
-
-            Log::info('Creating order', [
-                'user_id' => Auth::id(),
-                'total_price' => $total,
-            ]);
-
-            $order = Pemesanan::create([
-                'id_user' => Auth::id(),
-                'tanggal_pemesanan' => Carbon::now(),
-                'status_pemesanan' => 'pending',
-                'total_harga' => $total,
-            ]);
-
-            Log::info('Order created successfully', [
-                'order_id' => $order->id,
-                'user_id' => Auth::id(),
-                'total_price' => $total,
-            ]);
-
-            foreach ($cart as $item) {
-                Log::info('Processing cart item', ['item' => $item]);
-
-                if (!isset($item['id'])) {
-                    Log::error('Cart item does not have "id" key', ['item' => $item]);
-                    continue; 
-                }
-
-                PemesananProduk::create([
-                    'id_pemesanan' => $order->id,
-                    'id_produk' => $item['id'],
-                    'qty_produk' => $item['quantity'],
-                    'harga' => $item['price'],
-                    'total_harga' => $item['price'] * $item['quantity'],
-                ]);
-
-                Log::info('Product added to order', [
-                    'order_id' => $order->id,
-                    'product_id' => $item['id'],
-                    'quantity' => $item['quantity'],
-                    'price_per_unit' => $item['price'],
-                    'total_price' => $item['price'] * $item['quantity'],
-                ]);
-            }
-
-
-            Session::forget('cart');
-
-            Log::info('Cart cleared after successful checkout', [
-                'user_id' => Auth::id(),
-            ]);
-
-            return redirect()->route('dashboard_reseller')->with('success', 'Checkout successful! Your order is now placed.');
-        } catch (Exception $e) {
-            Log::error('Checkout failed', [
-                'error_message' => $e->getMessage(),
-                'stack_trace' => $e->getTraceAsString(),
-                'user_id' => Auth::id(),
-            ]);
-
-            return redirect()->route('cart.index')->with('error', 'An error occurred during checkout.');
+        if (empty($cart)) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
         }
+
+        $total = 0;
+        foreach ($cart as $item) {
+            if (!isset($item['id'])) {
+                Log::error('Cart item does not have "id" key', ['item' => $item]);
+                continue;
+            }
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        $order = Pemesanan::create([
+            'id_user' => Auth::id(),
+            'tanggal_pemesanan' => Carbon::now(),
+            'status_pemesanan' => 'pending',
+            'total_harga' => $total,
+        ]);
+
+        foreach ($cart as $item) {
+            if (!isset($item['id'])) {
+                continue;
+            }
+
+            PemesananProduk::create([
+                'id_pemesanan' => $order->id,
+                'id_produk' => $item['id'],
+                'qty_produk' => $item['quantity'],
+                'harga' => $item['price'],
+                'total_harga' => $item['price'] * $item['quantity'],
+            ]);
+        }
+
+        Session::forget('cart');
+
+        return redirect()->route('dashboard_reseller')->with('success', 'Checkout successful! Your order is now placed.');
     }
 }
