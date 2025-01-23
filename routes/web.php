@@ -10,6 +10,7 @@ use App\Http\Controllers\dashboard\adminController;
 use App\Http\Controllers\landingpage\reseller\LandingpageController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PemesananProdukController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/dashboard_reseller/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::get('dashboard_reseller/cart', [CartController::class, 'index'])->name('cart.index');
 
 Route::get('/dashboard_reseller', [LandingpageController::class, 'index'])->name('dashboard_reseller');
 
