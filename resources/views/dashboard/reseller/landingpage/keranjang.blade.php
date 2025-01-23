@@ -6,13 +6,18 @@
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-10">
 
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3 class="fw-normal mb-0">Shopping Cart</h3>
-                        <div>
-                            <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price
-                                    <i class="fas fa-angle-down mt-1"></i></a></p>
+                    <div class="d-flex flex-column align-items-start mb-4">
+                        <h3 class="fw-normal mb-2">Shopping Cart</h3>
+                        <div class="mt-3">
+                            <a href="{{ route('dashboard_reseller') }}" class="btn btn-secondary">Back</a>
                         </div>
+                        {{-- <div>
+                            <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!"
+                                    class="text-body">price
+                                    <i class="fas fa-angle-down mt-1"></i></a></p>
+                        </div> --}}
                     </div>
+
 
                     @if (session('success'))
                         <div class="alert alert-success">
@@ -22,7 +27,7 @@
 
                     @if (count($cart) > 0)
                         @foreach ($cart as $id => $item)
-                            <div class="card rounded-3 mb-4">
+                            <div class="card rounded-3 mb-4" id="cart-item-{{ $id }}">
                                 <div class="card-body p-4">
                                     <div class="row d-flex justify-content-between align-items-center">
                                         <div class="col-md-2 col-lg-2 col-xl-2">
@@ -57,9 +62,14 @@
                                             </h5>
                                         </div>
 
+                                        <!-- Remove Item -->
                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <a href="#" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                            <a href="{{ route('cart.destroy', $id) }}" class="text-danger">
+                                                <i class="fas fa-trash fa-lg"></i>
+                                            </a>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +91,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <a href="#" class="btn btn-warning btn-block btn-lg">Proceed to Pay</a>
+                                <a href="#" class="btn btn-warning btn-block btn-lg">Checkout</a>
                             </div>
                         </div>
                     @else
@@ -113,15 +123,15 @@
             let qtyInput = document.getElementById('qty-' + productId);
             let quantity = parseInt(qtyInput.value);
             let priceElement = document.getElementById('price-' + productId);
-            let price = parseFloat(priceElement.getAttribute('data-price')); 
+            let price = parseFloat(priceElement.getAttribute('data-price'));
 
             if (!price || quantity < 1) {
                 console.error("Invalid price or quantity");
-                return; 
+                return;
             }
 
             let newPrice = quantity * price;
-            priceElement.innerText = 'Rp ' + formatPrice(newPrice); 
+            priceElement.innerText = 'Rp ' + formatPrice(newPrice);
 
             updateTotalPrice();
         }
@@ -131,7 +141,7 @@
 
             document.querySelectorAll('[id^="price-"]').forEach(function(item) {
                 let itemPriceText = item.innerText.replace('Rp ', '').replace(/\./g, '').replace(',',
-                ''); 
+                    '');
                 let itemPrice = parseFloat(itemPriceText);
 
                 total += itemPrice;
@@ -141,11 +151,15 @@
         }
 
         function formatPrice(amount) {
-            return amount.toLocaleString('id-ID'); 
+            return amount.toLocaleString('id-ID');
         }
 
         function removeItem(productId) {
-            alert('Item with ID ' + productId + ' removed.');
+            const itemElement = document.getElementById('cart-item-' + productId);
+            if (itemElement) {
+                itemElement.remove();
+            }
+            updateTotalPrice();
         }
     </script>
 @endsection

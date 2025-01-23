@@ -65,4 +65,23 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Produk berhasil ditambahkan ke keranjang!')->with('total', $total);
     }
+
+    public function destroy($productId)
+    {
+        $cart = Session::get('cart', []);
+        if (isset($cart[$productId])) {
+
+            unset($cart[$productId]);
+
+            Session::put('cart', $cart);
+        }
+
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Produk berhasil dihapus dari keranjang!')->with('total', $total);
+    }
+
 }
