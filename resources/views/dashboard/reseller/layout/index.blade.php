@@ -4,7 +4,7 @@
 
 @include('dashboard.reseller.layout.header')
 
-       <section class="py-5">
+       <section class="pb-5">
             @yield('content')
         </section>
 
