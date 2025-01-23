@@ -91,7 +91,10 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <a href="#" class="btn btn-warning btn-block btn-lg">Checkout</a>
+                                <form action="{{ route('cart.checkout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-warning btn-block btn-lg">Checkout</button>
+                                </form>
                             </div>
                         </div>
                     @else
