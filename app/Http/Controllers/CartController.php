@@ -3,39 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Produk; 
+use App\Models\Produk;
 use Illuminate\Support\Facades\Session;
+use App\Models\Pemesanan;
+use App\Models\PemesananProduk;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class CartController extends Controller
 {
     public function index()
     {
-        // Get cart data from session
         $cart = Session::get('cart', []);
 
-        // Attach the image URL for each product in the cart
         foreach ($cart as $key => $value) {
-            $product = Produk::find($key); // Find the product by its ID (ensure $key is a valid product ID)
+            $product = Produk::find($key);
 
-            // Check if the product exists
             if ($product) {
-                $cart[$key]['image_url'] = $product->image_url; // Attach the image URL
+                $cart[$key]['image_url'] = $product->image_url;
             } else {
-                // If the product doesn't exist, set a default image URL or handle accordingly
                 $cart[$key]['image_url'] = asset('storage/images/default.jpg');
             }
         }
 
-        // Update the session with the cart data including image URLs
         Session::put('cart', $cart);
 
-        // Calculate total price of the products in the cart
         $total = 0;
         foreach ($cart as $item) {
             $total += $item['price'] * $item['quantity'];
         }
-
-        // Return the view with cart and total
         return view('dashboard.reseller.landingpage.keranjang', compact('cart', 'total'));
     }
 
@@ -84,4 +82,83 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Produk berhasil dihapus dari keranjang!')->with('total', $total);
     }
 
+    public function checkout()
+    {
+        try {
+            $cart = Session::get('cart', []);
+
+            if (empty($cart)) {
+                Log::warning('Checkout attempt with empty cart', [
+                    'user_id' => Auth::id(), 
+                    'cart_data' => $cart, 
+                ]);
+                return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
+            }
+
+            $total = 0;
+            foreach ($cart as $item) {
+                $total += $item['price'] * $item['quantity'];
+            }
+
+            Log::info('Creating order', [
+                'user_id' => Auth::id(),
+                'total_price' => $total,
+            ]);
+
+            $order = Pemesanan::create([
+                'id_user' => Auth::id(),
+                'tanggal_pemesanan' => Carbon::now(),
+                'status_pemesanan' => 'pending',
+                'total_harga' => $total,
+            ]);
+
+            Log::info('Order created successfully', [
+                'order_id' => $order->id,
+                'user_id' => Auth::id(),
+                'total_price' => $total,
+            ]);
+
+            foreach ($cart as $item) {
+                Log::info('Processing cart item', ['item' => $item]);
+
+                if (!isset($item['id'])) {
+                    Log::error('Cart item does not have "id" key', ['item' => $item]);
+                    continue; 
+                }
+
+                PemesananProduk::create([
+                    'id_pemesanan' => $order->id,
+                    'id_produk' => $item['id'],
+                    'qty_produk' => $item['quantity'],
+                    'harga' => $item['price'],
+                    'total_harga' => $item['price'] * $item['quantity'],
+                ]);
+
+                Log::info('Product added to order', [
+                    'order_id' => $order->id,
+                    'product_id' => $item['id'],
+                    'quantity' => $item['quantity'],
+                    'price_per_unit' => $item['price'],
+                    'total_price' => $item['price'] * $item['quantity'],
+                ]);
+            }
+
+
+            Session::forget('cart');
+
+            Log::info('Cart cleared after successful checkout', [
+                'user_id' => Auth::id(),
+            ]);
+
+            return redirect()->route('dashboard_reseller')->with('success', 'Checkout successful! Your order is now placed.');
+        } catch (Exception $e) {
+            Log::error('Checkout failed', [
+                'error_message' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString(),
+                'user_id' => Auth::id(),
+            ]);
+
+            return redirect()->route('cart.index')->with('error', 'An error occurred during checkout.');
+        }
+    }
 }

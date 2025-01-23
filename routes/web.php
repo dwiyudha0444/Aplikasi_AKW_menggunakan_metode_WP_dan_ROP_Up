@@ -27,10 +27,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//keranjang
 Route::post('/dashboard_reseller/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::get('/dashboard_reseller/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/dashboard_reseller/cart/destroy/{productId}', [CartController::class, 'destroy'])->name('cart.destroy');
-
+Route::post('/dashboard_reseller/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
 Route::get('/dashboard_reseller', [LandingpageController::class, 'index'])->name('dashboard_reseller');
 
