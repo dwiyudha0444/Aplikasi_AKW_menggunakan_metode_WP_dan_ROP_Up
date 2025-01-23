@@ -37,7 +37,7 @@
                         </div>
                     @endif
                     <!-- Form -->
-                    <form action="{{ route('update_admin_produk', $produk->id) }}" method="POST">
+                    <form action="{{ route('update_admin_produk', $produk->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
