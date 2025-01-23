@@ -94,8 +94,19 @@ class CartController extends Controller
             $total += $item['price'] * $item['quantity'];
         }
 
+        $user = Auth::user();
+        $userInitials = strtoupper(substr($user->name, 0, 2));
+        $today = Carbon::now();
+        $dateFormatted = $today->format('dmy');
+
+        $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
+        $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT); // Padding angka ke 3 digit (misalnya: 001, 002, dll.)
+
+        $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
+
         $order = Pemesanan::create([
             'id_user' => Auth::id(),
+            'order_id' => $orderId,
             'tanggal_pemesanan' => Carbon::now(),
             'status_pemesanan' => 'pending',
             'total_harga' => $total,
@@ -117,6 +128,8 @@ class CartController extends Controller
 
         Session::forget('cart');
 
-        return redirect()->route('dashboard_reseller')->with('success', 'Checkout successful! Your order is now placed.');
+        return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
+
     }
+
 }
