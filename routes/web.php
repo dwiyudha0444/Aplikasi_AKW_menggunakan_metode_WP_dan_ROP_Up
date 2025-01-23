@@ -29,7 +29,6 @@ Route::get('/', function () {
 
 Route::get('/dashboard_reseller', [LandingpageController::class, 'index'])->name('dashboard_reseller');
 
-
 //pemesanan
 Route::get('/dashboard_reseller/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
 Route::get('/dashboard_reseller/pemesanan/create', [PemesananController::class, 'create'])->name('pemesanan.create');
