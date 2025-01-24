@@ -11,7 +11,7 @@ class Pemesanan extends Model
 
     protected $table = 'pemesanan';
 
-    protected $fillable = ['id_user', 'tanggal_pemesanan', 'status_pemesanan', 'total_harga', 'image_bukti_tf', 'order_id'];
+    protected $fillable = ['id_user', 'tanggal_pemesanan', 'status_pemesanan', 'total_harga', 'image_bukti_tf', 'order_id', 'status_pengiriman'];
 
     public function user()
     {
