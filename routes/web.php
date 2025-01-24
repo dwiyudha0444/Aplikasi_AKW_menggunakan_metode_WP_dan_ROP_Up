@@ -11,6 +11,7 @@ use App\Http\Controllers\landingpage\reseller\LandingpageController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PemesananProdukController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\landingpage\reseller\PengirimanController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +64,10 @@ Route::post('/dashboard_reseller/pemesanan_produk/store', [PemesananProdukContro
 Route::get('/dashboard_reseller/pemesanan_produk/edit/{id}', [PemesananProdukController::class, 'edit'])->name('pemesanan_produk.edit');
 Route::put('/dashboard_reseller/pemesanan_produk/update/{id}', [PemesananProdukController::class, 'update'])->name('pemesanan_produk.update');
 Route::delete('/dashboard_reseller/pemesanan_produk/delete/{id}', [PemesananProdukController::class, 'destroy'])->name('pemesanan_produk.destroy');
+
+// pengiriman
+Route::get('/dashboard_reseller/pengiriman', [PengirimanController::class, 'index'])->name('pengiriman_produk');
+
 
 //auth
 Route::get('/login', [LoginController::class, 'index'])->name('login');
