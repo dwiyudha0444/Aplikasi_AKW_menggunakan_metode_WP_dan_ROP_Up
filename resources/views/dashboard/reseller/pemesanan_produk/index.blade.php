@@ -19,57 +19,57 @@
                 <section class="hk-sec-wrapper">
                     <h5 class="hk-sec-title">Tabel Pemesanan Produk</h5>
                     <p class="mb-40">Daftar produk yang telah dipesan oleh reseller</p>
-                    <div class="row">
-                        {{-- <div class="col-sm">
-                              <a href="{{ route('pemesanan_produk.create') }}" class="btn btn-primary mb-3">
-                        <i class="icon-plus-circle"></i> Pesan Produk
-                    </a> --}}
-                        <div class="table-wrap">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-bordered mb-0">
-                                    <thead>
+                    <div class="table-wrap">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tanggal Pemesanan</th>
+                                        <th>Nama Produk</th>
+                                        <th>Nama Pemesan</th>
+                                        <th>Qty Produk</th>
+                                        <th>Harga Produk</th>
+                                        <th>Status Pemesanan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($pemesananProduk as $index => $pemesanan)
                                         <tr>
-                                            <th>#</th>
-                                            <th>Nama Produk</th>
-                                            <th>Nama Pemesan</th>
-                                            <th>Qty Produk</th>
-                                            <th>Harga</th>
-                                            <th>Total Harga</th>
-                                            <th>Status Pemesanan</th>
-                                            <th>Aksi</th>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $pemesanan->pemesanan->tanggal_pemesanan }}</td>
+                                            <td>{{ $pemesanan->produk->nama }}</td>
+                                            <td>{{ $pemesanan->pemesanan->user->name }}</td>
+                                            <td>{{ $pemesanan->qty_produk }}</td>
+                                            <td>{{ number_format($pemesanan->produk->harga, 0, ',', '.') }}</td>
+                                            <td>
+                                                @if ($pemesanan->pemesanan->status_pemesanan == 'waiting approvement')
+                                                    <span
+                                                        class="badge bg-warning text-dark">{{ ucfirst($pemesanan->pemesanan->status_pemesanan) }}</span>
+                                                @elseif ($pemesanan->pemesanan->status_pemesanan == 'paid')
+                                                    <span
+                                                        class="badge bg-success">{{ ucfirst($pemesanan->pemesanan->status_pemesanan) }}</span>
+                                                @elseif ($pemesanan->pemesanan->status_pemesanan == 'rejected')
+                                                    <span
+                                                        class="badge bg-danger">{{ ucfirst($pemesanan->pemesanan->status_pemesanan) }}</span>
+                                                @else
+                                                    <span
+                                                        class="badge bg-secondary">{{ ucfirst($pemesanan->pemesanan->status_pemesanan) }}</span>
+                                                @endif
+                                            </td>
+
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($pemesananProduk as $index => $pemesanan)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>{{ $pemesanan->produk->nama }}</td>
-                                                <td>{{ $pemesanan->pemesanan->user->name }}</td>
-                                                <td>{{ $pemesanan->qty_produk }}</td>
-                                                <td>{{ $pemesanan->produk->harga }}</td>
-                                                <td>{{ number_format($pemesanan->total_harga, 0, ',', '.') }}</td>
-                                                <td>{{ ucfirst($pemesanan->pemesanan->status_pemesanan) }}</td>
-                                                <td>
-                                                    {{-- <a href="{{ route('pemesanan_produk.show', $pemesanan->id) }}" 
-                                                           class="mr-25" data-toggle="tooltip" data-original-title="Detail">
-                                                            <i class="icon-eye"></i>
-                                                        </a> --}}
-                                                    <!-- Anda bisa menambahkan aksi edit atau hapus di sini -->
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                    @endforeach
+                                </tbody>
+                            </table>
 
-                                @if ($pemesananProduk->isEmpty())
-                                    <p class="text-center mt-4">Tidak ada pemesanan produk yang tersedia.</p>
-                                @endif
-
-                            </div>
+                            @if ($pemesananProduk->isEmpty())
+                                <p class="text-center mt-4">Tidak ada pemesanan produk yang tersedia.</p>
+                            @endif
                         </div>
                     </div>
+                </section>
             </div>
-            </section>
         </div>
     </div>
     </div>

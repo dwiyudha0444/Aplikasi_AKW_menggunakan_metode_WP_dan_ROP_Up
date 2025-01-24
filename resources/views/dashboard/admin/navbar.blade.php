@@ -112,10 +112,10 @@
                                             <a class="nav-link" href="{{ route('admin_kategori') }}">Kategori</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('pemesanan.index') }}">Pemesanan</a>
+                                            <a class="nav-link" href="{{ route('pemesanan.index') }}">Riwayat Pemesanan</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('pemesanan_produk.index') }}">Pemesanan Produk</a>
+                                            <a class="nav-link" href="{{ route('pemesanan_produk.index') }}">Detail Pemesanan Produk</a>
                                         </li>
                                         
                                     </ul>

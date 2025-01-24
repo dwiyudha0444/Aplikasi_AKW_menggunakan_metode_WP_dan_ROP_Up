@@ -63,7 +63,7 @@ class PaymentController extends Controller
 
                 Log::info('Pemesanan status updated to waiting approvement', ['order_id' => $request->order_id]);
 
-                return redirect()->route('dashboard_reseller')->with('success', 'Payment proof uploaded successfully!');
+                return redirect()->route('history')->with('success', 'Payment proof uploaded successfully!');
             } else {
                 Log::warning('No payment proof file uploaded', ['order_id' => $request->order_id]);
             }
