@@ -92,20 +92,35 @@
                                                                         @endif
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        {{-- <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Tutup</button> --}}
+                                                                        <!-- Cek jika status pemesanan bukan paid atau rejected -->
+                                                                        @if ($item->status_pemesanan != 'paid' && $item->status_pemesanan != 'rejected')
+                                                                            <!-- Tombol Konfirmasi -->
+                                                                            <form
+                                                                                action="{{ route('pemesanan.updateStatus', $item->id) }}"
+                                                                                method="POST" style="display:inline;">
+                                                                                @csrf
+                                                                                @method('PATCH')
+                                                                                <input type="hidden"
+                                                                                    name="status_pemesanan" value="paid">
+                                                                                <button type="submit"
+                                                                                    class="btn btn-success">Konfirmasi</button>
+                                                                            </form>
 
-                                                                        <form
-                                                                            action="{{ route('pemesanan.updateStatus', $item->id) }}"
-                                                                            method="POST" style="display:inline;">
-                                                                            @csrf
-                                                                            @method('PATCH')
-                                                                            <input type="hidden" name="status_pemesanan"
-                                                                                value="paid">
-                                                                            <button type="submit"
-                                                                                class="btn btn-success">Konfirmasi</button>
-                                                                        </form>
+                                                                            <!-- Tombol Tolak -->
+                                                                            <form
+                                                                                action="{{ route('pemesanan.updateStatus', $item->id) }}"
+                                                                                method="POST" style="display:inline;">
+                                                                                @csrf
+                                                                                @method('PATCH')
+                                                                                <input type="hidden"
+                                                                                    name="status_pemesanan"
+                                                                                    value="rejected">
+                                                                                <button type="submit"
+                                                                                    class="btn btn-danger">Tolak</button>
+                                                                            </form>
+                                                                        @endif
                                                                     </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
