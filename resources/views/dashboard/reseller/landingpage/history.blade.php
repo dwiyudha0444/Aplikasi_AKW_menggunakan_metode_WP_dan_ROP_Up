@@ -43,10 +43,10 @@
                             <td>
                                 @if ($transaction->status_pemesanan == 'waiting approvement')
                                     <span class="badge bg-warning text-dark">Menunggu Persetujuan</span>
-                                @elseif ($transaction->status_pemesanan == 'approved')
-                                    <span class="badge bg-success">Disetujui</span>
+                                @elseif ($transaction->status_pemesanan == 'paid')
+                                    <span class="badge bg-success">Paid</span>
                                 @elseif ($transaction->status_pemesanan == 'rejected')
-                                    <span class="badge bg-danger">Ditolak</span>
+                                    <span class="badge bg-danger">Rejected</span>
                                 @else
                                     <span class="badge bg-secondary">Status Tidak Diketahui</span>
                                 @endif

@@ -90,4 +90,13 @@ class PemesananController extends Controller
 
         return redirect()->route('pemesanan.index')->with('success', 'Pemesanan berhasil dihapus');
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $pemesanan = Pemesanan::findOrFail($id);
+        $pemesanan->status_pemesanan = $request->status_pemesanan;
+        $pemesanan->save();
+
+        return redirect()->back()->with('success', 'Status pemesanan berhasil diperbarui menjadi Paid.');
+    }
 }

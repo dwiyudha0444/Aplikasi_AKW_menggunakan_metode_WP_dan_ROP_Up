@@ -30,6 +30,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//update status pemesanan
+Route::patch('/dashboard_admin/pemesanan/{id}/update-status', [PemesananController::class, 'updateStatus'])->name('pemesanan.updateStatus');
+
 //payment
 Route::post('/dashboard_reseller/payment/upload', [PaymentController::class, 'uploadPaymentProof'])->name('payment.upload');
 
