@@ -3,6 +3,22 @@
 @section('title', 'Riwayat Transaksi')
 
 @section('content')
+    <div class="modal fade" id="buktiTfModal" tabindex="-1" role="dialog" aria-labelledby="buktiTfModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buktiTfModalLabel">Bukti Transfer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <!-- Gambar Bukti Transfer -->
+                    <img id="buktiTfImage" src="" alt="Bukti Transfer" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container mt-4">
         <h1 class="mb-4">Riwayat Transaksi</h1>
         <div class="table-responsive">
@@ -26,19 +42,22 @@
                             <td>Rp {{ number_format($transaction->total_harga, 0, ',', '.') }}</td>
                             <td>
                                 @if ($transaction->status_pemesanan == 'waiting approvement')
-                                    Menunggu Persetujuan
+                                    <span class="badge bg-warning text-dark">Menunggu Persetujuan</span>
                                 @elseif ($transaction->status_pemesanan == 'approved')
-                                    Disetujui
+                                    <span class="badge bg-success">Disetujui</span>
                                 @elseif ($transaction->status_pemesanan == 'rejected')
-                                    Ditolak
+                                    <span class="badge bg-danger">Ditolak</span>
                                 @else
-                                    Status Tidak Diketahui
+                                    <span class="badge bg-secondary">Status Tidak Diketahui</span>
                                 @endif
                             </td>
                             <td>
                                 @if ($transaction->image_bukti_tf)
-                                    <a href="{{ asset('storage/' . $transaction->image_bukti_tf) }}" target="_blank">Lihat
-                                        Bukti</a>
+                                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#buktiTfModal"
+                                        onclick="showBukti('{{ asset('storage/' . $transaction->image_bukti_tf) }}')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
                                 @else
                                     <span class="text-muted">Tidak ada bukti</span>
                                 @endif
@@ -53,4 +72,11 @@
             </table>
         </div>
     </div>
+    <script>
+        function showBukti(imageUrl) {
+            const imageElement = document.getElementById('buktiTfImage');
+            imageElement.src = imageUrl;
+        }
+    </script>
+
 @endsection

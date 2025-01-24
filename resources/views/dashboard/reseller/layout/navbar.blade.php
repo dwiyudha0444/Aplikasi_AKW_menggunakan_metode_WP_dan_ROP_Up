@@ -13,6 +13,7 @@
                         data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">All Products</a></li>
+                         <li><a class="dropdown-item" href="{{ route('history') }}">History Transaction</a></li>
                     </ul>
                 </li>
             </ul>
