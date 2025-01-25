@@ -28,7 +28,13 @@
                 <section class="hk-sec-wrapper">
                     <h5 class="hk-sec-title">Tabel Pengiriman</h5>
                     <p class="mb-40">Daftar pengiriman produk yang harus diproses oleh kurir.</p>
-
+                    {{-- <div class="row mb-3">
+                        <div class="col-sm">
+                            <a href="{{ route('create_admin_produk') }}" class="btn btn-primary">
+                                <i class="icon-plus"></i> Tambah Produk
+                            </a>
+                        </div>
+                    </div> --}}
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
@@ -56,6 +62,7 @@
                                                 <th>Total Harga</th>
                                                 <th>Total Harga</th>
                                                 <th>Dibuat Pada</th>
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -77,6 +84,18 @@
                                                     <td>{{ number_format($item->harga, 0, ',', '.') }}</td>
                                                     <td>{{ number_format($item->total_harga, 0, ',', '.') }}</td>
                                                     <td>{{ $item->created_at }}</td>
+                                                    <td>
+                                                        <a href="{{ route('edit_admin_produk', $item->id) }}"
+                                                            class="mr-25" data-toggle="tooltip" data-original-title="Edit">
+                                                            <i class="icon-pencil"></i>
+                                                        </a>
+                                                        {{-- <a href="{{ route('products.destroy', $product->id) }}",
+                                                            class="text-danger" data-toggle="tooltip"
+                                                            data-original-title="Hapus"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
+                                                            <i class="icon-trash"></i>
+                                                        </a> --}}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
