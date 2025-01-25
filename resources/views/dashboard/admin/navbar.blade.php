@@ -45,6 +45,7 @@
                                         class="dropdown-icon zmdi zmdi-minus-circle-outline text-danger"></i><span>Offline</span></a>
                             </div>
                         </div>
+
                         <div class="dropdown-divider"></div>
                         <form action="{{ route('logout') }}" method="POST" id="logout-form">
                             @csrf
@@ -68,105 +69,208 @@
             <div class="nicescroll-bar">
                 <div class="navbar-nav-wrap">
                     <ul class="navbar-nav flex-column">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#dash_drp">
-                                <span class="feather-icon"><i data-feather="activity"></i></span>
-                                <span class="nav-link-text">Dashboard</span>
-                            </a>
-                            <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
-                                <li class="nav-item">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item active">
-                                            <a class="nav-link" href="dashboard1.html">CRM</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="dashboard2.html">Project</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="dashboard3.html">Statistics</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="dashboard4.html">Classic</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="dashboard5.html">Analytics</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#app_drp">
-                                <span class="feather-icon"><i data-feather="package"></i></span>
-                                <span class="nav-link-text">Aplikasi</span>
-                            </a>
-                            <ul id="app_drp" class="nav flex-column collapse collapse-level-1">
-                                <li class="nav-item">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('admin_produk') }}">Produk</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('admin_kategori') }}">Kategori</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('pemesanan.index') }}">Riwayat Pemesanan</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('pemesanan_produk.index') }}">Detail Pemesanan Produk</a>
-                                        </li>
-                                        
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#auth_drp">
-                                <span class="feather-icon"><i data-feather="zap"></i></span>
-                                <span class="nav-link-text">Akun</span>
-                            </a>
-                            <ul id="auth_drp" class="nav flex-column collapse collapse-level-1">
-                                <li class="nav-item">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('admin_daftarakun') }}">Daftar Akun</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                data-target="#pages_drp">
-                                <span class="feather-icon"><i data-feather="file-text"></i></span>
-                                <span class="nav-link-text">Pages</span>
-                            </a>
-                            <ul id="pages_drp" class="nav flex-column collapse collapse-level-1">
-                                <li class="nav-item">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="profile.html">Profile</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="invoice.html">Invoice</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="gallery.html">Gallery</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="activity.html">Activity</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="faq.html">Faq</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
+                        @if (Auth::check() && Auth::user()->role === 'admin')
+                            <li class="nav-item active">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#dash_drp">
+                                    <span class="feather-icon"><i data-feather="activity"></i></span>
+                                    <span class="nav-link-text">Dashboard</span>
+                                </a>
+                                <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item active">
+                                                <a class="nav-link" href="dashboard1.html">CRM</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard2.html">Project</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard3.html">Statistics</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard4.html">Classic</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard5.html">Analytics</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#app_drp">
+                                    <span class="feather-icon"><i data-feather="package"></i></span>
+                                    <span class="nav-link-text">Aplikasi</span>
+                                </a>
+                                <ul id="app_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('admin_produk') }}">Produk</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('admin_kategori') }}">Kategori</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('pemesanan.index') }}">Riwayat
+                                                    Pemesanan</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link"
+                                                    href="{{ route('pemesanan_produk.index') }}">Detail Pemesanan
+                                                    Produk</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#auth_drp">
+                                    <span class="feather-icon"><i data-feather="zap"></i></span>
+                                    <span class="nav-link-text">Akun</span>
+                                </a>
+                                <ul id="auth_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('admin_daftarakun') }}">Daftar
+                                                    Akun</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+                        @if (Auth::check() && Auth::user()->role === 'admin')
+                            <li class="nav-item active">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#dash_drp">
+                                    <span class="feather-icon"><i data-feather="activity"></i></span>
+                                    <span class="nav-link-text">Dashboard</span>
+                                </a>
+                                <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item active">
+                                                <a class="nav-link" href="dashboard1.html">CRM</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard2.html">Project</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard3.html">Statistics</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard4.html">Classic</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard5.html">Analytics</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#app_drp">
+                                    <span class="feather-icon"><i data-feather="package"></i></span>
+                                    <span class="nav-link-text">Aplikasi</span>
+                                </a>
+                                <ul id="app_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('admin_produk') }}">Produk</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('admin_kategori') }}">Kategori</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('pemesanan.index') }}">Riwayat
+                                                    Pemesanan</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link"
+                                                    href="{{ route('pemesanan_produk.index') }}">Detail Pemesanan
+                                                    Produk</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#auth_drp">
+                                    <span class="feather-icon"><i data-feather="zap"></i></span>
+                                    <span class="nav-link-text">Akun</span>
+                                </a>
+                                <ul id="auth_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('admin_daftarakun') }}">Daftar
+                                                    Akun</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+
+                       {{-- kurir --}}
+
+                        @if (Auth::check() && Auth::user()->role === 'kurir')
+                            <li class="nav-item active">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#dash_drp">
+                                    <span class="feather-icon"><i data-feather="activity"></i></span>
+                                    <span class="nav-link-text">Dashboard Kurir</span>
+                                </a>
+                                <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item active">
+                                                <a class="nav-link" href="dashboard1.html">CRM</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard2.html">Project</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard3.html">Statistics</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard4.html">Classic</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard5.html">Analytics</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#app_drp">
+                                    <span class="feather-icon"><i data-feather="package"></i></span>
+                                    <span class="nav-link-text">Pengiriman</span>
+                                </a>
+                                <ul id="app_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('dashboard_kurir_pengiriman') }}">Paket</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                        @endif
+
                     </ul>
                 </div>
             </div>

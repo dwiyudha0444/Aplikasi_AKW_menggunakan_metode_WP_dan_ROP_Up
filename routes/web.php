@@ -11,7 +11,9 @@ use App\Http\Controllers\landingpage\reseller\LandingpageController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PemesananProdukController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\landingpage\reseller\PengirimanController;
+use App\Http\Controllers\dashboard\kurir\KurirController;
+use App\Http\Controllers\landingpage\reseller\PengirimanController as ResellerPengirimanController;
+use App\Http\Controllers\dashboard\kurir\PengirimanController as KurirPengirimanController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -66,7 +68,16 @@ Route::put('/dashboard_reseller/pemesanan_produk/update/{id}', [PemesananProdukC
 Route::delete('/dashboard_reseller/pemesanan_produk/delete/{id}', [PemesananProdukController::class, 'destroy'])->name('pemesanan_produk.destroy');
 
 // pengiriman
-Route::get('/dashboard_reseller/pengiriman', [PengirimanController::class, 'index'])->name('pengiriman_produk');
+// Route untuk Kurir
+Route::get('/dashboard_kurir/pengiriman', [KurirPengirimanController::class, 'index'])
+    ->name('dashboard_kurir_pengiriman');
+
+// kurir
+Route::get('/dashboard_kurir', [KurirController::class, 'index'])->name('dashboard_kurir');
+// Route untuk Reseller
+Route::get('/dashboard_reseller/pengiriman', [ResellerPengirimanController::class, 'index'])
+    ->name('pengiriman_produk');
+
 
 
 //auth
