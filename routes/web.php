@@ -71,6 +71,8 @@ Route::delete('/dashboard_reseller/pemesanan_produk/delete/{id}', [PemesananProd
 // Route untuk Kurir
 Route::get('/dashboard_kurir/pengiriman', [KurirPengirimanController::class, 'index'])
     ->name('dashboard_kurir_pengiriman');
+Route::get('/dashboard_kurir/pengiriman/edit/{id}', [KurirPengirimanController::class, 'edit'])->name('edit_pengiriman_produk');
+Route::put('/dashboard_kurir/pengiriman/edit/{id}', [KurirPengirimanController::class, 'update'])->name('update_pengiriman_produk');
 
 // kurir
 Route::get('/dashboard_kurir', [KurirController::class, 'index'])->name('dashboard_kurir');
@@ -78,6 +80,7 @@ Route::get('/dashboard_kurir', [KurirController::class, 'index'])->name('dashboa
 Route::get('/dashboard_reseller/pengiriman', [ResellerPengirimanController::class, 'index'])
     ->name('pengiriman_produk');
 
+    Route::get('/dashboard_reseller/produk_diterima', [ResellerPengirimanController::class, 'indexConfirm'])->name('produk.diterima');
 
 
 //auth

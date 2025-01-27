@@ -131,34 +131,42 @@
         <div class="tabs">
             <span id="Semua" class="tab active" onclick="showTab('Semua')">Semua</span>
             <span id="BelumBayar" class="tab" onclick="showTab('BelumBayar')">Belum Bayar</span>
-            <span id="Dikemas" class="tab" onclick="showTab('Dikemas')">Sedang Dikemas</span>
+            <span id="Dikemas" class="tab" onclick="showTab('Dikemas')">Dikemas</span>
+            <span id="Dikirim" class="tab" onclick="showTab('Dikirim')">Dikirim</span>
             <span id="Selesai" class="tab" onclick="showTab('Selesai')">Selesai</span>
         </div>
+
         @foreach ($pengiriman as $index => $item)
-            <div class="product {{ $item->pemesanan->status_pengiriman }}">
+            <div class="product {{ $item->status_pengiriman }}">
                 <div class="product-header">
                     <span style="color: #ff5722; font-weight: bold;">Star+</span>
                     <span
-                        style="margin-left: 10px; font-size: 18px; font-weight: bold;">{{ $item->produk->kategori->nama }}</span>
+                        style="margin-left: 10px; font-size: 18px; font-weight: bold;">{{ $item->pemesanan_produk->produk->kategori->nama }}</span>
                 </div>
                 <div class="product-body">
-                    @if ($item->produk->image)
-                        <img src="{{ $item->produk->image_url }}" alt="{{ $item->produk->nama }}" style="width: 100px; height: auto;">
+                    @if ($item->pemesanan_produk->produk->image)
+                        <img src="{{ $item->pemesanan_produk->produk->image_url }}"
+                            alt="{{ $item->pemesanan_produk->produk->nama }}" style="width: 100px; height: auto;">
                     @else
                         <span>No Image</span>
                     @endif
 
                     <div class="details">
-                        <h3>{{ $item->produk->nama }}</h3>
-                        {{-- <p>Variasi:</p> --}}
-                        <p class="price">
-                        <p class="price">Rp{{ number_format($item->produk->harga, 0, ',', '.') }}</p>
-                        </p>
+                        <h3>{{ $item->pemesanan_produk->produk->nama }}</h3>
+                        <p class="price">Rp{{ number_format($item->pemesanan_produk->produk->harga, 0, ',', '.') }}</p>
                     </div>
                 </div>
+
+                {{-- Menampilkan tombol "Diterima" jika status pengiriman adalah "Selesai" --}}
+                @if ($item->status_pengiriman == 'Selesai')
+                    <div class="product-footer">
+                        <form action="{{ route('produk.diterima', $item->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-success">Diterima</button>
+                        </form>
+                    </div>
+                @endif
             </div>
         @endforeach
-
-
     </div>
 @endsection
