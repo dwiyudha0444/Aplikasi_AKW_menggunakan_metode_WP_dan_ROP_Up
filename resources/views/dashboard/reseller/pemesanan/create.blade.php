@@ -43,17 +43,7 @@
                                     value="{{ old('tanggal_pemesanan') }}" required>
                             </div>
 
-                            <div class="form-group col-md-6">
-                                <label for="status_pemesanan">Status Pemesanan</label>
-                                <select id="status_pemesanan" name="status_pemesanan" class="form-control" required>
-                                    <option value="pending" {{ old('status_pemesanan') == 'pending' ? 'selected' : '' }}>
-                                        Pending</option>
-                                    <option value="approved" {{ old('status_pemesanan') == 'approved' ? 'selected' : '' }}>
-                                        Approved</option>
-                                    <option value="shipped" {{ old('status_pemesanan') == 'shipped' ? 'selected' : '' }}>
-                                        Shipped</option>
-                                </select>
-                            </div>
+                           
 
                             <div class="form-group col-md-6">
                                 <label for="total_harga">Total Harga</label>

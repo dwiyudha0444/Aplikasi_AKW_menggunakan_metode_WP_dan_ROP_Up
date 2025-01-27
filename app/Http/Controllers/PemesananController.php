@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pemesanan;
+use App\Models\Pengiriman;
 use App\Models\User;
 
 class PemesananController extends Controller
@@ -93,10 +94,24 @@ class PemesananController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        // Mencari pemesanan berdasarkan ID
         $pemesanan = Pemesanan::findOrFail($id);
+        
+        // Memperbarui status pemesanan
         $pemesanan->status_pemesanan = $request->status_pemesanan;
         $pemesanan->save();
-
-        return redirect()->back()->with('success', 'Status pemesanan berhasil diperbarui menjadi Paid.');
+        
+        // Memperbarui status pengiriman menjadi "Dikemas" untuk semua pengiriman dengan id_pemesanan yang sama
+        $pengiriman = Pengiriman::where('id_pemesanan', $id);
+        
+        if ($pengiriman->exists()) {
+            // Mengupdate semua baris yang cocok
+            $pengiriman->update(['status_pengiriman' => 'Dikemas']);
+        }
+    
+        // Redirect kembali dengan pesan sukses
+        return redirect()->back()->with('success', 'Status pemesanan dan pengiriman berhasil diperbarui menjadi Dikemas.');
     }
+    
+    
 }

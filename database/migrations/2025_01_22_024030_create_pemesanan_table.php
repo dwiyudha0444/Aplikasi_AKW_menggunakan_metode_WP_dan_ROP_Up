@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->timestamp('tanggal_pemesanan')->useCurrent();
-            $table->string('status_pemesanan');
+            $table->string('status_pemesanan')->nullable();
             $table->decimal('total_harga', 15, 2);
             $table->timestamps();
         });

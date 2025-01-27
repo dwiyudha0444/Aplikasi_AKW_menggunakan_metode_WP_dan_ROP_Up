@@ -7,6 +7,7 @@ use App\Models\Produk;
 use Illuminate\Support\Facades\Session;
 use App\Models\Pemesanan;
 use App\Models\PemesananProduk;
+use App\Models\Pengiriman;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -80,11 +81,11 @@ class CartController extends Controller
     public function checkout()
     {
         $cart = Session::get('cart', []);
-
+    
         if (empty($cart)) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
         }
-
+    
         $total = 0;
         foreach ($cart as $item) {
             if (!isset($item['id'])) {
@@ -93,43 +94,49 @@ class CartController extends Controller
             }
             $total += $item['price'] * $item['quantity'];
         }
-
+    
         $user = Auth::user();
         $userInitials = strtoupper(substr($user->name, 0, 2));
         $today = Carbon::now();
         $dateFormatted = $today->format('dmy');
-
+    
         $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
         $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT); // Padding angka ke 3 digit (misalnya: 001, 002, dll.)
-
+    
         $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
-
+    
         $order = Pemesanan::create([
             'id_user' => Auth::id(),
             'order_id' => $orderId,
             'tanggal_pemesanan' => Carbon::now(),
-            'status_pemesanan' => 'pending',
             'total_harga' => $total,
         ]);
-
+    
         foreach ($cart as $item) {
             if (!isset($item['id'])) {
                 continue;
             }
-
-            PemesananProduk::create([
+    
+            $pemesananProduk = PemesananProduk::create([
                 'id_pemesanan' => $order->id,
                 'id_produk' => $item['id'],
                 'qty_produk' => $item['quantity'],
                 'harga' => $item['price'],
                 'total_harga' => $item['price'] * $item['quantity'],
             ]);
+    
+            // Menambahkan data ke tabel pengiriman untuk setiap produk yang dipesan
+            Pengiriman::create([
+                'id_pemesanan' => $order->id,
+                'id_pemesanan_produk' => $pemesananProduk->id, // Mendapatkan id dari PemesananProduk
+                'id_users' => Auth::id(), // Menggunakan id user yang sedang login
+                'status_pengiriman' => 'BelumDibayar', // Status awal pengiriman
+            ]);
         }
-
+    
         Session::forget('cart');
-
+    
         return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
-
     }
 
 }
