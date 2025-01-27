@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('atribut', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_penilaian')->constrained('penilaian')->onDelete('cascade');
             $table->integer('kualitas_produk')->nullable(); 
             $table->integer('harga_produk')->nullable();
             $table->integer('layanan_pelanggan')->nullable();
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('atribut_');
+        Schema::dropIfExists('atribut');
     }
 };
