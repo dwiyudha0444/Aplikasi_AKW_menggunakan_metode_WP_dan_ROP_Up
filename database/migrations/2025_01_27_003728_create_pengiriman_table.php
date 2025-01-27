@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('id_users')->constrained('users')->onDelete('cascade');
             $table->foreignId('id_pemesanan')->constrained('pemesanan')->onDelete('cascade'); // Relasi dengan tabel pemesanan
             $table->foreignId('id_pemesanan_produk')->constrained('pemesanan_produk')->onDelete('cascade'); // Relasi dengan tabel pemesanan
-            $table->enum('status_pengiriman', ['BelumDibayar', 'Dikemas', 'Dikirim', 'Selesai'])->default('BelumDibayar')->change();
+            $table->string('status_pengiriman')->nullable();
             $table->string('konfirmasi_reseller')->nullable();
             $table->timestamps();
         });

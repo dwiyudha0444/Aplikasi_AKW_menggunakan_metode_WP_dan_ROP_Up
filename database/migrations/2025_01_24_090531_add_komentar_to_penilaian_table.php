@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('penilaian', function (Blueprint $table) {
-            $table->text('komentar')->nullable()->after('rating'); // Menambahkan kolom komentar setelah kolom rating
+            $table->text('komentar')->nullable()->after('fleksibilitas_pembayaran'); // Menambahkan kolom komentar setelah kolom rating
         });
     }
 

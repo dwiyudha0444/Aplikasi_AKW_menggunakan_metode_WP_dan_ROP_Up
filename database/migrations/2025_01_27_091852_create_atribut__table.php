@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penilaian', function (Blueprint $table) {
-            $table->id(); // Kolom id sebagai primary key
-            $table->foreignId('id_pemesanan')->constrained('pemesanan')->onDelete('cascade'); // Relasi dengan tabel pemesanan
-            $table->integer('kualitas_produk')->nullable(); // Kolom rating
+        Schema::create('atribut', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_penilaian')->constrained('penilaian')->onDelete('cascade');
+            $table->integer('kualitas_produk')->nullable(); 
             $table->integer('harga_produk')->nullable();
             $table->integer('layanan_pelanggan')->nullable();
             $table->integer('ulasan_pelanggan')->nullable();
             $table->integer('fleksibilitas_pembayaran')->nullable();
-            $table->timestamps(); // Kolom created_at dan updated_at
+            $table->timestamps();
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penilaian');
+        Schema::dropIfExists('atribut_');
     }
 };

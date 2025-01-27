@@ -80,7 +80,8 @@ Route::get('/dashboard_kurir', [KurirController::class, 'index'])->name('dashboa
 Route::get('/dashboard_reseller/pengiriman', [ResellerPengirimanController::class, 'index'])
     ->name('pengiriman_produk');
 
-    Route::get('/dashboard_reseller/produk_diterima', [ResellerPengirimanController::class, 'indexConfirm'])->name('produk.diterima');
+Route::post('/dashboard_reseller/produk_diterima/{id}', [ResellerPengirimanController::class, 'diterima'])->name('produk.diterima');
+Route::get('/dashboard_reseller/penilaian/{id}', [ResellerPengirimanController::class, 'indexPenilaian'])->name('penilaian.index');
 
 
 //auth
