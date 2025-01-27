@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\landingpage\reseller;
 
 use App\Http\Controllers\Controller;
+use App\Models\Atribut;
 use App\Models\Pemesanan;
 use App\Models\PemesananProduk;
 use App\Models\Pengiriman;
@@ -36,7 +37,7 @@ class PengirimanController extends Controller
     {
         // Ambil data produk dari database menggunakan model
         $pengiriman = Pengiriman::all(); // Pastikan model `Product` sesuai dengan nama model Anda
-
+        $atribut = Atribut::all();
         // Kirim data produk ke view
         return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman'));
     }
