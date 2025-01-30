@@ -16,6 +16,7 @@ use App\Http\Controllers\landingpage\reseller\PengirimanController as ResellerPe
 use App\Http\Controllers\dashboard\kurir\PengirimanController as KurirPengirimanController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+//profile
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 //update status pemesanan
