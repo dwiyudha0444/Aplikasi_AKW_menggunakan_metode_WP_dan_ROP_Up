@@ -89,6 +89,7 @@ Route::get('/dashboard_reseller/pengiriman', [ResellerPengirimanController::clas
 
 Route::post('/dashboard_reseller/produk_diterima/{id}', [ResellerPengirimanController::class, 'diterima'])->name('produk.diterima');
 Route::get('/dashboard_reseller/penilaian/{id}', [ResellerPengirimanController::class, 'indexPenilaian'])->name('penilaian.index');
+
 Route::post('/dashboard_reseller/penilaian/{id}/store', [ResellerPengirimanController::class, 'storePenilaian'])->name('penilaian.store');
 
 //auth
