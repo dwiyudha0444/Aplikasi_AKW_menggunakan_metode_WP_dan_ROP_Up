@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Atribut;
 use App\Models\Pemesanan;
 use App\Models\PemesananProduk;
+use App\Models\Penilaian;
 use App\Models\Pengiriman;
 use Illuminate\Http\Request;
 
@@ -42,5 +43,25 @@ class PengirimanController extends Controller
         return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman'));
     }
 
-    
+    public function storePenilaian(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'kualitas_produk' => 'required|integer|between:1,10',
+            'harga_produk' => 'required|integer|between:1,10',
+            'layanan_pelanggan' => 'required|integer|between:1,10',
+            'ulasan_pelanggan' => 'required|integer|between:1,10',
+            'fleksibilitas_pembayaran' => 'required|integer|between:1,3',
+        ]);
+
+        $averageRating = ($validated['kualitas_produk'] + $validated['harga_produk'] + $validated['layanan_pelanggan'] + $validated['ulasan_pelanggan'] + $validated['fleksibilitas_pembayaran']) / 5;
+
+        Penilaian::create([
+            'id_pemesanan' => $id, 
+            'rating' => $averageRating, 
+            'komentar' => $request->komentar ?? null, 
+        ]);
+
+        return redirect()->route('penilaian.index', $id)
+            ->with('success', 'Penilaian berhasil disimpan!');
+    }
 }
