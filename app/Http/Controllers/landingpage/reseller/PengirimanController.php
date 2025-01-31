@@ -12,13 +12,13 @@ use Illuminate\Http\Request;
 
 class PengirimanController extends Controller
 {
-    public function index()
+    public function index($id)
     {
         // Ambil data produk dari database menggunakan model
         $pengiriman = Pengiriman::all(); // Pastikan model `Product` sesuai dengan nama model Anda
 
         // Kirim data produk ke view
-        return view('dashboard.reseller.pengiriman.index', compact('pengiriman'));
+        return view('dashboard.reseller.pengiriman.index', compact('id','pengiriman'));
     }
 
     public function diterima(Request $request, $id)
@@ -67,6 +67,6 @@ class PengirimanController extends Controller
         ]);
 
         // Redirect ke halaman penilaian dengan pesan sukses
-        return redirect()->route('penilaian.index', ['id' => $id])->with('success', 'Barang telah diterima, silakan beri penilaian.');
+        return redirect()->route('penilaian.index')->with('success', 'Penilaian berhasil disimpan!');
     }
 }
