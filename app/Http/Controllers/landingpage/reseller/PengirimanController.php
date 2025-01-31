@@ -34,13 +34,13 @@ class PengirimanController extends Controller
         return redirect()->route('penilaian.index', ['id' => $id])->with('success', 'Barang telah diterima, silakan beri penilaian.');
     }
 
-    public function indexPenilaian()
+    public function indexPenilaian($id)
     {
         // Ambil data produk dari database menggunakan model
         $pengiriman = Pengiriman::all(); // Pastikan model `Product` sesuai dengan nama model Anda
         $atribut = Atribut::all();
         // Kirim data produk ke view
-        return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman'));
+        return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman','id'));
     }
 
     public function storePenilaian(Request $request, $id)
