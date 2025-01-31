@@ -45,23 +45,28 @@ class PengirimanController extends Controller
 
     public function storePenilaian(Request $request, $id)
     {
+        // Validasi input
         $validated = $request->validate([
-            'kualitas_produk' => 'required|integer|between:1,10',
-            'harga_produk' => 'required|integer|between:1,10',
-            'layanan_pelanggan' => 'required|integer|between:1,10',
-            'ulasan_pelanggan' => 'required|integer|between:1,10',
-            'fleksibilitas_pembayaran' => 'required|integer|between:1,3',
+            'kualitas_produk' => 'nullable|integer|between:1,10',
+            'harga_produk' => 'nullable|integer|between:1,10',
+            'layanan_pelanggan' => 'nullable|integer|between:1,10',
+            'ulasan_pelanggan' => 'nullable|integer|between:1,10',
+            'fleksibilitas_pembayaran' => 'nullable|integer|between:1,3',
+            'komentar' => 'nullable|string',
         ]);
 
-        $averageRating = ($validated['kualitas_produk'] + $validated['harga_produk'] + $validated['layanan_pelanggan'] + $validated['ulasan_pelanggan'] + $validated['fleksibilitas_pembayaran']) / 5;
-
+        // Menyimpan data penilaian ke database
         Penilaian::create([
-            'id_pemesanan' => $id, 
-            'rating' => $averageRating, 
-            'komentar' => $request->komentar ?? null, 
+            'id_pemesanan' => $id, // Menggunakan $id dari parameter
+            'kualitas_produk' => $validated['kualitas_produk'],
+            'harga_produk' => $validated['harga_produk'],
+            'layanan_pelanggan' => $validated['layanan_pelanggan'],
+            'ulasan_pelanggan' => $validated['ulasan_pelanggan'],
+            'fleksibilitas_pembayaran' => $validated['fleksibilitas_pembayaran'],
+            'komentar' => $request->komentar ?? null,
         ]);
 
-        return redirect()->route('penilaian.index', $id)
-            ->with('success', 'Penilaian berhasil disimpan!');
+        // Redirect ke halaman penilaian dengan pesan sukses
+        return redirect()->route('penilaian.index', ['id' => $id])->with('success', 'Barang telah diterima, silakan beri penilaian.');
     }
 }

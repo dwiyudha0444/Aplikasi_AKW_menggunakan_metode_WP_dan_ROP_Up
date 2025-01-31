@@ -14,8 +14,12 @@ class Penilaian extends Model
     // Kolom yang dapat diisi (mass assignable)
     protected $fillable = [
         'id_pemesanan',
-        'rating',
-        'komentar'
+        'kualitas_produk',
+        'harga_produk',
+        'layanan_pelanggan',
+        'ulasan_pelanggan',
+        'fleksibilitas_pembayaran',
+        'komentar',
     ];
 
     // Menentukan relasi dengan model Pemesanan
