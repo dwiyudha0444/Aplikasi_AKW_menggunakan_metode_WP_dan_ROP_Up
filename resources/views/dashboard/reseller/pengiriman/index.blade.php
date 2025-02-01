@@ -158,7 +158,11 @@
                 </div>
 
                 {{-- Menampilkan tombol "Diterima" jika status pengiriman adalah "Selesai" --}}
-                @if ($item->status_pengiriman == 'Selesai')
+                @if ($item->status_pengiriman === 'Selesai' && $item->konfirmasi_reseller === 'Barang Diterima')
+                    <div class="product-footer">
+                        <span class="text-success font-weight-bold">Barang telah diterima</span>
+                    </div>
+                @elseif ($item->status_pengiriman === 'Selesai')
                     <div class="product-footer">
                         <form action="{{ route('produk.diterima', $item->id) }}" method="POST">
                             @csrf
@@ -166,6 +170,8 @@
                         </form>
                     </div>
                 @endif
+
+
             </div>
         @endforeach
     </div>
