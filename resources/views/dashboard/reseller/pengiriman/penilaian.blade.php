@@ -6,6 +6,8 @@
             <h2 class="mb-4 text-center">Penilaian Produk</h2>
             <form action="{{ route('penilaian.store', $id) }}" method="POST">
                 @csrf
+                <input type="hidden" name="id_pemesanan" value="{{ $id }}">
+
                 <!-- Penilaian Kualitas Produk -->
                 <div class="mb-4">
                     <label class="form-label">Kualitas Produk</label>
@@ -71,7 +73,6 @@
                     <label class="form-label">Fleksibilitas Pembayaran</label>
                     <div class="radio-group">
                         @for ($i = 1; $i <= 3; $i++)
-                            <!-- Fleksibilitas hanya memiliki 3 angka -->
                             <input type="radio" name="fleksibilitas_pembayaran"
                                 id="fleksibilitas_pembayaran_{{ $i }}" value="{{ $i }}"
                                 class="radio-input" required>
@@ -90,6 +91,7 @@
 
                 <button type="submit" class="btn btn-primary w-100">Kirim Penilaian</button>
             </form>
+
         </div>
     </div>
 
