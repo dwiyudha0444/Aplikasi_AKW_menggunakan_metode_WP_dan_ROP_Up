@@ -185,8 +185,6 @@ class CartController extends Controller
         return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
     }
 
-
-
     public function updateQuantity($orderId, $productId, Request $request)
     {
         $validated = $request->validate([
@@ -314,7 +312,7 @@ class CartController extends Controller
                 $cart[] = [
                     'id' => $product->id,
                     'name' => $product->name,
-                    'price' => $product->price,
+                    'harga' => $product->harga,
                     'quantity' => $validated['quantity']
                 ];
             }
@@ -323,7 +321,7 @@ class CartController extends Controller
         // Hitung ulang total harga
         $total = 0;
         foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
+            $total += $item['harga'] * $item['quantity'];
         }
 
         // Simpan cart dan total harga di session

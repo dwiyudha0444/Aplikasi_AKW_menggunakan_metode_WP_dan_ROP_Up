@@ -216,6 +216,4 @@
             updateTotalPrice();
         }
     </script>
-
-
 @endsection
