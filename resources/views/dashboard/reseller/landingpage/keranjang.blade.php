@@ -124,39 +124,23 @@
         }
 
         function updateQuantityInDatabase(productId, quantity) {
-            let priceElement = document.getElementById('price-' + productId);
-            let price = parseFloat(priceElement.getAttribute('data-price'));
-            let newPrice = quantity * price;
-
-            // Ambil order_id dari elemen atau URL
-            let orderId = document.getElementById('order-id')
-            .value; // Jika order_id ada di elemen HTML (misalnya input hidden)
-
-            let url = `/order/${orderId}/product/${productId}/update-quantity`;
-
-            fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        qty_produk: quantity,
-                        harga: newPrice
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Update total harga di halaman setelah berhasil memperbarui quantity
-                        document.getElementById('total-price').innerText = 'Rp ' + formatPrice(data.total);
-                    } else {
-                        console.error(data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            // Kirimkan permintaan AJAX untuk memperbarui quantity di server
+            $.ajax({
+                url: '/update-cart', // Ganti dengan URL yang sesuai di aplikasi Anda
+                method: 'POST',
+                data: {
+                    productId: productId,
+                    quantity: quantity,
+                    _token: '{{ csrf_token() }}' // Pastikan CSRF token dikirim
+                },
+                success: function(response) {
+                    // Tindakan setelah pembaruan berhasil
+                    console.log('Cart updated successfully');
+                },
+                error: function(error) {
+                    console.log('Error updating cart', error);
+                }
+            });
         }
 
         function updatePrice(productId, quantity) {

@@ -246,4 +246,94 @@ class CartController extends Controller
             'total' => $order->total_harga
         ]);
     }
+
+    public function updateCartSession(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'productId' => 'required|integer',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        // Ambil cart dari session
+        $cart = Session::get('cart', []);
+
+        // Cari produk di cart berdasarkan productId
+        $productIndex = array_search($validated['productId'], array_column($cart, 'id'));
+
+        if ($productIndex !== false) {
+            // Perbarui quantity di cart
+            $cart[$productIndex]['quantity'] = $validated['quantity'];
+
+            // Perbarui harga berdasarkan quantity
+            $product = Produk::find($validated['productId']);
+            if ($product) {
+                $cart[$productIndex]['price'] = $product->price;
+            }
+
+            // Hitung ulang total harga setelah quantity diperbarui
+            $total = 0;
+            foreach ($cart as $item) {
+                $total += $item['price'] * $item['quantity'];
+            }
+
+            // Simpan kembali cart dan total harga di session
+            Session::put('cart', $cart);
+            Session::put('total_price', $total); // Menyimpan total harga di session
+
+            return response()->json([
+                'success' => true,
+                'total_price' => $total
+            ]);
+        }
+
+        return response()->json(['error' => 'Product not found in cart'], 404);
+    }
+
+    public function addToCart(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'productId' => 'required|integer',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        // Ambil cart dari session
+        $cart = Session::get('cart', []);
+
+        // Cek apakah produk sudah ada di cart
+        $productIndex = array_search($validated['productId'], array_column($cart, 'id'));
+
+        if ($productIndex !== false) {
+            // Jika produk sudah ada, perbarui quantity
+            $cart[$productIndex]['quantity'] += $validated['quantity'];
+        } else {
+            // Jika produk belum ada, tambahkan produk baru ke cart
+            $product = Produk::find($validated['productId']);
+            if ($product) {
+                $cart[] = [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'quantity' => $validated['quantity']
+                ];
+            }
+        }
+
+        // Hitung ulang total harga
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        // Simpan cart dan total harga di session
+        Session::put('cart', $cart);
+        Session::put('total_price', $total);
+
+        return response()->json([
+            'success' => true,
+            'cart' => $cart,
+            'total_price' => $total
+        ]);
+    }
 }
