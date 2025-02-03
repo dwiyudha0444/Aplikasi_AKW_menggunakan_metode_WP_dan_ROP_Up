@@ -14,9 +14,11 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\dashboard\kurir\KurirController;
 use App\Http\Controllers\landingpage\reseller\PengirimanController as ResellerPengirimanController;
 use App\Http\Controllers\dashboard\kurir\PengirimanController as KurirPengirimanController;
+use App\Http\Controllers\landingpage\reseller\PenilaianController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Penilaian;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -88,9 +90,11 @@ Route::get('/dashboard_reseller/pengiriman', [ResellerPengirimanController::clas
     ->name('pengiriman_produk');
 
 Route::post('/dashboard_reseller/produk_diterima/{id}', [ResellerPengirimanController::class, 'diterima'])->name('produk.diterima');
-Route::get('/dashboard_reseller/penilaian/{id}', [ResellerPengirimanController::class, 'indexPenilaian'])->name('penilaian.index');
+Route::get('/dashboard_reseller/penilaian/{id}/{id_pemesanan}', 
+    [ResellerPengirimanController::class, 'indexPenilaian']
+)->name('penilaian.index');
 
-Route::post('/dashboard_reseller/penilaian/{id}/store', [ResellerPengirimanController::class, 'storePenilaian'])->name('penilaian.store');
+Route::post('/dashboard_reseller/penilaian/{id}/store', [PenilaianController::class, 'store'])->name('penilaian.store');
 
 //auth
 Route::get('/login', [LoginController::class, 'index'])->name('login');

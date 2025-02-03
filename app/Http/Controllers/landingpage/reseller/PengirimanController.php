@@ -23,26 +23,39 @@ class PengirimanController extends Controller
     }
 
     public function diterima(Request $request, $id)
-    {
-        // Cari data pengiriman berdasarkan ID
-        $pengiriman = Pengiriman::findOrFail($id);
+{
+    // Cari data pengiriman berdasarkan ID
+    $pengiriman = Pengiriman::find($id);
 
-        // Perbarui kolom konfirmasi_pelanggan dengan nilai "Barang Diterima"
-        $pengiriman->konfirmasi_reseller = 'Barang Diterima';
-        $pengiriman->save();
-
-        // Redirect ke halaman penilaian dengan membawa ID pengiriman
-        return redirect()->route('penilaian.index', ['id' => $id])->with('success', 'Barang telah diterima, silakan beri penilaian.');
+    // Jika data tidak ditemukan, kembalikan dengan error
+    if (!$pengiriman) {
+        return redirect()->back()->with('error', 'Data pengiriman tidak ditemukan.');
     }
 
-    public function indexPenilaian($id)
+    // Perbarui kolom konfirmasi_reseller dengan nilai "Barang Diterima"
+    $pengiriman->update(['konfirmasi_reseller' => 'Barang Diterima']);
+
+    // Pastikan ID pemesanan tersedia untuk redirect ke halaman penilaian
+    $id_pemesanan = $pengiriman->id_pemesanan ?? null;
+
+    // Redirect ke halaman penilaian dengan membawa ID pengiriman dan ID pemesanan
+    return redirect()->route('penilaian.index', [
+        'id' => $id, 
+        'id_pemesanan' => $id_pemesanan
+    ])->with('success', 'Barang telah diterima, silakan beri penilaian.');
+}
+
+
+    public function indexPenilaian($id ,$id_pemesanan)
     {
         // Ambil data produk dari database menggunakan model
         $pengiriman = Pengiriman::all(); // Pastikan model `Product` sesuai dengan nama model Anda
         $atribut = Atribut::all();
+        $pemesananProduk = PemesananProduk::all();
         // Kirim data produk ke view
-        return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman','id'));
+        return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman','id','id_pemesanan'));
     }
+
 
     public function storePenilaian(Request $request, $id)
     {
