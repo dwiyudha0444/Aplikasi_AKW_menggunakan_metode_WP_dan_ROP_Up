@@ -31,33 +31,7 @@ class PaymentController extends Controller
             'total' => $total
         ]);
     }
-
-    public function updateTotalHarga(Request $request, $order_id)
-    {
-        // Ambil data order berdasarkan order_id
-        $order = Pemesanan::where('order_id', $order_id)->first();
-
-        // Pastikan order ditemukan
-        if (!$order) {
-            return redirect()->route('cart.index')->with('error', 'Order not found!');
-        }
-
-        // Validasi input total
-        $request->validate([
-            'total' => 'required|numeric|min:0',
-        ]);
-
-        // Update total_harga di database
-        $order->total_harga = $request->total;
-        $order->save();
-
-        // Kembalikan response dalam format JSON atau redirect kembali
-        return response()->json([
-            'order_id' => $order->order_id,
-            'total' => $order->total_harga
-        ]);
-    }
-
+    
     public function uploadPaymentProof(Request $request)
     {
         try {

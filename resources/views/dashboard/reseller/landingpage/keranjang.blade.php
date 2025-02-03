@@ -127,7 +127,11 @@
             let priceElement = document.getElementById('price-' + productId);
             let price = parseFloat(priceElement.getAttribute('data-price'));
             let newPrice = quantity * price;
-            // Ganti URL dengan URL rute yang sesuai
+
+            // Ambil order_id dari elemen atau URL
+            let orderId = document.getElementById('order-id')
+            .value; // Jika order_id ada di elemen HTML (misalnya input hidden)
+
             let url = `/order/${orderId}/product/${productId}/update-quantity`;
 
             fetch(url, {
@@ -193,7 +197,9 @@
 
         // Fungsi untuk mengirim total harga ke server
         function updateTotalHargaToServer(total) {
-            fetch('/dashboard_reseller/cart/payment/' + order_id, {
+            let orderId = document.getElementById('order-id').value; // Ambil orderId jika ada di elemen HTML
+
+            fetch('/dashboard_reseller/cart/payment/' + orderId, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -226,5 +232,6 @@
             updateTotalPrice();
         }
     </script>
+
 
 @endsection
