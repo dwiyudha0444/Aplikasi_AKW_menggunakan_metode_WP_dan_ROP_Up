@@ -195,6 +195,53 @@
                             </li>
                         @endif
 
+                        @if (Auth::check() && Auth::user()->role === 'owner')
+                            <li class="nav-item active">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#dash_drp">
+                                    <span class="feather-icon"><i data-feather="activity"></i></span>
+                                    <span class="nav-link-text">Dashboard Owner</span>
+                                </a>
+                                <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item active">
+                                                <a class="nav-link" href="dashboard1.html">CRM</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard2.html">Project</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard3.html">Statistics</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard4.html">Classic</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="dashboard5.html">Analytics</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#app_drp">
+                                    <span class="feather-icon"><i data-feather="package"></i></span>
+                                    <span class="nav-link-text">Pengiriman</span>
+                                </a>
+                                <ul id="app_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link"
+                                                    href="{{ route('dashboard_kurir_pengiriman') }}">Paket</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>

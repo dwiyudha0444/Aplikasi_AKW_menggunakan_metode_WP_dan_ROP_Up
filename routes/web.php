@@ -14,6 +14,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\dashboard\kurir\KurirController;
 use App\Http\Controllers\landingpage\reseller\PengirimanController as ResellerPengirimanController;
 use App\Http\Controllers\dashboard\kurir\PengirimanController as KurirPengirimanController;
+use App\Http\Controllers\landingpage\owner\OwnerDashboardController;
 use App\Http\Controllers\landingpage\reseller\PenilaianController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
@@ -128,3 +129,7 @@ Route::post('/dashboard_admin/kategori/store', [KategoriController::class, 'stor
 Route::get('/dashboard_admin/kategori/edit/{id}', [KategoriController::class, 'edit'])->name('edit_admin_kategori');
 Route::put('/dashboard_admin/kategori/update/{id}', [KategoriController::class, 'update'])->name('update_admin_kategori');
 Route::delete('/dashboard_admin/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('destroy_admin_kategori');
+
+// owner
+
+Route::get('/dashboard_owner', [OwnerDashboardController::class, 'index'])->name('dashboard_owner');
