@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -139,38 +140,38 @@ class CartController extends Controller
         return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
     }
 
-    public function updateQuantity(Request $request, $order_id, $product_id)
+    public function updateQuantity($orderId, $productId, Request $request)
     {
-        // Ambil pesanan berdasarkan order_id
-        $order = Pemesanan::where('order_id', $order_id)->first();
+        $validated = $request->validate([
+            'qty_produk' => 'required|integer|min:1',
+            'harga' => 'required|numeric',
+        ]);
 
-        if (!$order) {
-            return response()->json(['error' => 'Order not found!'], 404);
+        // Temukan order dan produk terkait
+        $order = PemesananProduk::find($orderId);
+        $product = $order->products()->find($productId);
+
+        if (!$order || !$product) {
+            return response()->json(['error' => 'Order or product not found'], 404);
         }
 
-        // Cari produk yang sesuai dengan product_id dalam order tersebut
-        $product = $order->pemesananProduk()->where('product_id', $product_id)->first();
+        // Update qty_produk dan harga di tabel pemesanan_produk
+        $order->products()->updateExistingPivot($productId, [
+            'qty_produk' => $validated['qty_produk'],
+            'harga' => $validated['harga'],
+        ]);
 
-        if (!$product) {
-            return response()->json(['error' => 'Product not found in order!'], 404);
-        }
+        // Update total harga di order
+        $total = $order->products()->sum(DB::raw('harga * qty_produk')); // Menghitung total harga
 
-        // Update quantity
-        $product->quantity = $request->quantity; // Pastikan request membawa data quantity
-        $product->save();
-
-        // Hitung total harga baru
-        $total = $order->pemesananProduk->sum(function ($item) {
-            return $item->quantity * $item->price;
-        });
-
-        // Update total_harga di tabel pemesanan
-        $order->total_harga = $total;
+        // Update total harga di tabel order
+        $order->total_price = $total;
         $order->save();
 
         return response()->json([
-            'success' => 'Quantity updated successfully!',
-            'total' => $total
+            'success' => true,
+            'total' => $total,
         ]);
     }
+
 }

@@ -124,6 +124,9 @@
         }
 
         function updateQuantityInDatabase(productId, quantity) {
+            let priceElement = document.getElementById('price-' + productId);
+            let price = parseFloat(priceElement.getAttribute('data-price'));
+            let newPrice = quantity * price;
             // Ganti URL dengan URL rute yang sesuai
             let url = `/order/${orderId}/product/${productId}/update-quantity`;
 
@@ -134,7 +137,8 @@
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify({
-                        quantity: quantity
+                        qty_produk: quantity,
+                        harga: newPrice
                     })
                 })
                 .then(response => response.json())
