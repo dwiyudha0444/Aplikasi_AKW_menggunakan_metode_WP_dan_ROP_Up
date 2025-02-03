@@ -119,12 +119,40 @@
 
             qtyInput.value = quantity;
 
-            updatePrice(productId);
+            updatePrice(productId, quantity);
+            updateQuantityInDatabase(productId, quantity); // Update quantity in the database
         }
 
-        function updatePrice(productId) {
+        function updateQuantityInDatabase(productId, quantity) {
+            // Ganti URL dengan URL rute yang sesuai
+            let url = `/order/${orderId}/product/${productId}/update-quantity`;
+
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        quantity: quantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update total harga di halaman setelah berhasil memperbarui quantity
+                        document.getElementById('total-price').innerText = 'Rp ' + formatPrice(data.total);
+                    } else {
+                        console.error(data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function updatePrice(productId, quantity) {
             let qtyInput = document.getElementById('qty-' + productId);
-            let quantity = parseInt(qtyInput.value);
             let priceElement = document.getElementById('price-' + productId);
             let price = parseFloat(priceElement.getAttribute('data-price'));
 
@@ -142,15 +170,44 @@
         function updateTotalPrice() {
             let total = 0;
 
+            // Menghitung total harga berdasarkan harga produk
             document.querySelectorAll('[id^="price-"]').forEach(function(item) {
-                let itemPriceText = item.innerText.replace('Rp ', '').replace(/\./g, '').replace(',',
-                    '');
+                let itemPriceText = item.innerText.replace('Rp ', '').replace(/\./g, '').replace(',', '');
                 let itemPrice = parseFloat(itemPriceText);
 
-                total += itemPrice;
+                if (!isNaN(itemPrice)) {
+                    total += itemPrice;
+                }
             });
 
+            // Memperbarui total harga di tampilan
             document.getElementById('total-price').innerText = 'Rp ' + formatPrice(total);
+
+            // Mengirimkan total harga ke server untuk diperbarui di database
+            updateTotalHargaToServer(total);
+        }
+
+        // Fungsi untuk mengirim total harga ke server
+        function updateTotalHargaToServer(total) {
+            fetch('/dashboard_reseller/cart/payment/' + order_id, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: JSON.stringify({
+                        total: total
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Total updated successfully:', data);
+                    // Update tampilan total harga setelah berhasil diupdate
+                    document.getElementById('total-price').innerText = 'Rp ' + formatPrice(data.total);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
         function formatPrice(amount) {
@@ -165,4 +222,5 @@
             updateTotalPrice();
         }
     </script>
+
 @endsection

@@ -53,7 +53,13 @@ Route::post('/dashboard_reseller/cart/add', [CartController::class, 'add'])->nam
 Route::get('/dashboard_reseller/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/dashboard_reseller/cart/destroy/{productId}', [CartController::class, 'destroy'])->name('cart.destroy');
 Route::post('/dashboard_reseller/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/order/{order_id}/product/{product_id}/update-quantity', [CartController::class, 'updateQuantity']);
+// Route::post('/dashboard_reseller/cart/payment/{order_id}', [PaymentController::class, 'showPaymentPage'])->name('payment.page');
+
 Route::get('/dashboard_reseller/cart/payment/{order_id}', [PaymentController::class, 'showPaymentPage'])->name('payment.page');
+Route::post('/dashboard_reseller/cart/payment/{order_id}', [PaymentController::class, 'updateTotalHarga'])->name('update.total');
+
+// Route::post('/order/{order_id}/update-total', [PaymentController::class, 'updateTotal']);
 
 //riwayat transaksi
 Route::get('/dashboard_reseller/history', [TransactionController::class, 'history'])->name('history');
