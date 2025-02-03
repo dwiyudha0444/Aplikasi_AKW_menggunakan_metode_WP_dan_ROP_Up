@@ -139,4 +139,38 @@ class CartController extends Controller
         return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
     }
 
+    public function updateQuantity(Request $request, $order_id, $product_id)
+    {
+        // Ambil pesanan berdasarkan order_id
+        $order = Pemesanan::where('order_id', $order_id)->first();
+
+        if (!$order) {
+            return response()->json(['error' => 'Order not found!'], 404);
+        }
+
+        // Cari produk yang sesuai dengan product_id dalam order tersebut
+        $product = $order->pemesananProduk()->where('product_id', $product_id)->first();
+
+        if (!$product) {
+            return response()->json(['error' => 'Product not found in order!'], 404);
+        }
+
+        // Update quantity
+        $product->quantity = $request->quantity; // Pastikan request membawa data quantity
+        $product->save();
+
+        // Hitung total harga baru
+        $total = $order->pemesananProduk->sum(function ($item) {
+            return $item->quantity * $item->price;
+        });
+
+        // Update total_harga di tabel pemesanan
+        $order->total_harga = $total;
+        $order->save();
+
+        return response()->json([
+            'success' => 'Quantity updated successfully!',
+            'total' => $total
+        ]);
+    }
 }

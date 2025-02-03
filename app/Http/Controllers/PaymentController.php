@@ -12,13 +12,47 @@ class PaymentController extends Controller
 {
     public function showPaymentPage($order_id)
     {
-        $order = Pemesanan::where('order_id', $order_id)->first();
+        // Ambil data order berdasarkan order_id
+        $order = Pemesanan::where('order_id', $order_id)
+            ->with('pemesananProduk')  // Mengambil relasi pemesananProduk
+            ->first();
 
+        // Pastikan order ditemukan
         if (!$order) {
             return redirect()->route('cart.index')->with('error', 'Order not found!');
         }
 
+        // Ambil total_harga yang sudah ada atau hitung total jika belum ada
+        $total = $order->total_harga;
+
+        // Return view dengan data order
         return view('dashboard.reseller.landingpage.payment', [
+            'order_id' => $order->order_id,
+            'total' => $total
+        ]);
+    }
+
+    public function updateTotalHarga(Request $request, $order_id)
+    {
+        // Ambil data order berdasarkan order_id
+        $order = Pemesanan::where('order_id', $order_id)->first();
+
+        // Pastikan order ditemukan
+        if (!$order) {
+            return redirect()->route('cart.index')->with('error', 'Order not found!');
+        }
+
+        // Validasi input total
+        $request->validate([
+            'total' => 'required|numeric|min:0',
+        ]);
+
+        // Update total_harga di database
+        $order->total_harga = $request->total;
+        $order->save();
+
+        // Kembalikan response dalam format JSON atau redirect kembali
+        return response()->json([
             'order_id' => $order->order_id,
             'total' => $order->total_harga
         ]);
