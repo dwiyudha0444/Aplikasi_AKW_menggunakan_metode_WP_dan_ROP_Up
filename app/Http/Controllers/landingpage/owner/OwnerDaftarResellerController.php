@@ -10,7 +10,8 @@ class OwnerDaftarResellerController extends Controller
 {
     public function index()
     {
+        $penilaian = getAllPenilaian();
         $user = User::all(); 
-        return view('dashboard.owner.daftar_reseller.index', compact('user'));
+        return view('dashboard.owner.daftar_reseller.index', compact('user','penilaian'));
     }
 }
