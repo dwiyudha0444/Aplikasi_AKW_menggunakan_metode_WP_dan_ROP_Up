@@ -37,23 +37,25 @@ class PengirimanController extends Controller
 
     // Pastikan ID pemesanan tersedia untuk redirect ke halaman penilaian
     $id_pemesanan = $pengiriman->id_pemesanan ?? null;
+    $id_pemesanan_produk = $pengiriman->id_pemesanan_produk ?? null;
 
     // Redirect ke halaman penilaian dengan membawa ID pengiriman dan ID pemesanan
     return redirect()->route('penilaian.index', [
         'id' => $id, 
-        'id_pemesanan' => $id_pemesanan
+        'id_pemesanan' => $id_pemesanan,
+        'id_pemesanan_produk' => $id_pemesanan_produk,
     ])->with('success', 'Barang telah diterima, silakan beri penilaian.');
 }
 
 
-    public function indexPenilaian($id ,$id_pemesanan)
+    public function indexPenilaian($id ,$id_pemesanan,$id_pemesanan_produk)
     {
         // Ambil data produk dari database menggunakan model
         $pengiriman = Pengiriman::all(); // Pastikan model `Product` sesuai dengan nama model Anda
         $atribut = Atribut::all();
         $pemesananProduk = PemesananProduk::all();
         // Kirim data produk ke view
-        return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman','id','id_pemesanan'));
+        return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman','id','id_pemesanan','id_pemesanan_produk'));
     }
 
 

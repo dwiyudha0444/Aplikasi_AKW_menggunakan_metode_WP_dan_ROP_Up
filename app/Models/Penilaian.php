@@ -14,6 +14,7 @@ class Penilaian extends Model
     // Kolom yang dapat diisi (mass assignable)
     protected $fillable = [
         'id_pemesanan',
+        'id_pemesanan_produk',
         'kualitas_produk',
         'harga_produk',
         'layanan_pelanggan',
@@ -26,5 +27,10 @@ class Penilaian extends Model
     public function pemesanan()
     {
         return $this->belongsTo(Pemesanan::class, 'id_pemesanan');
+    }
+
+    public function pemesananProduk()
+    {
+        return $this->belongsTo(PemesananProduk::class, 'id_pemesanan_produk');
     }
 }

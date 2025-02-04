@@ -12,6 +12,7 @@ class PenilaianController extends Controller
     {
         $request->validate([
             'id_pemesanan' => 'required|exists:pemesanan,id',
+            'id_pemesanan_produk' => 'required|exists:pemesanan_produk,id',
             'kualitas_produk' => 'required|integer|min:1|max:10',
             'harga_produk' => 'required|integer|min:1|max:10',
             'layanan_pelanggan' => 'required|integer|min:1|max:10',
@@ -23,6 +24,7 @@ class PenilaianController extends Controller
         // Simpan data ke database
         Penilaian::create([
             'id_pemesanan' => $request->id_pemesanan,
+            'id_pemesanan_produk' => $request->id_pemesanan_produk,
             'kualitas_produk' => $request->kualitas_produk,
             'harga_produk' => $request->harga_produk,
             'layanan_pelanggan' => $request->layanan_pelanggan,

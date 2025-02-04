@@ -7,6 +7,7 @@
             <form action="{{ route('penilaian.store', $id) }}" method="POST">
                 @csrf
                 <input type="text" name="id_pemesanan" value="{{ $id_pemesanan }}">
+                <input type="text" name="id_pemesanan_produk" value="{{ $id_pemesanan_produk }}">
 
                 <!-- Penilaian Kualitas Produk -->
                 <div class="mb-4">

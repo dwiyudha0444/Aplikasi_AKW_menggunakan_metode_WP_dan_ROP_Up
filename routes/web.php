@@ -99,7 +99,7 @@ Route::get('/dashboard_reseller/pengiriman', [ResellerPengirimanController::clas
     ->name('pengiriman_produk');
 
 Route::post('/dashboard_reseller/produk_diterima/{id}', [ResellerPengirimanController::class, 'diterima'])->name('produk.diterima');
-Route::get('/dashboard_reseller/penilaian/{id}/{id_pemesanan}', 
+Route::get('/dashboard_reseller/penilaian/{id}/{id_pemesanan}/{id_pemesanan_produk}', 
     [ResellerPengirimanController::class, 'indexPenilaian']
 )->name('penilaian.index');
 

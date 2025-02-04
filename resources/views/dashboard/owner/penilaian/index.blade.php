@@ -5,7 +5,7 @@
     <nav class="hk-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-light bg-transparent">
             <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Pemesanan</li>
+            <li class="breadcrumb-item active" aria-current="page">Penilaian</li>
         </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -18,7 +18,7 @@
                 <span class="pg-title-icon">
                     <span class="feather-icon"><i data-feather="shopping-cart"></i></span>
                 </span>
-                Daftar Pemesanan
+                Daftar Penilaian
             </h4>
         </div>
         <!-- /Title -->
@@ -27,8 +27,8 @@
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <h5 class="hk-sec-title">Tabel Pemesanan</h5>
-                    <p class="mb-40">Daftar pemesanan yang dilakukan oleh pelanggan.</p>
+                    <h5 class="hk-sec-title">Tabel Penilaian</h5>
+                    <p class="mb-40">Daftar penilaian yang dilakukan oleh pelanggan.</p>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
@@ -49,6 +49,8 @@
                                         <thead class="table-dark">
                                             <tr>
                                                 <th>#</th>
+                                                <th>Reseller</th>
+                                                <th>Nama Produk</th>
                                                 <th>Kualitas Produk</th>
                                                 <th>Harga Produk</th>
                                                 <th>Layanan Pelanggan</th>
@@ -62,6 +64,8 @@
                                             @foreach ($penilaian as $index => $item)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $item->pemesanan->user->name}} </td>
+                                                    <td>{{ $item->pemesananProduk->produk->nama }}</td>
                                                     <td>{{ $item->kualitas_produk }}</td>
                                                     <td>{{ $item->harga_produk }}</td>
                                                     <td>{{ $item->layanan_pelanggan }}</td>

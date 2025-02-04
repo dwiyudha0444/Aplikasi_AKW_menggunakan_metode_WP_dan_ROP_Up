@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('penilaian', function (Blueprint $table) {
             $table->id(); // Kolom id sebagai primary key
-            $table->foreignId('id_pemesanan')->constrained('pemesanan')->onDelete('cascade'); // Relasi dengan tabel pemesanan
+            $table->foreignId('id_pemesanan')->constrained('pemesanan')->onDelete('cascade');
+            $table->foreignId('id_pemesanan_produk')->constrained('pemesanan_produk')->onDelete('cascade'); // Relasi dengan tabel pemesanan
             $table->integer('kualitas_produk')->nullable(); // Kolom rating
             $table->integer('harga_produk')->nullable();
             $table->integer('layanan_pelanggan')->nullable();
