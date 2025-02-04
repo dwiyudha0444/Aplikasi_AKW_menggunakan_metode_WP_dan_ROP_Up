@@ -259,6 +259,24 @@
                                     </li>
                                 </ul>
                             </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#auth_drp">
+                                    <span class="feather-icon"><i data-feather="zap"></i></span>
+                                    <span class="nav-link-text">Daftar Reseller</span>
+                                </a>
+                                <ul id="auth_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('owner_daftarreseller') }}">Daftar
+                                                    Reseller Terbaik</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
                         @endif
                     </ul>
                 </div>

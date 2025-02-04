@@ -14,6 +14,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\dashboard\kurir\KurirController;
 use App\Http\Controllers\landingpage\reseller\PengirimanController as ResellerPengirimanController;
 use App\Http\Controllers\dashboard\kurir\PengirimanController as KurirPengirimanController;
+use App\Http\Controllers\landingpage\owner\OwnerDaftarResellerController;
 use App\Http\Controllers\landingpage\owner\OwnerDashboardController;
 use App\Http\Controllers\landingpage\owner\OwnerPenilaianController;
 use App\Http\Controllers\landingpage\owner\OwnerPenjualanController;
@@ -137,3 +138,4 @@ Route::delete('/dashboard_admin/kategori/delete/{id}', [KategoriController::clas
 Route::get('/dashboard_owner', [OwnerDashboardController::class, 'index'])->name('dashboard_owner');
 Route::get('/dashboard_owner/penjualan', [OwnerPenjualanController::class, 'index'])->name('owner_penjualan');
 Route::get('/dashboard_owner/penilaian', [OwnerPenilaianController::class, 'index'])->name('owner_penilaian');
+Route::get('/dashboard_owner/daftar_reseller', [OwnerDaftarResellerController::class, 'index'])->name('owner_daftarreseller');
