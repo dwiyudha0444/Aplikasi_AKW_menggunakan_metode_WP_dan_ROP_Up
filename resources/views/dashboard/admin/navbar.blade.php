@@ -226,16 +226,34 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                    data-target="#app_drp">
+                                    data-target="#penjualan_drp">
                                     <span class="feather-icon"><i data-feather="package"></i></span>
-                                    <span class="nav-link-text">Pengiriman</span>
+                                    <span class="nav-link-text">Penjualan</span>
                                 </a>
-                                <ul id="app_drp" class="nav flex-column collapse collapse-level-1">
+                                <ul id="penjualan_drp" class="nav flex-column collapse collapse-level-1">
                                     <li class="nav-item">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
                                                 <a class="nav-link"
-                                                    href="{{ route('dashboard_kurir_pengiriman') }}">Paket</a>
+                                                    href="{{ route('owner_penjualan') }}">Penjualan</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#penilaian_drp">
+                                    <span class="feather-icon"><i data-feather="package"></i></span>
+                                    <span class="nav-link-text">Penilaian</span>
+                                </a>
+                                <ul id="penilaian_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link"
+                                                    href="{{ route('owner_penilaian') }}">Penilaian</a>
                                             </li>
                                         </ul>
                                     </li>
