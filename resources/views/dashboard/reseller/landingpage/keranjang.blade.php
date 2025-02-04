@@ -46,14 +46,62 @@
                                                 onclick="updateQuantity({{ $id }}, 'decrease')">
                                                 <i class="fas fa-minus"></i>
                                             </button>
+
                                             <input type="number" id="qty-{{ $id }}"
                                                 value="{{ $item['quantity'] }}" min="1"
-                                                class="form-control form-control-sm">
+                                                class="form-control form-control-sm"
+                                                oninput="saveQuantity({{ $id }})">
+
                                             <button class="btn btn-link px-2"
                                                 onclick="updateQuantity({{ $id }}, 'increase')">
                                                 <i class="fas fa-plus"></i>
                                             </button>
                                         </div>
+
+                                        <!-- Menampilkan nilai sessionStorage -->
+                                        <p>Quantity tersimpan: <span id="saved-qty-{{ $id }}">-</span></p>
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function() {
+                                                let itemId = {{ $id }}; // Pastikan ini mendapatkan nilai yang benar
+                                                let qtyInput = document.getElementById('qty-' + itemId);
+                                                let savedQty = sessionStorage.getItem('qty-' + itemId);
+
+                                                console.log("Item ID:", itemId);
+                                                console.log("Saved Qty from sessionStorage:", savedQty);
+
+                                                if (savedQty) {
+                                                    qtyInput.value = savedQty;
+                                                    document.getElementById('saved-qty-' + itemId).textContent = savedQty;
+                                                }
+                                            });
+
+                                            function updateQuantity(id, action) {
+                                                let qtyInput = document.getElementById('qty-' + id);
+                                                let currentQty = parseInt(qtyInput.value);
+
+                                                if (action === 'increase') {
+                                                    currentQty++;
+                                                } else if (action === 'decrease' && currentQty > 1) {
+                                                    currentQty--;
+                                                }
+
+                                                qtyInput.value = currentQty;
+                                                sessionStorage.setItem('qty-' + id, currentQty);
+                                                document.getElementById('saved-qty-' + id).textContent = currentQty;
+
+                                                console.log("Updated Quantity:", currentQty);
+                                            }
+
+                                            function saveQuantity(id) {
+                                                let qtyInput = document.getElementById('qty-' + id);
+                                                sessionStorage.setItem('qty-' + id, qtyInput.value);
+                                                document.getElementById('saved-qty-' + id).textContent = qtyInput.value;
+
+                                                console.log("Saved Quantity on Input:", qtyInput.value);
+                                            }
+                                        </script>
+
 
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                             <h5 id="price-{{ $id }}" class="mb-0"
@@ -91,12 +139,21 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ route('cart.checkout') }}" method="POST">
+                                <form action="{{ route('cart.checkout') }}" method="POST" onsubmit="updateTotalInput()">
                                     @csrf
+                                    <input type="hidden" name="total_harga" id="total-input">
                                     <button type="submit" class="btn btn-warning btn-block btn-lg">Checkout</button>
                                 </form>
                             </div>
                         </div>
+
+                        <script>
+                            function updateTotalInput() {
+                                let totalText = document.getElementById("total-price").innerText;
+                                let totalValue = totalText.replace(/[^\d]/g, ""); // Menghapus "Rp" dan titik pemisah
+                                document.getElementById("total-input").value = totalValue;
+                            }
+                        </script>
                     @else
                         <p>Your cart is empty.</p>
                     @endif

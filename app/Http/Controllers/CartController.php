@@ -16,11 +16,25 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
+    public function updateQuantity(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $id = $request->input('id');
+        $quantity = $request->input('quantity');
+
+        // Simpan quantity ke session
+        session()->put('cart.' . $id, $quantity);
+
+        return response()->json(['message' => 'Quantity updated successfully']);
+    }
+    
     public function index()
     {
-
         $cart = Session::get('cart', []);
-        // dd($cart);
 
         foreach ($cart as $key => $value) {
             $product = Produk::find($key);
@@ -32,14 +46,22 @@ class CartController extends Controller
             }
         }
 
+        // Update cart di session
         Session::put('cart', $cart);
 
+        // Hitung total harga dari cart
         $total = 0;
         foreach ($cart as $item) {
             $total += $item['price'] * $item['quantity'];
         }
+
+        // Simpan total ke session
+        Session::put('total_price', $total);
+
+        // Return view dengan cart dan total
         return view('dashboard.reseller.landingpage.keranjang', compact('cart', 'total'));
     }
+
 
     public function add(Request $request)
     {
@@ -81,7 +103,7 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Produk berhasil dihapus dari keranjang!')->with('total', $total);
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
         $cart = Session::get('cart', []);
 
@@ -98,7 +120,7 @@ class CartController extends Controller
 
                 if ($product) {
                     // Pastikan harga produk tidak null
-                    if ($product->harga !== null) { // Ubah price menjadi harga
+                    if ($product->harga !== null) {
                         $cart[$key]['harga'] = $product->harga;  // Perbarui harga produk
                     } else {
                         Log::error('Harga produk tidak ditemukan atau null untuk produk ID ' . $item['id']);
@@ -109,35 +131,31 @@ class CartController extends Controller
                     Log::error('Produk tidak ditemukan untuk ID ' . $item['id']);
                     $cart[$key]['harga'] = 0; // Atau harga default lainnya
                 }
-
             }
         }
 
         // Setelah memperbarui cart di sesi, simpan kembali
         Session::put('cart', $cart);
 
-        // Debug untuk memastikan cart telah diperbarui
-        dd($cart);
-
         // Hitung total harga setelah update
-        $total = 0;
-        foreach ($cart as $item) {
-            if (!isset($item['id'])) {
-                Log::error('Cart item does not have "id" key', ['item' => $item]);
-                continue;
-            }
-            // Pastikan harga tidak null sebelum dihitung
-            if ($item['harga'] !== null) {  // Ganti price menjadi harga
-                $total += $item['harga'] * $item['quantity'];  // Ganti price menjadi harga
-            } else {
-                Log::error('Harga produk null saat menghitung total harga', ['item' => $item]);
-            }
-        }
+        // $total = 0;
+        // foreach ($cart as $item) {
+        //     if (!isset($item['id'])) {
+        //         Log::error('Cart item does not have "id" key', ['item' => $item]);
+        //         continue;
+        //     }
+        //     // Pastikan harga tidak null sebelum dihitung
+        //     if ($item['harga'] !== null) {
+        //         $total += $item['harga'] * $item['quantity'];
+        //     } else {
+        //         Log::error('Harga produk null saat menghitung total harga', ['item' => $item]);
+        //     }
+        // }
 
-
-        // Debug total harga
-        dd($total);
-
+        $request->validate([
+            'total_harga' => 'required',
+        ]);
+    
         $user = Auth::user();
         $userInitials = strtoupper(substr($user->name, 0, 2));
         $today = Carbon::now();
@@ -148,14 +166,11 @@ class CartController extends Controller
 
         $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
 
-        // Debug order ID
-        dd($orderId);
-
         $order = Pemesanan::create([
             'id_user' => Auth::id(),
             'order_id' => $orderId,
             'tanggal_pemesanan' => Carbon::now(),
-            'total_harga' => $total,
+            'total_harga' => $request->total_harga,
         ]);
 
         foreach ($cart as $item) {
@@ -167,25 +182,27 @@ class CartController extends Controller
                 'id_pemesanan' => $order->id,
                 'id_produk' => $item['id'],
                 'qty_produk' => $item['quantity'],
-                'harga' => $item['harga'],  // Ganti price menjadi harga
-                'total_harga' => $item['harga'] * $item['quantity'],  // Ganti price menjadi harga
+                'harga' => $item['harga'],
+                'total_harga' => $request->total_harga,
             ]);
 
             // Menambahkan data ke tabel pengiriman untuk setiap produk yang dipesan
             Pengiriman::create([
                 'id_pemesanan' => $order->id,
-                'id_pemesanan_produk' => $pemesananProduk->id, // Mendapatkan id dari PemesananProduk
-                'id_users' => Auth::id(), // Menggunakan id user yang sedang login
-                'status_pengiriman' => 'BelumDibayar', // Status awal pengiriman
+                'id_pemesanan_produk' => $pemesananProduk->id,
+                'id_users' => Auth::id(),
+                'status_pengiriman' => 'BelumDibayar',
             ]);
         }
 
+        // Hapus cart setelah pemesanan berhasil
         Session::forget('cart');
 
         return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
     }
 
-    public function updateQuantity($orderId, $productId, Request $request)
+
+    public function updateQuantity2($orderId, $productId, Request $request)
     {
         $validated = $request->validate([
             'qty_produk' => 'required|integer|min:1',

@@ -10,28 +10,51 @@ use Exception;
 
 class PaymentController extends Controller
 {
+    // app/Http/Controllers/CartController.php
+    public function updateTotalPrice(Request $request)
+    {
+        // Ambil nilai total harga yang dikirimkan dari AJAX
+        $total = $request->input('total');
+
+        // Simpan total harga dalam session atau database
+        session(['total_price' => $total]);
+
+        // Jika ingin menyimpannya di database, misalnya pada tabel Pemesanan:
+        // $order = Pemesanan::find($orderId);
+        // $order->total_harga = $total;
+        // $order->save();
+
+        // Mengirimkan response sukses
+        return response()->json(['status' => 'success', 'total' => $total]);
+    }
+
     public function showPaymentPage($order_id)
     {
+        // Mengambil total_price yang disimpan di session
+        $totalPrice = session('total_price'); 
+    
         // Ambil data order berdasarkan order_id
         $order = Pemesanan::where('order_id', $order_id)
             ->with('pemesananProduk')  // Mengambil relasi pemesananProduk
             ->first();
-
+    
         // Pastikan order ditemukan
         if (!$order) {
             return redirect()->route('cart.index')->with('error', 'Order not found!');
         }
-
+    
         // Ambil total_harga yang sudah ada atau hitung total jika belum ada
         $total = $order->total_harga;
-
+    
         // Return view dengan data order
         return view('dashboard.reseller.landingpage.payment', [
             'order_id' => $order->order_id,
-            'total' => $total
+            'total' => $total,
+            'totalPrice' => $totalPrice  // Mengirimkan total_price dari session ke view
         ]);
     }
     
+
     public function uploadPaymentProof(Request $request)
     {
         try {

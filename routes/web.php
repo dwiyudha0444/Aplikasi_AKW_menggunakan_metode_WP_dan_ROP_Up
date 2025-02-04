@@ -59,9 +59,12 @@ Route::get('/dashboard_reseller/cart/destroy/{productId}', [CartController::clas
 Route::post('/dashboard_reseller/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::post('/order/{order_id}/product/{product_id}/update-quantity', [CartController::class, 'updateQuantity']);
 // Route::post('/dashboard_reseller/cart/payment/{order_id}', [PaymentController::class, 'showPaymentPage'])->name('payment.page');
+Route::post('/update-qty', [CartController::class, 'updateQuantity'])->name('update.qty');
 
 Route::get('/dashboard_reseller/cart/payment/{order_id}', [PaymentController::class, 'showPaymentPage'])->name('payment.page');
 Route::post('/dashboard_reseller/cart/payment/{order_id}', [PaymentController::class, 'updateTotalHarga'])->name('update.total');
+// routes/web.php
+Route::post('/update-total-price', [PaymentController::class, 'updateTotalPrice'])->name('update.total.price');
 
 // Route::post('/order/{order_id}/update-total', [PaymentController::class, 'updateTotal']);
 
