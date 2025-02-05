@@ -2,39 +2,43 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Collection;
+
 class WPHelper
 {
-    public static function calculateWP($resellers, $weights)
+    public static function combineUserData($data)
     {
-        $results = [];
+        $result = [];
+        $userCount = []; // Untuk menghitung jumlah kemunculan setiap id_user
 
-        foreach ($resellers as $reseller) {
-            $score = 1; // Inisialisasi skor WP
+        foreach ($data as $row) {
+            $id_user = $row['id_user'];
 
-            foreach ($weights as $criteria => $weight) {
-                $value = $reseller[$criteria];
-
-                // Jika kriteria adalah cost, gunakan 1/nilai
-                if ($criteria == 'harga_produk') {
-                    $value = 1 / $value;
-                }
-
-                // Hitung nilai WP
-                $score *= pow($value, $weight);
+            if (!isset($result[$id_user])) {
+                // Jika id_user belum ada di result, tambahkan
+                $result[$id_user] = $row;
+                $userCount[$id_user] = 1; // Inisialisasi jumlah kemunculan
+            } else {
+                // Jika id_user sudah ada, gabungkan datanya
+                $result[$id_user]['kualitas_produk'] += $row['kualitas_produk'];
+                $result[$id_user]['harga_produk'] += $row['harga_produk'];
+                $result[$id_user]['layanan_pelanggan'] += $row['layanan_pelanggan'];
+                $result[$id_user]['ulasan_pelanggan'] += $row['ulasan_pelanggan'];
+                $result[$id_user]['fleksibilitas_pembayaran'] += $row['fleksibilitas_pembayaran'];
+                $userCount[$id_user]++; // Tambahkan jumlah kemunculan
             }
-
-            // Simpan hasil perhitungan
-            $results[] = [
-                'id_pemesanan' => $reseller['id_pemesanan'],
-                'score' => $score
-            ];
         }
 
-        // Urutkan hasil berdasarkan skor tertinggi
-        usort($results, function ($a, $b) {
-            return $b['score'] <=> $a['score'];
-        });
+        // Hitung rata-rata untuk setiap id_user
+        foreach ($result as $id_user => &$values) {
+            $values['kualitas_produk'] /= $userCount[$id_user];
+            $values['harga_produk'] /= $userCount[$id_user];
+            $values['layanan_pelanggan'] /= $userCount[$id_user];
+            $values['ulasan_pelanggan'] /= $userCount[$id_user];
+            $values['fleksibilitas_pembayaran'] /= $userCount[$id_user];
+        }
 
-        return $results;
+        // Reset keys untuk hasil akhir
+        return array_values($result);
     }
 }

@@ -23,6 +23,7 @@ class PenilaianController extends Controller
     
         // Simpan data ke database
         Penilaian::create([
+            'id_user' => auth()->id(),
             'id_pemesanan' => $request->id_pemesanan,
             'id_pemesanan_produk' => $request->id_pemesanan_produk,
             'kualitas_produk' => $request->kualitas_produk,
