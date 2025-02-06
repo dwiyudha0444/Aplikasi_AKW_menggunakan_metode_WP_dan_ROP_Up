@@ -1,37 +1,67 @@
-@extends('dashboard.admin.index')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Penilaian</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
 
-@section('content')
-    <!-- Breadcrumb -->
-    <nav class="hk-breadcrumb" aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-light bg-transparent">
-            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Penilaian</li>
-        </ol>
-    </nav>
-    <!-- /Breadcrumb -->
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    <!-- Container -->
-    <div class="container">
-        <!-- Title -->
-        <div class="hk-pg-header">
-            <h4 class="hk-pg-title">
-                <span class="pg-title-icon">
-                    <span class="feather-icon"><i data-feather="shopping-cart"></i></span>
-                </span>
-                Daftar Penilaian
-            </h4>
-        </div>
-        <!-- /Title -->
+        .header h1 {
+            font-size: 18px;
+            margin: 0;
+        }
 
-        <a href="{{ route('generate.pdf') }}" class="btn btn-primary mb-3">
-            <i class="fa fa-download"></i> Download PDF
-        </a>
+        .header p {
+            font-size: 12px;
+            margin: 0;
+        }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
 
-        <!-- Row -->
-        <div class="row">
-            <div class="col-xl-12">
-                <section class="hk-sec-wrapper mt-4">
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 10px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Laporan Penilaian Reseller</h1>
+        <p>Tanggal: {{ date('d-m-Y') }}</p>
+    </div>
+
+    <section class="hk-sec-wrapper mt-4">
                     <h5 class="hk-sec-title">Tabel Bobot</h5>
                     <p class="mb-40">A. Normalisasi Bobot</p>
                     <div class="row">
@@ -235,11 +265,8 @@
                     </div>
                 </section>
 
-
-            </div>
-        </div>
-        <!-- /Row -->
-
+    <div class="footer">
+        <p>Laporan ini dibuat secara otomatis oleh sistem pada {{ date('d-m-Y H:i:s') }}</p>
     </div>
-    <!-- /Container -->
-@endsection
+</body>
+</html>

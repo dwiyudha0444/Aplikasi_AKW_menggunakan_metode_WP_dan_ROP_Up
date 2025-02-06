@@ -142,3 +142,4 @@ Route::get('/dashboard_owner', [OwnerDashboardController::class, 'index'])->name
 Route::get('/dashboard_owner/penjualan', [OwnerPenjualanController::class, 'index'])->name('owner_penjualan');
 Route::get('/dashboard_owner/penilaian', [OwnerPenilaianController::class, 'index'])->name('owner_penilaian');
 Route::get('/dashboard_owner/daftar_reseller', [OwnerDaftarResellerController::class, 'index'])->name('owner_daftarreseller');
+Route::get('/generate-pdf', [OwnerDaftarResellerController::class, 'generatePDF'])->name('generate.pdf');
