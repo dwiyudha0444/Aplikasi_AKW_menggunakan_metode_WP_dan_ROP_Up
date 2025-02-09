@@ -139,8 +139,9 @@ Route::delete('/dashboard_admin/kategori/delete/{id}', [KategoriController::clas
 
 Route::get('/dashboard_admin/stok', [AdminStokController::class, 'index'])->name('admin_stok');
 Route::get('/dashboard_admin/stok/create', [AdminStokController::class, 'create'])->name('create_admin_stok');
+Route::get('/dashboard_admin/stok/edit/{id}', [AdminStokController::class, 'edit'])->name('edit_admin_stok');
 Route::post('/dashboard_admin/stok/create/store', [AdminStokController::class, 'store'])->name('store_admin_stok');
-Route::get('/dashboard_admin/stok/create/update', [AdminStokController::class, 'update'])->name('edit_admin_stok');
+Route::put('/dashboard_admin/stok/edit/update/{id}', [AdminStokController::class, 'update'])->name('update_admin_stok');
 Route::delete('/dashboard_admin/stok/delete/{id}', [AdminStokController::class, 'destroy'])->name('destroy_admin_stok');
 
 // owner

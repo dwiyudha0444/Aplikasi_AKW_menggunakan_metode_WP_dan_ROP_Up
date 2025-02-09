@@ -27,6 +27,15 @@ class AdminStokController extends Controller
         return view('dashboard.admin.produk.stok.create', compact('stok', 'produk', 'kategori'));
     }
 
+    public function edit($id)
+    {
+        $stok = Stok::findOrFail($id);
+        $produk = Produk::all();
+        // $kategori = Kategori::all(); // Uncomment jika kategori digunakan
+        return view('dashboard.admin.produk.stok.update', compact('stok', 'produk'));
+    }
+    
+
     public function store(Request $request)
     {
         // Validasi input
@@ -57,4 +66,38 @@ class AdminStokController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data stok: ' . $e->getMessage());
         }
     }
+
+    public function update(Request $request, $id)
+{
+    // Validasi input
+    $request->validate([
+        'id_produk' => 'required|exists:produk,id',
+        // 'id_kategori' => 'required|exists:kategori,id',
+        'jumlah' => 'required|integer|min:1',
+        'warna' => 'required|string|max:50',
+        'model_motif' => 'required|string|max:100',
+        'ukuran' => 'required|string|max:20',
+    ]);
+
+    try {
+        // Cari data stok berdasarkan ID
+        $stok = Stok::findOrFail($id);
+
+        // Update data stok
+        $stok->update([
+            'id_produk' => $request->id_produk,
+            // 'id_kategori' => $request->id_kategori,
+            'jumlah' => $request->jumlah,
+            'warna' => $request->warna,
+            'model_motif' => $request->model_motif,
+            'ukuran' => $request->ukuran,
+        ]);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('admin_stok')->with('success', 'Data stok berhasil diperbarui!');
+    } catch (\Exception $e) {
+        // Redirect dengan pesan error jika terjadi kesalahan
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data stok: ' . $e->getMessage());
+    }
+}
 }
