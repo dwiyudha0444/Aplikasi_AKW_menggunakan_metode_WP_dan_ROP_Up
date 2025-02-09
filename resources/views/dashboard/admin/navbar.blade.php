@@ -125,18 +125,35 @@
                                                     Pemesanan
                                                     Produk</a>
                                             </li>
-                                            
+
                                         </ul>
                                     </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                    data-target="#auth_drp">
+                                    data-target="#diskon_drp">
                                     <span class="feather-icon"><i data-feather="zap"></i></span>
+                                    <span class="nav-link-text">Diskon</span>
+                                </a>
+                                <ul id="diskon_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('admin_diskon') }}">Daftar
+                                                    Diskon</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                    data-target="#akun_drp">
+                                    <span class="feather-icon"><i data-feather="user"></i></span>
                                     <span class="nav-link-text">Akun</span>
                                 </a>
-                                <ul id="auth_drp" class="nav flex-column collapse collapse-level-1">
+                                <ul id="akun_drp" class="nav flex-column collapse collapse-level-1">
                                     <li class="nav-item">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">

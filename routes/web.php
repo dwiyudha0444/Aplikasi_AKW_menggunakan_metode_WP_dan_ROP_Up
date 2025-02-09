@@ -11,6 +11,7 @@ use App\Http\Controllers\landingpage\reseller\LandingpageController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\PemesananProdukController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\dashboard\admin\AdminDiskonController;
 use App\Http\Controllers\dashboard\admin\AdminStokController;
 use App\Http\Controllers\dashboard\kurir\KurirController;
 use App\Http\Controllers\landingpage\reseller\PengirimanController as ResellerPengirimanController;
@@ -143,6 +144,10 @@ Route::get('/dashboard_admin/stok/edit/{id}', [AdminStokController::class, 'edit
 Route::post('/dashboard_admin/stok/create/store', [AdminStokController::class, 'store'])->name('store_admin_stok');
 Route::put('/dashboard_admin/stok/edit/update/{id}', [AdminStokController::class, 'update'])->name('update_admin_stok');
 Route::delete('/dashboard_admin/stok/delete/{id}', [AdminStokController::class, 'destroy'])->name('destroy_admin_stok');
+
+Route::get('/dashboard_admin/diskon', [AdminDiskonController::class, 'index'])->name('admin_diskon');
+Route::get('/dashboard_admin/diskon/create', [AdminDiskonController::class, 'create'])->name('create_admin_diskon');
+Route::get('/dashboard_admin/diskon/edit/{id}', [AdminDiskonController::class, 'edit'])->name('edit_admin_diskon');
 
 // owner
 
