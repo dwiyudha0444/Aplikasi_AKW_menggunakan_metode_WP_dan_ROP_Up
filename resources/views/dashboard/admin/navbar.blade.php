@@ -110,6 +110,10 @@
                                                 <a class="nav-link" href="{{ route('admin_produk') }}">Produk</a>
                                             </li>
                                             <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('admin_stok') }}">Stok
+                                                    Produk</a>
+                                            </li>
+                                            <li class="nav-item">
                                                 <a class="nav-link" href="{{ route('admin_kategori') }}">Kategori</a>
                                             </li>
                                             <li class="nav-item">
@@ -121,6 +125,7 @@
                                                     Pemesanan
                                                     Produk</a>
                                             </li>
+                                            
                                         </ul>
                                     </li>
                                 </ul>

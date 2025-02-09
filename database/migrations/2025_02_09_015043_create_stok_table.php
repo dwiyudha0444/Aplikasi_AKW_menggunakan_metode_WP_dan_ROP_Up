@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('id_kategori')->constrained('kategori')->onDelete('cascade');
             $table->string('ukuran')->nullable();
             $table->string('warna')->nullable();
-            $table->string('konfirmasi_reseller')->nullable();
             $table->string('model_motif')->nullable();
             $table->integer('jumlah')->nullable();
             $table->timestamps();
