@@ -264,7 +264,6 @@
                         </div>
                     </div>
                 </section>
-
     <div class="footer">
         <p>Laporan ini dibuat secara otomatis oleh sistem pada {{ date('d-m-Y H:i:s') }}</p>
     </div>

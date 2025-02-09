@@ -53,7 +53,7 @@
                                                 <th>Nama</th>
                                                 <th>Kategori</th>
                                                 <th>Harga</th>
-                                                <th>Stok</th>
+                                                {{-- <th>Stok</th> --}}
                                                 <th>Gambar</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -65,7 +65,7 @@
                                                     <td>{{ $product->nama }}</td>
                                                     <td>{{ $product->kategori->nama }}</td>
                                                     <td>{{ number_format($product->harga, 0, ',', '.') }}</td>
-                                                    <td>{{ $product->stok }}</td>
+                                                    {{-- <td>{{ $product->stok }}</td> --}}
                                                     <td>
                                                         <!-- Menampilkan gambar produk jika ada -->
                                                         @if ($product->image)

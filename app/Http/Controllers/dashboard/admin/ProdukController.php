@@ -39,7 +39,7 @@ class ProdukController extends Controller
             'nama' => 'required|string|max:255', 
             'id_kategori' => 'required|exists:kategori,id', 
             'harga' => 'required|numeric|min:0',
-            'stok' => 'required|numeric|min:0',
+            // 'stok' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
@@ -48,7 +48,7 @@ class ProdukController extends Controller
             $produk->nama = $request->input('nama');
             $produk->id_kategori = $request->input('id_kategori');
             $produk->harga = $request->input('harga');
-            $produk->stok = $request->input('stok');
+            // $produk->stok = $request->input('stok');
 
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
@@ -83,7 +83,7 @@ class ProdukController extends Controller
                 'nama' => 'required|string|max:255',
                 'id_kategori' => 'required|exists:kategori,id',
                 'harga' => 'required|numeric',
-                'stok' => 'required|numeric|min:1',
+                // 'stok' => 'required|numeric|min:1',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
@@ -93,7 +93,7 @@ class ProdukController extends Controller
                 'nama' => $validated['nama'],
                 'id_kategori' => $validated['id_kategori'],
                 'harga' => $validated['harga'],
-                'stok' => $validated['stok'],
+                // 'stok' => $validated['stok'],
             ]);
 
             if ($request->hasFile('image')) {
