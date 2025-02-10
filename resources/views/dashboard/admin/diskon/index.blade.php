@@ -68,8 +68,6 @@
                                                                     class="btn btn-warning">
                                                                     <i class="icon-pencil"></i> Edit
                                                                 </a>
-
-
                                                                 <form
                                                                     action="{{ route('destroy_admin_diskon', $item->id) }}"
                                                                     method="POST"

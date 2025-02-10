@@ -26,7 +26,7 @@ class AdminDiskonController extends Controller
     public function edit($id)
     {
         $diskon = Diskon::findOrFail($id);
-        return view('dashboard.admin.diskon.up', compact('diskon'));
+        return view('dashboard.admin.diskon.update', compact('diskon'));
     }
 
     public function store(Request $request)

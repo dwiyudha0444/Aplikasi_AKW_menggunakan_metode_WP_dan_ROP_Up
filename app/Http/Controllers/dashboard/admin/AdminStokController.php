@@ -31,7 +31,6 @@ class AdminStokController extends Controller
     {
         $stok = Stok::findOrFail($id);
         $produk = Produk::all();
-        // $kategori = Kategori::all(); // Uncomment jika kategori digunakan
         return view('dashboard.admin.produk.stok.update', compact('stok', 'produk'));
     }
     
