@@ -50,7 +50,7 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>ID Produk</th>
+                                                {{-- <th>ID Produk</th> --}}
                                                 <th>Potongan Diskon</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -59,7 +59,7 @@
                                             @foreach ($diskon as $index => $item)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $item->id_produk }}</td>
+                                                    {{-- <td>{{ $item->id_produk }}</td> --}}
                                                     <td>{{ $item->potongan_diskon }}%</td>
                                                     <td>
                                                         <div class="d-flex justify-content-center w-100">

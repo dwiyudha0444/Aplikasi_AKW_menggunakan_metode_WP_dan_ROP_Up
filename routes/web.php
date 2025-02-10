@@ -148,6 +148,9 @@ Route::delete('/dashboard_admin/stok/delete/{id}', [AdminStokController::class, 
 Route::get('/dashboard_admin/diskon', [AdminDiskonController::class, 'index'])->name('admin_diskon');
 Route::get('/dashboard_admin/diskon/create', [AdminDiskonController::class, 'create'])->name('create_admin_diskon');
 Route::get('/dashboard_admin/diskon/edit/{id}', [AdminDiskonController::class, 'edit'])->name('edit_admin_diskon');
+Route::post('/dashboard_admin/diskon/store', [AdminDiskonController::class, 'store'])->name('store_admin_diskon');
+Route::delete('/dashboard_admin/diskon/delete/{id}', [AdminDiskonController::class, 'destroy'])->name('destroy_admin_diskon');
+
 
 // owner
 
