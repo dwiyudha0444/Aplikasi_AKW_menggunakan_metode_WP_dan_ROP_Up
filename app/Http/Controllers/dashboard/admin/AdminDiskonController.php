@@ -26,8 +26,7 @@ class AdminDiskonController extends Controller
     public function edit($id)
     {
         $diskon = Diskon::findOrFail($id);
-        // $kategori = Kategori::all(); // Uncomment jika kategori digunakan
-        return view('dashboard.admin.diskon.update', compact('diskon'));
+        return view('dashboard.admin.diskon.up', compact('diskon'));
     }
 
     public function store(Request $request)

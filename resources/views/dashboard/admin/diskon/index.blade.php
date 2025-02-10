@@ -65,10 +65,10 @@
                                                         <div class="d-flex justify-content-center w-100">
                                                             <div class="d-flex w-50">
                                                                 <a href="{{ route('edit_admin_diskon', $item->id) }}"
-                                                                    class="btn btn-warning mr-2" data-toggle="tooltip"
-                                                                    data-original-title="Edit">
+                                                                    class="btn btn-warning">
                                                                     <i class="icon-pencil"></i> Edit
                                                                 </a>
+
 
                                                                 <form
                                                                     action="{{ route('destroy_admin_diskon', $item->id) }}"

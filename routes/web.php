@@ -150,6 +150,7 @@ Route::get('/dashboard_admin/diskon/create', [AdminDiskonController::class, 'cre
 Route::get('/dashboard_admin/diskon/edit/{id}', [AdminDiskonController::class, 'edit'])->name('edit_admin_diskon');
 Route::post('/dashboard_admin/diskon/store', [AdminDiskonController::class, 'store'])->name('store_admin_diskon');
 Route::delete('/dashboard_admin/diskon/delete/{id}', [AdminDiskonController::class, 'destroy'])->name('destroy_admin_diskon');
+Route::put('/dashboard_admin/diskon/update/{id}', [AdminDiskonController::class, 'update'])->name('update_admin_diskon');
 
 
 // owner
