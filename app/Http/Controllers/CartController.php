@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Diskon;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use Illuminate\Support\Facades\Session;
@@ -51,15 +52,27 @@ class CartController extends Controller
 
         // Hitung total harga dari cart
         $total = 0;
+
+        // Hitung total harga dari keranjang
         foreach ($cart as $item) {
             $total += $item['price'] * $item['quantity'];
         }
-
-        // Simpan total ke session
-        Session::put('total_price', $total);
+        
+        // Terapkan diskon sebesar Rp 12.000
+        $diskon = 12000;
+        $totalSetelahDiskon = $total - $diskon;
+        
+        // Pastikan total setelah diskon tidak negatif
+        if ($totalSetelahDiskon < 0) {
+            $totalSetelahDiskon = 0;
+        }
+        
+        // Simpan total setelah diskon ke session
+        Session::put('total_price', $totalSetelahDiskon);
+        
 
         // Return view dengan cart dan total
-        return view('dashboard.reseller.landingpage.keranjang', compact('cart', 'total'));
+        return view('dashboard.reseller.landingpage.keranjang', compact('cart', 'total','diskon','totalSetelahDiskon'));
     }
 
 
@@ -172,6 +185,8 @@ class CartController extends Controller
             'tanggal_pemesanan' => Carbon::now(),
             'total_harga' => $request->total_harga,
         ]);
+
+        $diskon = Diskon::all(); 
 
         foreach ($cart as $item) {
             if (!isset($item['id'])) {

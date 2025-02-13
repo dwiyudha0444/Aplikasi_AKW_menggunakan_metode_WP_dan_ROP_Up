@@ -130,7 +130,8 @@
                                         <p class="lead fw-normal mb-2"><strong>Total</strong></p>
                                     </div>
                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                        <h5 id="total-price" class="mb-0">Rp {{ number_format($total, 0, ',', '.') }}
+                                        <h5 id="total-price" class="mb-0">Rp
+                                            {{ number_format($totalSetelahDiskon, 0, ',', '.') }}
                                         </h5>
                                     </div>
                                 </div>
@@ -230,7 +231,11 @@
             });
 
             // Memperbarui total harga di tampilan
-            document.getElementById('total-price').innerText = 'Rp ' + formatPrice(total);
+            const discount = 12000; // Diskon sebesar Rp 12.000
+            const discountedTotal = total - discount; // Mengurangi total dengan diskon
+
+            // Menampilkan hasil setelah diskon
+            document.getElementById('total-price').innerText = 'Rp ' + formatPrice(discountedTotal);
 
             // Mengirimkan total harga ke server untuk diperbarui di database
             updateTotalHargaToServer(total);
