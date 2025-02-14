@@ -37,9 +37,39 @@
 
                                         <div class="col-md-3 col-lg-3 col-xl-3">
                                             <p class="lead fw-normal mb-2">{{ $item['name'] }}</p>
-                                            <p><span class="text-muted">Size: </span>{{ $item['size'] ?? 'N/A' }} <span
-                                                    class="text-muted">Color: </span>{{ $item['color'] ?? 'N/A' }}</p>
+                                            <p>
+                                                <span class="text-muted">Pilih Ukuran dan Warna:</span>
+                                                <select id="product-option-{{ $id }}"
+                                                    class="form-select form-select-sm"
+                                                    onchange="updateStock(this, '{{ $id }}')">
+                                                    @foreach ($item['options'] as $option)
+                                                        <option value="{{ $option->id_produk }}"
+                                                            data-stock="{{ $option->jumlah }}"
+                                                            {{ $option->id_produk == $item['selected_option'] ? 'selected' : '' }}>
+                                                            {{ $option->ukuran }} - {{ $option->warna }} - {{ $option->model_motif }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </p>
+
+                                            <p>
+                                                <span class="text-muted">Stok:</span>
+                                                <strong
+                                                    id="stock-{{ $id }}">{{ $item['options']->firstWhere('id_produk', $item['selected_option'])->jumlah ?? $item['options'][0]->jumlah }}</strong>
+                                            </p>
                                         </div>
+
+                                        <script>
+                                            function updateStock(selectElement, id) {
+                                                // Ambil stok dari data attribute 'data-stock' dari opsi yang dipilih
+                                                const selectedOption = selectElement.options[selectElement.selectedIndex];
+                                                const stock = selectedOption.getAttribute('data-stock');
+
+                                                // Perbarui elemen stok
+                                                document.getElementById('stock-' + id).textContent = stock;
+                                            }
+                                        </script>
+
 
                                         <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                             <button class="btn btn-link px-2"
@@ -58,51 +88,6 @@
                                             </button>
                                         </div>
 
-                                        <!-- Menampilkan nilai sessionStorage -->
-                                        <p>Quantity tersimpan: <span id="saved-qty-{{ $id }}">-</span></p>
-
-                                        <script>
-                                            document.addEventListener("DOMContentLoaded", function() {
-                                                let itemId = {{ $id }}; // Pastikan ini mendapatkan nilai yang benar
-                                                let qtyInput = document.getElementById('qty-' + itemId);
-                                                let savedQty = sessionStorage.getItem('qty-' + itemId);
-
-                                                console.log("Item ID:", itemId);
-                                                console.log("Saved Qty from sessionStorage:", savedQty);
-
-                                                if (savedQty) {
-                                                    qtyInput.value = savedQty;
-                                                    document.getElementById('saved-qty-' + itemId).textContent = savedQty;
-                                                }
-                                            });
-
-                                            function updateQuantity(id, action) {
-                                                let qtyInput = document.getElementById('qty-' + id);
-                                                let currentQty = parseInt(qtyInput.value);
-
-                                                if (action === 'increase') {
-                                                    currentQty++;
-                                                } else if (action === 'decrease' && currentQty > 1) {
-                                                    currentQty--;
-                                                }
-
-                                                qtyInput.value = currentQty;
-                                                sessionStorage.setItem('qty-' + id, currentQty);
-                                                document.getElementById('saved-qty-' + id).textContent = currentQty;
-
-                                                console.log("Updated Quantity:", currentQty);
-                                            }
-
-                                            function saveQuantity(id) {
-                                                let qtyInput = document.getElementById('qty-' + id);
-                                                sessionStorage.setItem('qty-' + id, qtyInput.value);
-                                                document.getElementById('saved-qty-' + id).textContent = qtyInput.value;
-
-                                                console.log("Saved Quantity on Input:", qtyInput.value);
-                                            }
-                                        </script>
-
-
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                             <h5 id="price-{{ $id }}" class="mb-0"
                                                 data-price="{{ $item['price'] }}">
@@ -110,14 +95,11 @@
                                             </h5>
                                         </div>
 
-                                        <!-- Remove Item -->
                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                                             <a href="{{ route('cart.destroy', $id) }}" class="text-danger">
                                                 <i class="fas fa-trash fa-lg"></i>
                                             </a>
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -131,8 +113,7 @@
                                     </div>
                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                         <h5 id="total-price" class="mb-0">Rp
-                                            {{ number_format($totalSetelahDiskon, 0, ',', '.') }}
-                                        </h5>
+                                            {{ number_format($totalSetelahDiskon, 0, ',', '.') }}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -149,6 +130,48 @@
                         </div>
 
                         <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                @foreach ($cart as $id => $item)
+                                    let savedSize = sessionStorage.getItem('size-{{ $id }}');
+                                    let savedColor = sessionStorage.getItem('color-{{ $id }}');
+
+                                    if (savedSize) {
+                                        document.getElementById('size-{{ $id }}').value = savedSize;
+                                    }
+
+                                    if (savedColor) {
+                                        document.getElementById('color-{{ $id }}').value = savedColor;
+                                    }
+                                @endforeach
+                            });
+
+                            function updateOption(id, type) {
+                                let selectElement = document.getElementById(type + '-' + id);
+                                let selectedValue = selectElement.value;
+
+                                sessionStorage.setItem(type + '-' + id, selectedValue);
+                                console.log(type.charAt(0).toUpperCase() + type.slice(1) + " updated for item " + id + ":", selectedValue);
+                            }
+
+                            function updateQuantity(id, action) {
+                                let qtyInput = document.getElementById('qty-' + id);
+                                let currentQty = parseInt(qtyInput.value);
+
+                                if (action === 'increase') {
+                                    currentQty++;
+                                } else if (action === 'decrease' && currentQty > 1) {
+                                    currentQty--;
+                                }
+
+                                qtyInput.value = currentQty;
+                                sessionStorage.setItem('qty-' + id, currentQty);
+                            }
+
+                            function saveQuantity(id) {
+                                let qtyInput = document.getElementById('qty-' + id);
+                                sessionStorage.setItem('qty-' + id, qtyInput.value);
+                            }
+
                             function updateTotalInput() {
                                 let totalText = document.getElementById("total-price").innerText;
                                 let totalValue = totalText.replace(/[^\d]/g, ""); // Menghapus "Rp" dan titik pemisah

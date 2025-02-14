@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Pemesanan;
 use App\Models\PemesananProduk;
 use App\Models\Pengiriman;
+use App\Models\Stok;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -36,44 +37,33 @@ class CartController extends Controller
     public function index()
     {
         $cart = Session::get('cart', []);
-
+    
         foreach ($cart as $key => $value) {
-            $product = Produk::find($key);
-
-            if ($product) {
-                $cart[$key]['image_url'] = $product->image_url;
-            } else {
-                $cart[$key]['image_url'] = asset('storage/images/default.jpg');
+            // Ambil semua data produk dengan ukuran, warna, dan stok
+            $products = DB::table('stok') // Ganti 'produk' dengan nama tabel Anda
+                ->where('id_produk', $key)
+                ->get(); // Ambil semua data terkait
+    
+            if ($products->isNotEmpty()) {
+                $cart[$key]['options'] = $products; // Simpan semua pilihan kombinasi ukuran-warna
+                $cart[$key]['selected_option'] = $value['selected_option'] ?? null;
             }
         }
-
-        // Update cart di session
-        Session::put('cart', $cart);
-
-        // Hitung total harga dari cart
+    
         $total = 0;
-
-        // Hitung total harga dari keranjang
         foreach ($cart as $item) {
             $total += $item['price'] * $item['quantity'];
         }
-        
-        // Terapkan diskon sebesar Rp 12.000
+    
         $diskon = 12000;
-        $totalSetelahDiskon = $total - $diskon;
-        
-        // Pastikan total setelah diskon tidak negatif
-        if ($totalSetelahDiskon < 0) {
-            $totalSetelahDiskon = 0;
-        }
-        
-        // Simpan total setelah diskon ke session
+        $totalSetelahDiskon = max($total - $diskon, 0);
+    
         Session::put('total_price', $totalSetelahDiskon);
-        
-
-        // Return view dengan cart dan total
-        return view('dashboard.reseller.landingpage.keranjang', compact('cart', 'total','diskon','totalSetelahDiskon'));
+    
+        return view('dashboard.reseller.landingpage.keranjang', compact('cart', 'total', 'diskon', 'totalSetelahDiskon'));
     }
+    
+    
 
 
     public function add(Request $request)
