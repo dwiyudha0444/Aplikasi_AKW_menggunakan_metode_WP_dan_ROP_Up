@@ -46,7 +46,8 @@
                                                         <option value="{{ $option->id_produk }}"
                                                             data-stock="{{ $option->jumlah }}"
                                                             {{ $option->id_produk == $item['selected_option'] ? 'selected' : '' }}>
-                                                            {{ $option->ukuran }} - {{ $option->warna }} - {{ $option->model_motif }}
+                                                            {{ $option->ukuran }} - {{ $option->warna }} -
+                                                            {{ $option->model_motif }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -124,6 +125,7 @@
                                 <form action="{{ route('cart.checkout') }}" method="POST" onsubmit="updateTotalInput()">
                                     @csrf
                                     <input type="hidden" name="total_harga" id="total-input">
+                                    <input type="hidden" name="qty_produk" id="hidden-qty-{{ $id }}">
                                     <button type="submit" class="btn btn-warning btn-block btn-lg">Checkout</button>
                                 </form>
                             </div>
@@ -188,42 +190,51 @@
     </section>
 
     <script>
-        function updateQuantity(productId, action) {
-            let qtyInput = document.getElementById('qty-' + productId);
-            let quantity = parseInt(qtyInput.value);
+        // Fungsi untuk meningkatkan/mengurangi jumlah produk
+        function updateQuantity(id, action) {
+            const qtyInput = document.getElementById('qty-' + id);
+            let currentQty = parseInt(qtyInput.value);
 
             if (action === 'increase') {
-                quantity++;
-            } else if (action === 'decrease' && quantity > 1) {
-                quantity--;
+                currentQty++;
+            } else if (action === 'decrease' && currentQty > 1) {
+                currentQty--;
             }
 
-            qtyInput.value = quantity;
+            qtyInput.value = currentQty;
 
-            updatePrice(productId, quantity);
-            updateQuantityInDatabase(productId, quantity); // Update quantity in the database
+            // Simpan nilai ke input hidden
+            saveQuantity(id);
         }
 
-        function updateQuantityInDatabase(productId, quantity) {
-            // Kirimkan permintaan AJAX untuk memperbarui quantity di server
-            $.ajax({
-                url: '/update-cart', // Ganti dengan URL yang sesuai di aplikasi Anda
-                method: 'POST',
-                data: {
-                    productId: productId,
-                    quantity: quantity,
-                    _token: '{{ csrf_token() }}' // Pastikan CSRF token dikirim
-                },
-                success: function(response) {
-                    // Tindakan setelah pembaruan berhasil
-                    console.log('Cart updated successfully');
-                },
-                error: function(error) {
-                    console.log('Error updating cart', error);
-                }
+        // Fungsi untuk menyimpan jumlah produk ke input hidden
+        function saveQuantity(id) {
+            const qtyInput = document.getElementById('qty-' + id).value;
+            const hiddenQtyInput = document.getElementById('hidden-qty-' + id);
+
+            hiddenQtyInput.value = qtyInput;
+        }
+
+        // Fungsi untuk memperbarui total harga sebelum checkout
+        function updateTotalInput() {
+            let totalHarga = 0;
+
+            // Loop untuk menghitung total berdasarkan qty
+            const allQtyInputs = document.querySelectorAll('input[id^="qty-"]');
+            allQtyInputs.forEach(input => {
+                const id = input.id.split('-')[1];
+                const hargaPerProduk = {{ $item['price'] ?? 0 }}; // Sesuaikan harga
+                const qty = parseInt(input.value);
+
+                totalHarga += hargaPerProduk * qty;
             });
-        }
 
+            // Perbarui input hidden total
+            document.getElementById('total-input').value = totalHarga;
+        }
+    </script>
+
+    <script>
         function updatePrice(productId, quantity) {
             let qtyInput = document.getElementById('qty-' + productId);
             let priceElement = document.getElementById('price-' + productId);

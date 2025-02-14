@@ -157,6 +157,7 @@ class CartController extends Controller
 
         $request->validate([
             'total_harga' => 'required',
+            'qty_produk' => 'required',
         ]);
     
         $user = Auth::user();
@@ -186,7 +187,7 @@ class CartController extends Controller
             $pemesananProduk = PemesananProduk::create([
                 'id_pemesanan' => $order->id,
                 'id_produk' => $item['id'],
-                'qty_produk' => $item['quantity'],
+                'qty_produk' => $request->qty_produk,
                 'harga' => $item['harga'],
                 'total_harga' => $request->total_harga,
             ]);
