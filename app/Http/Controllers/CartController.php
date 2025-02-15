@@ -33,37 +33,37 @@ class CartController extends Controller
 
         return response()->json(['message' => 'Quantity updated successfully']);
     }
-    
+
     public function index()
     {
         $cart = Session::get('cart', []);
-    
+
         foreach ($cart as $key => $value) {
             // Ambil semua data produk dengan ukuran, warna, dan stok
             $products = DB::table('stok') // Ganti 'produk' dengan nama tabel Anda
                 ->where('id_produk', $key)
                 ->get(); // Ambil semua data terkait
-    
+
             if ($products->isNotEmpty()) {
                 $cart[$key]['options'] = $products; // Simpan semua pilihan kombinasi ukuran-warna
                 $cart[$key]['selected_option'] = $value['selected_option'] ?? null;
             }
         }
-    
+
         $total = 0;
         foreach ($cart as $item) {
             $total += $item['price'] * $item['quantity'];
         }
-    
+
         $diskon = 12000;
         $totalSetelahDiskon = max($total - $diskon, 0);
-    
+
         Session::put('total_price', $totalSetelahDiskon);
-    
+
         return view('dashboard.reseller.landingpage.keranjang', compact('cart', 'total', 'diskon', 'totalSetelahDiskon'));
     }
-    
-    
+
+
 
 
     public function add(Request $request)
@@ -159,7 +159,7 @@ class CartController extends Controller
             'total_harga' => 'required',
             'qty_produk' => 'required',
         ]);
-    
+
         $user = Auth::user();
         $userInitials = strtoupper(substr($user->name, 0, 2));
         $today = Carbon::now();
@@ -177,7 +177,7 @@ class CartController extends Controller
             'total_harga' => $request->total_harga,
         ]);
 
-        $diskon = Diskon::all(); 
+        $diskon = Diskon::all();
 
         foreach ($cart as $item) {
             if (!isset($item['id'])) {
@@ -200,6 +200,7 @@ class CartController extends Controller
                 'status_pengiriman' => 'BelumDibayar',
             ]);
 
+            Stok::where('id_produk', $item['id'])->increment('jumlah_keluar', $request->qty_produk);
             Stok::where('id_produk', $item['id'])->decrement('jumlah', $request->qty_produk);
         }
 

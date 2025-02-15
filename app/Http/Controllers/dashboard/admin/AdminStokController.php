@@ -58,6 +58,7 @@ class AdminStokController extends Controller
                 'warna' => $request->warna,
                 'model_motif' => $request->model_motif,
                 'ukuran' => $request->ukuran,
+                'jumlah_keluar' => 0,
             ]);
 
             // Redirect dengan pesan sukses
