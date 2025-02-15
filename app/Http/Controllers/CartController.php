@@ -199,6 +199,8 @@ class CartController extends Controller
                 'id_users' => Auth::id(),
                 'status_pengiriman' => 'BelumDibayar',
             ]);
+
+            Stok::where('id_produk', $item['id'])->decrement('jumlah', $request->qty_produk);
         }
 
         // Hapus cart setelah pemesanan berhasil
