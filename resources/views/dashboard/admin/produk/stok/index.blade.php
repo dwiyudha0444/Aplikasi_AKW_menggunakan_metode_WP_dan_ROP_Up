@@ -51,11 +51,12 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>ID Produk</th>
-                                                <th>ID Kategori</th>
+                                                {{-- <th>ID Kategori</th> --}}
                                                 <th>Ukuran</th>
                                                 <th>Warna</th>
                                                 <th>Model Motif</th>
                                                 <th>Jumlah</th>
+                                                <th>Rekomendasi Restok</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -64,11 +65,11 @@
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->id_produk }}</td>
-                                                    <td>{{ $item->id_kategori }}</td>
                                                     <td>{{ $item->ukuran }}</td>
                                                     <td>{{ $item->warna }}</td>
                                                     <td>{{ $item->model_motif }}</td>
                                                     <td>{{ $item->jumlah }}</td>
+                                                    <td></td>
                                                     <td>
                                                         <div class="d-flex justify-content-center w-100">
                                                             <div class="d-flex w-50">

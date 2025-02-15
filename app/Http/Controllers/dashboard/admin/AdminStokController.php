@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\dashboard\admin;
 
+use App\Helpers\ROPHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\Produk;
@@ -12,8 +13,9 @@ class AdminStokController extends Controller
 {
     public function index()
     {
+        $totalQty = ROPHelper::getTotalQtyProdukBulanIni();
         $stok = Stok::orderBy('created_at', 'desc')->get();
-        return view('dashboard.admin.produk.stok.index', compact('stok'));
+        return view('dashboard.admin.produk.stok.index', compact('stok','totalQty'));
     }
 
     public function create()

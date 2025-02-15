@@ -130,7 +130,7 @@
     <div class="container2">
         <div class="tabs">
             <span id="Semua" class="tab active" onclick="showTab('Semua')">Semua</span>
-            <span id="BelumBayar" class="tab" onclick="showTab('BelumBayar')">Belum Bayar</span>
+            <span id="BelumDibayar" class="tab" onclick="showTab('BelumDibayar')">Belum Bayar</span>
             <span id="Dikemas" class="tab" onclick="showTab('Dikemas')">Dikemas</span>
             <span id="Dikirim" class="tab" onclick="showTab('Dikirim')">Dikirim</span>
             <span id="Selesai" class="tab" onclick="showTab('Selesai')">Selesai</span>

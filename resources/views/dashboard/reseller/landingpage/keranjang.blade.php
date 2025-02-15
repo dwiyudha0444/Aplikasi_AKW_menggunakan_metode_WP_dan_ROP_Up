@@ -113,8 +113,7 @@
                                         <p class="lead fw-normal mb-2"><strong>Total</strong></p>
                                     </div>
                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                        <h5 id="total-price" class="mb-0">Rp
-                                            {{ number_format($totalSetelahDiskon, 0, ',', '.') }}</h5>
+                                        <p>Total: <span id="total-view">Rp 0</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -124,8 +123,8 @@
                             <div class="card-body">
                                 <form action="{{ route('cart.checkout') }}" method="POST" onsubmit="updateTotalInput()">
                                     @csrf
-                                    <input type="hidden" name="total_harga" id="total-input">
-                                    <input type="hidden" name="qty_produk" id="hidden-qty-{{ $id }}">
+                                    <input type="text" name="total_harga" id="total-price" readonly>
+                                    <input type="text" name="qty_produk" id="hidden-qty-{{ $id }}">
                                     <button type="submit" class="btn btn-warning btn-block btn-lg">Checkout</button>
                                 </form>
                             </div>
@@ -194,6 +193,8 @@
         function updateQuantity(id, action) {
             const qtyInput = document.getElementById('qty-' + id);
             let currentQty = parseInt(qtyInput.value);
+            const priceElement = document.getElementById('price-' + id);
+            const unitPrice = parseFloat(priceElement.getAttribute('data-price'));
 
             if (action === 'increase') {
                 currentQty++;
@@ -203,9 +204,31 @@
 
             qtyInput.value = currentQty;
 
-            // Simpan nilai ke input hidden
+            // Update harga otomatis
+            const newPrice = unitPrice * currentQty;
+            priceElement.innerText = "Rp " + newPrice.toLocaleString('id-ID');
+
             saveQuantity(id);
+            updateTotal(); // Perbarui total harga keseluruhan
         }
+
+        function updateTotal() {
+            let total = 0;
+            const priceElements = document.querySelectorAll('[id^="price-"]');
+
+            priceElements.forEach(priceElement => {
+                total += parseFloat(priceElement.innerText.replace(/[^\d]/g, ''));
+            });
+
+            // Set nilai total harga ke input tanpa titik pemisah
+            document.getElementById('total-price').value = total;
+
+            // Set nilai total harga ke tampilan (dengan format Rp dan titik pemisah ribuan)
+            document.getElementById('total-view').innerText = "Rp " + total.toLocaleString('id-ID');
+        }
+
+
+
 
         // Fungsi untuk menyimpan jumlah produk ke input hidden
         function saveQuantity(id) {
