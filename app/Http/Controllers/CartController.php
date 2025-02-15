@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Pemesanan;
 use App\Models\PemesananProduk;
 use App\Models\Pengiriman;
+use App\Models\Rop;
 use App\Models\Stok;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -200,7 +201,12 @@ class CartController extends Controller
                 'status_pengiriman' => 'BelumDibayar',
             ]);
 
-            Stok::where('id_produk', $item['id'])->increment('jumlah_keluar', $request->qty_produk);
+            Rop::create([
+                'id_produk' => $item['id'],
+                'stok_keluar' => $request->qty_produk,
+            ]);
+
+            // Stok::where('id_produk', $item['id'])->increment('jumlah_keluar', $request->qty_produk);
             Stok::where('id_produk', $item['id'])->decrement('jumlah', $request->qty_produk);
         }
 
