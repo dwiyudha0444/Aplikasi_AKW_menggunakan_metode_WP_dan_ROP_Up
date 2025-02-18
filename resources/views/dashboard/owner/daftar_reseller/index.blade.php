@@ -9,6 +9,10 @@
         </ol>
     </nav>
     <!-- /Breadcrumb -->
+    @php
+    $users = DB::table('users')->pluck('name', 'id')->toArray(); // Ambil semua user sekali saja
+@endphp
+
 
     <!-- Container -->
     <div class="container">
@@ -56,7 +60,7 @@
                                             @endphp
                                             <td>{{ $no++ }}</td>
                                             <td>0,25</td>
-                                            <td>0,25</td>
+                                            <td>-0,25</td>
                                             <td>0,15</td>
                                             <td>0,2</td>
                                             <td>0,15</td>
@@ -91,10 +95,10 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Reseller</th>
-                                                <th>Nama Produk</th>
                                                 <th>Kualitas Produk</th>
                                                 <th>Harga Produk</th>
                                                 <th>Layanan Pelanggan</th>
+                                                <th>Ulasan Pelanggan</th>
                                                 <th>Fleksibilitas Pembayaran</th>
                                             </tr>
                                         </thead>
@@ -105,7 +109,7 @@
                                             @foreach ($ranking as $row)
                                                 <tr>
                                                     <td>{{ $no++ }}</td> <!-- Menampilkan nomor urut -->
-                                                    <td>{{ $row['id_user'] }}</td>
+                                                    <td>{{ $users[$row['id_user']] ?? 'Tidak Diketahui' }}</td>
                                                     <td>{{ $row['kualitas_produk'] }}</td>
                                                     <td>{{ $row['harga_produk'] }}</td>
                                                     <td>{{ $row['layanan_pelanggan'] }}</td>
@@ -152,31 +156,34 @@
                                                 @php
                                                     // Hitung total untuk baris saat ini
                                                     $rowTotal =
-                                                        pow($row['kualitas_produk'], 0.25) +
-                                                        pow($row['harga_produk'], -0.25) +
-                                                        pow($row['layanan_pelanggan'], 0.15) +
-                                                        pow($row['ulasan_pelanggan'], 0.2) +
-                                                        pow($row['fleksibilitas_pembayaran'], 0.25);
+                                                        pow($row['kualitas_produk'], 0.25) *
+                                                        pow($row['harga_produk'], -0.25) *
+                                                        pow($row['layanan_pelanggan'], 0.15) *
+                                                        pow($row['ulasan_pelanggan'], 0.2) *
+                                                        pow($row['fleksibilitas_pembayaran'], 0.15);
 
                                                     // Tambahkan ke grand total
                                                     $grandTotal += $rowTotal;
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
-                                                    <td>{{ $row['id_user'] }}</td>
-                                                    <td>{{ pow($row['kualitas_produk'], 0.25) }}</td>
-                                                    <td>{{ pow($row['harga_produk'], 0.25) }}</td>
-                                                    <td>{{ pow($row['layanan_pelanggan'], 0.25) }}</td>
-                                                    <td>{{ pow($row['ulasan_pelanggan'], 0.25) }}</td>
-                                                    <td>{{ pow($row['fleksibilitas_pembayaran'], 0.25) }}</td>
-                                                    <td>{{ $rowTotal }}</td> <!-- Tampilkan total untuk baris ini -->
+                                                    <td>{{ $users[$row['id_user']] ?? 'Tidak Diketahui' }}</td>
+                                                    <td>{{ number_format(pow($row['kualitas_produk'], 0.25), 2) }}</td>
+                                                    <td>{{ number_format(pow($row['harga_produk'], -0.25), 2) }}</td>
+                                                    <td>{{ number_format(pow($row['layanan_pelanggan'], 0.15), 2) }}</td>
+                                                    <td>{{ number_format(pow($row['ulasan_pelanggan'], 0.2), 2) }}</td>
+                                                    <td>{{ number_format(pow($row['fleksibilitas_pembayaran'], 0.15), 2) }}
+                                                    </td>
+
+                                                    <td>{{ number_format($rowTotal, 2) }}
+                                                    </td> <!-- Tampilkan total untuk baris ini -->
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <td colspan="7" class="text-end"><strong>Total Semua:</strong></td>
-                                                <td><strong>{{ $grandTotal }}</strong></td>
+                                                <td><strong>{{ number_format($grandTotal, 2) }}</strong></td>
                                                 <!-- Tampilkan total keseluruhan -->
                                             </tr>
                                         </tfoot>
@@ -204,29 +211,54 @@
                                         </thead>
                                         <tbody>
                                             @php
-                                                $no = 1; // Inisialisasi nomor urut
-                                                $grandTotal = 0; // Total keseluruhan
-                                            @endphp
-                                            @foreach ($ranking as $row)
-                                                @php
-                                                    // Hitung total untuk setiap id_user
-                                                    $rowTotal =
-                                                        pow($row['kualitas_produk'], 0.25) +
-                                                        pow($row['harga_produk'], 0.25) +
-                                                        pow($row['layanan_pelanggan'], 0.25) +
-                                                        pow($row['ulasan_pelanggan'], 0.25) +
-                                                        pow($row['fleksibilitas_pembayaran'], 0.25);
+                                                $grandTotal = 0;
 
-                                                    // Tambahkan ke grand total
-                                                    $grandTotal += $rowTotal;
-                                                @endphp
+                                                // Hitung total keseluruhan
+                                                foreach ($ranking as $row) {
+                                                    $grandTotal +=
+                                                        pow($row['kualitas_produk'], 0.25) *
+                                                        pow($row['harga_produk'], -0.25) *
+                                                        pow($row['layanan_pelanggan'], 0.15) *
+                                                        pow($row['ulasan_pelanggan'], 0.2) *
+                                                        pow($row['fleksibilitas_pembayaran'], 0.15);
+                                                }
+
+                                                // Hitung nilai per user sebelum diurutkan
+                                                $rankingData = [];
+                                                foreach ($ranking as $row) {
+                                                    $rowTotal =
+                                                        pow($row['kualitas_produk'], 0.25) *
+                                                        pow($row['harga_produk'], -0.25) *
+                                                        pow($row['layanan_pelanggan'], 0.15) *
+                                                        pow($row['ulasan_pelanggan'], 0.2) *
+                                                        pow($row['fleksibilitas_pembayaran'], 0.15);
+
+                                                    $finalValue = $grandTotal > 0 ? $rowTotal / $grandTotal : 0;
+
+                                                    $rankingData[] = [
+                                                        'id_user' => $row['id_user'],
+                                                        'finalValue' => $finalValue,
+                                                    ];
+                                                }
+
+                                                // Urutkan berdasarkan nilai tertinggi (descending)
+                                                usort($rankingData, function ($a, $b) {
+                                                    return $b['finalValue'] <=> $a['finalValue'];
+                                                });
+                                            @endphp
+
+                                        <tbody>
+                                            @php $no = 1; @endphp
+                                            @foreach ($rankingData as $row)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
-                                                    <td>{{ $row['id_user'] }}</td>
-                                                    <td>{{ $rowTotal / $grandTotal }}</td>
-                                                    <!-- Total nilai untuk user ini -->
+                                                    <td>{{ $users[$row['id_user']] ?? 'Tidak Diketahui' }}</td>
+                                                    <td>{{ number_format($row['finalValue'], 2) }}</td>
                                                 </tr>
                                             @endforeach
+                                        </tbody>
+
+
                                         </tbody>
                                     </table>
                                 </div>

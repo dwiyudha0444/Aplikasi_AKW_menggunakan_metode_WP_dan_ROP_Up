@@ -11,12 +11,17 @@ use Illuminate\Http\Request;
 
 class AdminStokController extends Controller
 {
+
     public function index()
     {
-        $totalQty = ROPHelper::getTotalQtyProdukBulanIni();
         $stok = Stok::orderBy('created_at', 'desc')->get();
-        return view('dashboard.admin.produk.stok.index', compact('stok','totalQty'));
+        $avgStok = ROPHelper::getAverageStokKeluarPerDay(); // Panggil helper
+        $maxStok = ROPHelper::getMaxStokKeluarPerDay();
+
+        
+        return view('dashboard.admin.produk.stok.index', compact('stok', 'avgStok','maxStok'));
     }
+    
 
     public function create()
     {

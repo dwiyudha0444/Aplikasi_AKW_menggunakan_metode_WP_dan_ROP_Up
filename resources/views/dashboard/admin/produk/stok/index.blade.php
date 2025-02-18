@@ -56,7 +56,12 @@
                                                 <th>Warna</th>
                                                 <th>Model Motif</th>
                                                 <th>Jumlah</th>
-                                                <th>Rekomendasi Restok</th>
+                                                <th>PJ Max</th>
+                                                <th>WT Max</th>
+                                                <th>PJ Rata-Rata</th>
+                                                <th>WT Rata-Rata</th>
+                                                <th>SS</th>
+                                                <th>ROP</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -69,7 +74,36 @@
                                                     <td>{{ $item->warna }}</td>
                                                     <td>{{ $item->model_motif }}</td>
                                                     <td>{{ $item->jumlah }}</td>
-                                                    <td></td>
+                                                    <td>
+                                                        @php
+                                                            $max = $maxStok->firstWhere('id_stok', $item->id);
+                                                        @endphp
+                                                        {{ $max ? number_format($max->max_stok_keluar, 2) : '0' }}
+                                                    </td>
+                                                    <td>30 Hari</td>
+                                                    <td>
+                                                        @php
+                                                            $avg = $avgStok->firstWhere('id_stok', $item->id);
+                                                        @endphp
+                                                        {{ $avg ? number_format($avg->avg_stok_keluar, 2) : '0' }}
+                                                    </td>
+                                                    <td>30 Hari</td>
+                                                    @php
+    // Check if $max and $avg are collections and then perform the logic.
+    $maxStokKeluar = $max && is_object($max) ? intval($max->max_stok_keluar) : 0;
+    $avgStokKeluar = $avg && is_object($avg) ? intval($avg->avg_stok_keluar) : 0;
+
+    // Perform your calculations
+    $result = ($maxStokKeluar * 30) - ($avgStokKeluar * 30);
+@endphp
+
+<td>
+    {{ number_format($result, 2) }}
+</td>
+<td>
+    {{ number_format($result + ($avgStokKeluar*30), 2) }}
+</td>
+
                                                     <td>
                                                         <div class="d-flex justify-content-center w-100">
                                                             <div class="d-flex w-50">
@@ -79,8 +113,7 @@
                                                                     <i class="icon-pencil"></i> Edit
                                                                 </a>
 
-                                                                <form
-                                                                    action="{{ route('destroy_admin_stok', $item->id) }}"
+                                                                <form action="{{ route('destroy_admin_stok', $item->id) }}"
                                                                     method="POST"
                                                                     onsubmit="return confirm('Are you sure you want to delete this item?')">
                                                                     @csrf

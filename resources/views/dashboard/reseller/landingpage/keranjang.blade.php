@@ -43,14 +43,18 @@
                                                     class="form-select form-select-sm"
                                                     onchange="updateStock(this, '{{ $id }}')">
                                                     @foreach ($item['options'] as $option)
-                                                        <option value="{{ $option->id_produk }}"
+                                                        <option id="option-{{ $id }}-{{ $option->id_produk }}"
+                                                            value="{{ $option->id_produk }}"
                                                             data-stock="{{ $option->jumlah }}"
+                                                            data-option-id="{{ $option->id }}"
                                                             {{ $option->id_produk == $item['selected_option'] ? 'selected' : '' }}>
+                                                            ID: option-{{ $id }}-{{ $option->id }} |
                                                             {{ $option->ukuran }} - {{ $option->warna }} -
                                                             {{ $option->model_motif }}
                                                         </option>
                                                     @endforeach
                                                 </select>
+
                                             </p>
 
                                             <p>
@@ -123,6 +127,9 @@
                             <div class="card-body">
                                 <form action="{{ route('cart.checkout') }}" method="POST" onsubmit="updateTotalInput()">
                                     @csrf
+                                    <input type="text" id="selected-option-id-{{ $id }}"
+                                        name="id_stok"
+                                        value="{{ collect($item['options'])->where('id_produk', $item['selected_option'])->first()->id ?? '' }}">
                                     <input type="text" name="total_harga" id="total-price" readonly>
                                     <input type="text" name="qty_produk" id="hidden-qty-{{ $id }}">
                                     <button type="submit" class="btn btn-warning btn-block btn-lg">Checkout</button>
@@ -130,6 +137,18 @@
                             </div>
                         </div>
 
+                        <script>
+                            function updateStock(select, id) {
+                                // Ambil elemen yang dipilih
+                                let selectedOption = select.options[select.selectedIndex];
+
+                                // Ambil option->id dari atribut data-option-id
+                                let optionId = selectedOption.getAttribute('data-option-id');
+
+                                // Perbarui nilai input hidden dengan option->id yang dipilih
+                                document.getElementById('selected-option-id-' + id).value = optionId;
+                            }
+                        </script>
                         <script>
                             document.addEventListener("DOMContentLoaded", function() {
                                 @foreach ($cart as $id => $item)

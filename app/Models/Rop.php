@@ -17,5 +17,6 @@ class Rop extends Model
     protected $fillable = [
         'id_produk',
         'stok_keluar',
+        'id_stok',
     ];
 }

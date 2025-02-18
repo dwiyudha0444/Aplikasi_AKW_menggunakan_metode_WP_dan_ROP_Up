@@ -159,6 +159,7 @@ class CartController extends Controller
         $request->validate([
             'total_harga' => 'required',
             'qty_produk' => 'required',
+            'id_stok' => 'required',
         ]);
 
         $user = Auth::user();
@@ -204,6 +205,7 @@ class CartController extends Controller
             Rop::create([
                 'id_produk' => $item['id'],
                 'stok_keluar' => $request->qty_produk,
+                'id_stok' => $request->id_stok,
             ]);
 
             // Stok::where('id_produk', $item['id'])->increment('jumlah_keluar', $request->qty_produk);

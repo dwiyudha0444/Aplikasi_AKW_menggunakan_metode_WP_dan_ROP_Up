@@ -24,7 +24,7 @@
         <form action="{{ route('login_proses') }}" method="POST" class="frm-single">
             @csrf
             <div class="inside">
-                <div class="title"><strong>Ninja</strong>Admin</div>
+                <div class="title"><strong>Azzahra</strong> Kids Wear</div>
                 <div class="frm-title">Login</div>
 
                 <div class="frm-input">
@@ -46,9 +46,9 @@
 
                 <button type="submit" class="frm-submit">Login<i class="fa fa-arrow-circle-right"></i></button>
 
-                <a href="{{ route('register') }}" class="a-link"><i class="fa fa-key"></i>New to NinjaAdmin?
+                <a href="{{ route('register') }}" class="a-link"><i class="fa fa-key"></i>Belum Punya Akun?
                     Register.</a>
-                <div class="frm-footer">NinjaAdmin © 2016.</div>
+                <div class="frm-footer">Azzahra Kids Wear © 2016.</div>
             </div>
         </form>
     </div>

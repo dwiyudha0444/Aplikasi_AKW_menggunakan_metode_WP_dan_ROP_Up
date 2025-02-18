@@ -13,6 +13,7 @@ class Penilaian extends Model
 
     // Kolom yang dapat diisi (mass assignable)
     protected $fillable = [
+        'id_user',
         'id_pemesanan',
         'id_pemesanan_produk',
         'kualitas_produk',

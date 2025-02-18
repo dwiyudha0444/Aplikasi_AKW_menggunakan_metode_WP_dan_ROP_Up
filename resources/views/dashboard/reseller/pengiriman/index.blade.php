@@ -153,7 +153,7 @@
 
                     <div class="details">
                         <h3>{{ $item->pemesanan_produk->produk->nama }}</h3>
-                        <p class="price">Rp{{ number_format($item->pemesanan_produk->produk->harga, 0, ',', '.') }}</p>
+                        <p class="price">Rp{{ number_format($item->pemesanan_produk->total_harga, 0, ',', '.') }}</p>
                     </div>
                 </div>
 
