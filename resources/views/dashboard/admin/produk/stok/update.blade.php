@@ -46,7 +46,7 @@
                             <select class="form-control" id="id_produk" name="id_produk" required>
                                 <option value="">Pilih Produk</option>
                                 @foreach ($produk as $item)
-                                    <option value="{{ $item->id }}" 
+                                    <option value="{{ $item->id }}"
                                         {{ $item->id == $stok->id_produk ? 'selected' : '' }}>
                                         {{ $item->nama }}
                                     </option>
@@ -69,9 +69,19 @@
 
                         <div class="form-group">
                             <label for="ukuran">Ukuran</label>
-                            <input type="text" class="form-control" id="ukuran" name="ukuran"
-                                value="{{ $stok->ukuran }}" placeholder="Ukuran Produk" required>
+                            <select class="form-control" id="ukuran" name="ukuran" required>
+                            
+                                <option value="XS" {{ $stok->ukuran == 'XS' ? 'selected' : '' }}>XS</option>
+                                <option value="S" {{ $stok->ukuran == 'S' ? 'selected' : '' }}>S</option>
+                                <option value="M" {{ $stok->ukuran == 'M' ? 'selected' : '' }}>M</option>
+                                <option value="L" {{ $stok->ukuran == 'L' ? 'selected' : '' }}>L</option>
+                                <option value="XL" {{ $stok->ukuran == 'XL' ? 'selected' : '' }}>XL</option>
+                                <option value="XXL" {{ $stok->ukuran == 'XXL' ? 'selected' : '' }}>XXL</option>
+                                <option value="XXXL" {{ $stok->ukuran == 'XXXL' ? 'selected' : '' }}>XXXL</option>
+                                <option value="XXXXL" {{ $stok->ukuran == 'XXXXL' ? 'selected' : '' }}>XXXXL</option>
+                            </select>
                         </div>
+
 
                         <div class="form-group">
                             <label for="warna">Warna</label>

@@ -37,19 +37,56 @@
                                 Rp{{ number_format($product->harga, 2) }}
                             </div>
                         </div>
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center">
-                                <form action="{{ route('cart.add') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
-                                </form>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-outline-dark mt-auto add-to-cart"
+    data-id="{{ $product->id }}"
+    data-id-ukuran="{{ $product->id_ukuran ?? '' }}"
+    data-stok="1"
+    data-harga="{{ $product->harga }}"
+    data-warna="{{ $product->warna ?? '' }}"
+    data-model-motif="{{ $product->model_motif ?? '' }}">
+    Add to cart
+</button>
+
+
 
                     </div>
                 </div>
             @endforeach
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+$(document).ready(function() {
+    $(".add-to-cart").click(function() {
+        var productId = $(this).data("id");
+        var idUkuran = $(this).data("id-ukuran");
+        var stok = $(this).data("stok");
+        var harga = $(this).data("harga");
+        var warna = $(this).data("warna");
+        var modelMotif = $(this).data("model-motif");
+
+        $.ajax({
+            url: "{{ route('cart.add') }}",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id_produk: productId,
+                id_ukuran: idUkuran,
+                stok: stok,
+                harga: harga,
+                warna: warna,
+                model_motif: modelMotif
+            },
+            success: function(response) {
+                alert("Produk berhasil ditambahkan ke keranjang!");
+            },
+            error: function(xhr) {
+                alert("Terjadi kesalahan: " + xhr.responseJSON.error);
+            }
+        });
+    });
+});
+
+    </script>
 @endsection

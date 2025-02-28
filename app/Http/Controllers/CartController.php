@@ -37,56 +37,52 @@ class CartController extends Controller
 
     public function index()
     {
-        $cart = Session::get('cart', []);
-
-        foreach ($cart as $key => $value) {
-            // Ambil semua data produk dengan ukuran, warna, dan stok
-            $products = DB::table('stok') // Ganti 'produk' dengan nama tabel Anda
-                ->where('id_produk', $key)
-                ->get(); // Ambil semua data terkait
-
-            if ($products->isNotEmpty()) {
-                $cart[$key]['options'] = $products; // Simpan semua pilihan kombinasi ukuran-warna
-                $cart[$key]['selected_option'] = $value['selected_option'] ?? null;
-            }
-        }
-
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
-        }
-
-        $diskon = 12000;
-        $totalSetelahDiskon = max($total - $diskon, 0);
-
-        Session::put('total_price', $totalSetelahDiskon);
-
-        return view('dashboard.reseller.landingpage.keranjang', compact('cart', 'total', 'diskon', 'totalSetelahDiskon'));
+        // Ambil hanya id_produk dari tabel keranjang
+        $idProdukKeranjang = DB::table('keranjang')->pluck('id_produk');
+    
+        // Ambil data stok yang memiliki id_produk yang sama dengan di keranjang
+        $cart = DB::table('stok')
+            ->whereIn('id_produk', $idProdukKeranjang)
+            ->get();
+    
+        return view('dashboard.reseller.landingpage.keranjang', compact('cart'));
     }
-
-
-
-
+    
+    
     public function add(Request $request)
     {
-        $product = Produk::findOrFail($request->product_id);
-
-        $cart = Session::get('cart', []);
-
-        $cart[$product->id] = [
-            'id' => $product->id,
-            'name' => $product->nama,
-            'price' => $product->harga,
-            'quantity' => 1,
-            'image_url' => $product->image_url,
-        ];
-
-        Session::put('cart', $cart);
-
-        Log::info('Product added to cart', ['cart' => $cart]);
-
-        return redirect()->route('cart.index')->with('success', 'Product added to cart!');
+        $request->validate([
+            'id_produk' => 'required|exists:produk,id',
+            'id_ukuran' => 'nullable|exists:ukuran,id',
+            'stok' => 'nullable|integer|min:1',
+            'harga' => 'nullable|numeric|min:0',
+            'warna' => 'nullable|string',
+            'model_motif' => 'nullable|string',
+        ]);
+    
+        try {
+            DB::table('keranjang')->insert([
+                'id_produk' => $request->id_produk,
+                'id_ukuran' => $request->id_ukuran ?? null,
+                'stok' => $request->stok ?? 1,
+                'harga' => $request->harga ?? 0,
+                'warna' => $request->warna ?? null,
+                'model_motif' => $request->model_motif ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+    
+            return response()->json(['message' => 'Produk berhasil ditambahkan ke keranjang!']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Terjadi kesalahan: ' . $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ], 500);
+        }
     }
+    
+    
 
 
     public function destroy($productId)

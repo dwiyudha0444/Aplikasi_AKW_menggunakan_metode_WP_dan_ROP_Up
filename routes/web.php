@@ -38,9 +38,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 //profile
 Route::middleware(['auth'])->group(function () {
@@ -112,6 +110,7 @@ Route::get('/dashboard_reseller/penilaian/{id}/{id_pemesanan}/{id_pemesanan_prod
 Route::post('/dashboard_reseller/penilaian/{id}/store', [PenilaianController::class, 'store'])->name('penilaian.store');
 
 //auth
+Route::get('/', [LoginController::class, 'index'])->name('login2');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login_proses', [LoginController::class, 'login_proses'])->name('login_proses');
 Route::get('/register', [RegisterController::class, 'index'])->name('form_register');

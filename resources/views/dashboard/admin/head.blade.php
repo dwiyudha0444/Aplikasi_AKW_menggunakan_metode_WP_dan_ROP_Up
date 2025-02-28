@@ -11,7 +11,7 @@ License: You must have a valid license purchased only from templatemonster to le
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Mintos I CRM Dashboard</title>
+    <title>Azzahra Kids Wear</title>
     <meta name="description" content="A responsive bootstrap 4 admin dashboard template by hencework" />
 
     <!-- DataTables CSS -->

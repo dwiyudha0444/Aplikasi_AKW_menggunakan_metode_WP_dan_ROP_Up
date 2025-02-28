@@ -16,8 +16,7 @@ class PengirimanController extends Controller
     public function index($id = null)
     {
         // Ambil data pengiriman berdasarkan ID (jika ada), atau ambil semua data
-        $pengiriman = $id ? Pengiriman::where('id', $id)->get() : Pengiriman::all();
-
+        $pengiriman = $id ? Pengiriman::where('id', $id)->get() : Pengiriman::where('id_users', auth()->id())->paginate(5);
         // Kirim data ke view
         return view('dashboard.reseller.pengiriman.index', compact('id', 'pengiriman'));
     }
