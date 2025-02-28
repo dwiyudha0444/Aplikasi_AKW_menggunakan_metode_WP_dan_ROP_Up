@@ -36,17 +36,16 @@ class CartController extends Controller
     }
 
     public function index()
-    {
-        // Ambil hanya id_produk dari tabel keranjang
-        $idProdukKeranjang = DB::table('keranjang')->pluck('id_produk');
-    
-        // Ambil data stok yang memiliki id_produk yang sama dengan di keranjang
-        $cart = DB::table('stok')
-            ->whereIn('id_produk', $idProdukKeranjang)
-            ->get();
-    
-        return view('dashboard.reseller.landingpage.keranjang', compact('cart'));
-    }
+{
+    // Ambil data keranjang
+    $keranjang = DB::table('keranjang')->get();
+
+    // Ambil data stok berdasarkan id_produk yang ada di keranjang
+    $stok = DB::table('stok')->whereIn('id_produk', $keranjang->pluck('id_produk'))->get();
+
+    return view('dashboard.reseller.landingpage.keranjang', compact('keranjang', 'stok'));
+}
+
     
     
     public function add(Request $request)
