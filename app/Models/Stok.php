@@ -24,6 +24,7 @@ class Stok extends Model
         'konfirmasi_reseller',
         'model_motif',
         'jumlah',
+        'harga'
     ];
 
     /**

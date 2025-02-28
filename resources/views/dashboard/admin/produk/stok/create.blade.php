@@ -88,6 +88,12 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="harga">Harga</label>
+                            <input type="number" class="form-control" id="harga" name="harga"
+                                placeholder="Masukkan Harga" required>
+                        </div>
+
+                        <div class="form-group">
                             <label for="jumlah">Jumlah</label>
                             <input type="number" class="form-control" id="jumlah" name="jumlah"
                                 placeholder="Jumlah Stok" required>

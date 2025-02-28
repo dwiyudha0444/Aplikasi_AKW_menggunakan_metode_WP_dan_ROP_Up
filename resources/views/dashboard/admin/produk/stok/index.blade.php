@@ -55,6 +55,7 @@
                                                 <th>Ukuran</th>
                                                 <th>Warna</th>
                                                 <th>Model Motif</th>
+                                                <th>Harga</th>
                                                 <th>Jumlah</th>
                                                 <th>PJ Max</th>
                                                 <th>WT Max</th>
@@ -73,6 +74,7 @@
                                                     <td>{{ $item->ukuran }}</td>
                                                     <td>{{ $item->warna }}</td>
                                                     <td>{{ $item->model_motif }}</td>
+                                                    <td>{{ $item->harga }}</td>
                                                     <td>{{ $item->jumlah }}</td>
                                                     <td>
                                                         @php

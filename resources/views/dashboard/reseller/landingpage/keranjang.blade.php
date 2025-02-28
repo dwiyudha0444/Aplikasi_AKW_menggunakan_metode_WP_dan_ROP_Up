@@ -25,7 +25,7 @@
                                     <div class="col-md-4 d-flex flex-column">
                                         <p class="lead fw-normal mb-2">pe</p>
                                         <p class="mb-0">
-                                            <span class="text-muted">Ukuran:</span> } |
+                                            <span class="text-muted">Ukuran:</span>  |
                                             <span class="text-muted">Warna:</span> biru |
                                             <span class="text-muted">Stok:</span> 10
                                         </p>

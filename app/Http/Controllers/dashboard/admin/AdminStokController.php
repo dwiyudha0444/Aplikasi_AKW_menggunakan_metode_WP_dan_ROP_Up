@@ -52,6 +52,7 @@ class AdminStokController extends Controller
             'warna' => 'required|string|max:50',
             'model_motif' => 'required|string|max:100',
             'ukuran' => 'required|string|max:20',
+            'harga' => 'required|integer',
         ]);
 
         try {
@@ -63,6 +64,7 @@ class AdminStokController extends Controller
                 'warna' => $request->warna,
                 'model_motif' => $request->model_motif,
                 'ukuran' => $request->ukuran,
+                'harga' => $request->harga,
                 'jumlah_keluar' => 0,
             ]);
 
