@@ -16,7 +16,7 @@
 
 
                     @foreach ($keranjang as $item)
-                        <div class="card rounded-3 mb-4">
+                        <div class="card rounded-3 mb-4 keranjang-item" id="keranjang-{{ $item->id }}">
                             <div class="card-body p-4">
                                 <div class="row d-flex align-items-center">
                                     <div class="col-md-2">
@@ -24,7 +24,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="text-muted">Pilih Varian:</label>
-                                        <select class="form-select varian-select" data-harga="harga-{{ $item->id_produk }}">
+                                        <select class="form-select varian-select">
                                             @foreach ($stok->where('id_produk', $item->id_produk) as $s)
                                                 <option
                                                     value="{{ $s->ukuran }} - {{ $s->warna }} - {{ $s->model_motif }} - Stok: {{ $s->jumlah }}"
@@ -40,14 +40,15 @@
                                         <input type="number" class="form-control jumlah-input" value="1"
                                             min="1">
                                     </div>
-
                                     <div class="col-md-2 text-end">
-                                        <button type="button" class="btn btn-danger">Hapus</button>
+                                        <button type="button" class="btn btn-danger hapus-btn"
+                                            data-id="{{ $item->id }}">Hapus</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endforeach
+
 
 
 
@@ -58,12 +59,13 @@
                                     <p class="lead fw-normal mb-2"><strong>Total</strong></p>
                                 </div>
                                 <div class="col-md-3">
-                                    <p>Total: Rp <span id="total-harga">0</span></p>
-
+                                    <p>Total Produk: <span id="total-produk">0</span></p>
+                                    <p>Total Harga: Rp <span id="total-harga">0</span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                     <div class="card">
                         <div class="card-body">
@@ -75,25 +77,76 @@
         </div>
     </section>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
+        $(document).ready(function() {
+            $(".hapus-btn").click(function() {
+                let itemId = $(this).data("id"); // Ambil ID dari atribut data-id
+                let itemElement = $("#keranjang-" + itemId); // Ambil elemen kartu keranjang
+
+                $.ajax({
+                    url: "/keranjang/" + itemId,
+                    type: "DELETE",
+                    data: {
+                        _token: "{{ csrf_token() }}" // Kirim token CSRF untuk keamanan
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            itemElement.remove(); // Hapus elemen dari tampilan
+                            hitungTotal(); // Perbarui total harga
+                        }
+                    },
+                    error: function(xhr) {
+                        alert("Gagal menghapus item");
+                    }
+                });
+            });
+
+            function hitungTotal() {
+                let totalHarga = 0;
+
+                $(".keranjang-item").each(function() {
+                    let select = $(this).find(".varian-select");
+                    let harga = parseFloat(select.find(":selected").data("harga")) || 0;
+                    let jumlah = parseInt($(this).find(".jumlah-input").val()) || 1;
+                    totalHarga += harga * jumlah;
+                });
+
+                $("#total-harga").text("Rp " + totalHarga.toLocaleString("id-ID"));
+            }
+
+            $(".varian-select, .jumlah-input").change(hitungTotal);
+            hitungTotal();
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
     function hitungTotal() {
         let totalHarga = 0;
+        let totalProduk = 0;
 
-        document.querySelectorAll(".varian-select").forEach(function (select) {
-            let harga = parseFloat(select.selectedOptions[0].dataset.harga || 0);
-            let jumlah = parseInt(select.closest(".card-body").querySelector(".jumlah-input").value) || 1;
+        $(".keranjang-item").each(function() {
+            let select = $(this).find(".varian-select");
+            let harga = parseFloat(select.find(":selected").data("harga")) || 0;
+            let jumlah = parseInt($(this).find(".jumlah-input").val()) || 1;
+
             totalHarga += harga * jumlah;
+            totalProduk += jumlah;
         });
 
-        document.getElementById("total-harga").innerText = "Rp " + totalHarga.toLocaleString("id-ID");
+        $("#total-harga").text(totalHarga.toLocaleString("id-ID"));
+        $("#total-produk").text(totalProduk);
     }
 
-    document.querySelectorAll(".varian-select, .jumlah-input").forEach(function (element) {
-        element.addEventListener("change", hitungTotal);
+    $(".varian-select, .jumlah-input").change(hitungTotal);
+    $(".hapus-btn").click(function() {
+        $(this).closest(".keranjang-item").remove();
+        hitungTotal();
     });
 
-    hitungTotal(); // Hitung total saat halaman dimuat
+    hitungTotal();
 });
 
     </script>

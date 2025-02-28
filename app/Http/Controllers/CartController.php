@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diskon;
+use App\Models\Keranjang;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use Illuminate\Support\Facades\Session;
@@ -38,7 +39,8 @@ class CartController extends Controller
     public function index()
 {
     // Ambil data keranjang
-    $keranjang = DB::table('keranjang')->get();
+    $keranjang = Keranjang::all(); // Pastikan menggunakan Eloquent
+
 
     // Ambil data stok berdasarkan id_produk yang ada di keranjang
     $stok = DB::table('stok')->whereIn('id_produk', $keranjang->pluck('id_produk'))->get();
@@ -84,134 +86,82 @@ class CartController extends Controller
     
 
 
-    public function destroy($productId)
+    public function destroy($id)
     {
-        $cart = Session::get('cart', []);
-        if (isset($cart[$productId])) {
-
-            unset($cart[$productId]);
-
-            Session::put('cart', $cart);
+        $keranjang = Keranjang::find($id);
+        if (!$keranjang) {
+            return response()->json(['message' => 'Item tidak ditemukan'], 404);
         }
-
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
-        }
-
-        return redirect()->route('cart.index')->with('success', 'Produk berhasil dihapus dari keranjang!')->with('total', $total);
+    
+        $keranjang->delete();
+    
+        return response()->json(['message' => 'Item berhasil dihapus'], 200);
     }
+    
+    
 
     public function checkout(Request $request)
-    {
-        $cart = Session::get('cart', []);
+{
+    $request->validate([
+        'total_harga' => 'required',
+        'qty_produk' => 'required|array', // Pastikan qty_produk berupa array
+        'id_stok' => 'required|array', // Pastikan id_stok berupa array
+    ]);
 
-        // Pastikan cart tidak kosong
-        if (empty($cart)) {
-            return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
-        }
+    $user = Auth::user();
+    $userInitials = strtoupper(substr($user->name, 0, 2));
+    $today = Carbon::now();
+    $dateFormatted = $today->format('dmy');
 
-        // Update harga dan qty dalam cart jika ada perubahan
-        foreach ($cart as $key => $item) {
-            if (isset($item['id'])) {
-                // Cari produk berdasarkan ID
-                $product = Produk::find($item['id']);
+    $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
+    $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT);
 
-                if ($product) {
-                    // Pastikan harga produk tidak null
-                    if ($product->harga !== null) {
-                        $cart[$key]['harga'] = $product->harga;  // Perbarui harga produk
-                    } else {
-                        Log::error('Harga produk tidak ditemukan atau null untuk produk ID ' . $item['id']);
-                        $cart[$key]['harga'] = 0; // Atau harga default lainnya
-                    }
-                } else {
-                    // Jika produk tidak ditemukan, log error atau berikan harga default
-                    Log::error('Produk tidak ditemukan untuk ID ' . $item['id']);
-                    $cart[$key]['harga'] = 0; // Atau harga default lainnya
-                }
-            }
-        }
+    $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
 
-        // Setelah memperbarui cart di sesi, simpan kembali
-        Session::put('cart', $cart);
+    $order = Pemesanan::create([
+        'id_user' => Auth::id(),
+        'order_id' => $orderId,
+        'tanggal_pemesanan' => Carbon::now(),
+        'total_harga' => $request->total_harga,
+    ]);
 
-        // Hitung total harga setelah update
-        // $total = 0;
-        // foreach ($cart as $item) {
-        //     if (!isset($item['id'])) {
-        //         Log::error('Cart item does not have "id" key', ['item' => $item]);
-        //         continue;
-        //     }
-        //     // Pastikan harga tidak null sebelum dihitung
-        //     if ($item['harga'] !== null) {
-        //         $total += $item['harga'] * $item['quantity'];
-        //     } else {
-        //         Log::error('Harga produk null saat menghitung total harga', ['item' => $item]);
-        //     }
-        // }
+    // Loop setiap produk yang dipesan
+    foreach ($request->qty_produk as $index => $qty) {
+        $id_produk = $request->id_produk[$index]; 
+        $id_stok = $request->id_stok[$index]; 
+        $harga = $request->harga[$index]; 
+        $total_harga = $qty * $harga; 
 
-        $request->validate([
-            'total_harga' => 'required',
-            'qty_produk' => 'required',
-            'id_stok' => 'required',
+        $pemesananProduk = PemesananProduk::create([
+            'id_pemesanan' => $order->id,
+            'id_produk' => $id_produk,
+            'qty_produk' => $qty,
+            'harga' => $harga,
+            'total_harga' => $total_harga,
         ]);
 
-        $user = Auth::user();
-        $userInitials = strtoupper(substr($user->name, 0, 2));
-        $today = Carbon::now();
-        $dateFormatted = $today->format('dmy');
-
-        $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
-        $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT); // Padding angka ke 3 digit (misalnya: 001, 002, dll.)
-
-        $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
-
-        $order = Pemesanan::create([
-            'id_user' => Auth::id(),
-            'order_id' => $orderId,
-            'tanggal_pemesanan' => Carbon::now(),
-            'total_harga' => $request->total_harga,
+        // Tambahkan data ke tabel pengiriman
+        Pengiriman::create([
+            'id_pemesanan' => $order->id,
+            'id_pemesanan_produk' => $pemesananProduk->id,
+            'id_users' => Auth::id(),
+            'status_pengiriman' => 'BelumDibayar',
         ]);
 
-        $diskon = Diskon::all();
+        // Catat stok keluar di ROP
+        Rop::create([
+            'id_produk' => $id_produk,
+            'stok_keluar' => $qty,
+            'id_stok' => $id_stok,
+        ]);
 
-        foreach ($cart as $item) {
-            if (!isset($item['id'])) {
-                continue;
-            }
-
-            $pemesananProduk = PemesananProduk::create([
-                'id_pemesanan' => $order->id,
-                'id_produk' => $item['id'],
-                'qty_produk' => $request->qty_produk,
-                'harga' => $item['harga'],
-                'total_harga' => $request->total_harga,
-            ]);
-
-            // Menambahkan data ke tabel pengiriman untuk setiap produk yang dipesan
-            Pengiriman::create([
-                'id_pemesanan' => $order->id,
-                'id_pemesanan_produk' => $pemesananProduk->id,
-                'id_users' => Auth::id(),
-                'status_pengiriman' => 'BelumDibayar',
-            ]);
-
-            Rop::create([
-                'id_produk' => $item['id'],
-                'stok_keluar' => $request->qty_produk,
-                'id_stok' => $request->id_stok,
-            ]);
-
-            // Stok::where('id_produk', $item['id'])->increment('jumlah_keluar', $request->qty_produk);
-            Stok::where('id_produk', $item['id'])->decrement('jumlah', $request->qty_produk);
-        }
-
-        // Hapus cart setelah pemesanan berhasil
-        Session::forget('cart');
-
-        return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
+        // Update jumlah stok di tabel stok
+        Stok::where('id_produk', $id_produk)->decrement('jumlah', $qty);
     }
+
+    return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
+}
+
 
 
     public function updateQuantity2($orderId, $productId, Request $request)

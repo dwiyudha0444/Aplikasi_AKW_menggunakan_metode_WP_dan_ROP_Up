@@ -66,6 +66,8 @@ Route::post('/dashboard_reseller/cart/payment/{order_id}', [PaymentController::c
 // routes/web.php
 Route::post('/update-total-price', [PaymentController::class, 'updateTotalPrice'])->name('update.total.price');
 
+Route::delete('/keranjang/{id}', [CartController::class, 'destroy'])->name('keranjang.destroy');
+
 // Route::post('/order/{order_id}/update-total', [PaymentController::class, 'updateTotal']);
 
 //riwayat transaksi
