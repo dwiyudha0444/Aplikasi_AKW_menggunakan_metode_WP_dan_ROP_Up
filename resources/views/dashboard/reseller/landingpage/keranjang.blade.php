@@ -83,32 +83,32 @@
     </section>
 
     <script>
-document.addEventListener("DOMContentLoaded", function () {
-    function updateTotal() {
-        let totalHarga = 0;
-        let totalProduk = 0;
+        document.addEventListener("DOMContentLoaded", function() {
+            function updateTotal() {
+                let totalHarga = 0;
+                let totalProduk = 0;
 
-        document.querySelectorAll(".keranjang-item").forEach(item => {
-            let jumlah = item.querySelector(".jumlah-input").value;
-            let harga = item.querySelector(".varian-select").selectedOptions[0].dataset.harga;
-            totalHarga += jumlah * harga;
-            totalProduk += parseInt(jumlah);
+                document.querySelectorAll(".keranjang-item").forEach(item => {
+                    let jumlah = item.querySelector(".jumlah-input").value;
+                    let harga = item.querySelector(".varian-select").selectedOptions[0].dataset.harga;
+                    totalHarga += jumlah * harga;
+                    totalProduk += parseInt(jumlah);
+                });
+
+                document.getElementById("total-harga").textContent = totalHarga.toLocaleString();
+                document.getElementById("total-produk").textContent = totalProduk;
+                document.getElementById("total-harga-input").value = totalHarga; // Update input hidden
+            }
+
+            // Update total saat jumlah produk atau varian berubah
+            document.querySelectorAll(".jumlah-input, .varian-select").forEach(input => {
+                input.addEventListener("change", updateTotal);
+            });
+
+            // Panggil update total pertama kali saat halaman dimuat
+            updateTotal();
         });
-
-        document.getElementById("total-harga").textContent = totalHarga.toLocaleString();
-        document.getElementById("total-produk").textContent = totalProduk;
-        document.getElementById("total-harga-input").value = totalHarga; // Update input hidden
-    }
-
-    // Update total saat jumlah produk atau varian berubah
-    document.querySelectorAll(".jumlah-input, .varian-select").forEach(input => {
-        input.addEventListener("change", updateTotal);
-    });
-
-    // Panggil update total pertama kali saat halaman dimuat
-    updateTotal();
-});
-</script>
+    </script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

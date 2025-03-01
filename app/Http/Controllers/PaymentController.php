@@ -32,21 +32,21 @@ class PaymentController extends Controller
     public function showPaymentPage($order_id)
     {
         // Mengambil total_price yang disimpan di session
-        $totalPrice = session('total_price'); 
-    
+        $totalPrice = session('total_price');
+
         // Ambil data order berdasarkan order_id
         $order = Pemesanan::where('order_id', $order_id)
             ->with('pemesananProduk')  // Mengambil relasi pemesananProduk
             ->first();
-    
+
         // Pastikan order ditemukan
         if (!$order) {
             return redirect()->route('cart.index')->with('error', 'Order not found!');
         }
-    
+
         // Ambil total_harga yang sudah ada atau hitung total jika belum ada
         $total = $order->total_harga;
-    
+
         // Return view dengan data order
         return view('dashboard.reseller.landingpage.payment', [
             'order_id' => $order->order_id,
@@ -54,9 +54,30 @@ class PaymentController extends Controller
             'totalPrice' => $totalPrice  // Mengirimkan total_price dari session ke view
         ]);
     }
-    
+
 
     public function uploadPaymentProof(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|exists:pemesanan,order_id',
+        ]);
+
+        // Cari order berdasarkan order_id
+        $order = Pemesanan::where('order_id', $request->order_id)->first();
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Order tidak ditemukan.');
+        }
+
+        // Update status pembayaran
+        $order->update([
+            'status_pemesanan' => 'waiting approvement'
+        ]);
+
+        return redirect()->route('history')->with('success', 'Status pembayaran berhasil diperbarui.');
+    }
+
+    public function uploadPaymentProof2(Request $request)
     {
         try {
             $request->validate([
