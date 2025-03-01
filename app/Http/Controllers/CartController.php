@@ -37,19 +37,19 @@ class CartController extends Controller
     }
 
     public function index()
-{
-    // Ambil data keranjang
-    $keranjang = Keranjang::all(); // Pastikan menggunakan Eloquent
+    {
+        // Ambil data keranjang
+        $keranjang = Keranjang::all(); // Pastikan menggunakan Eloquent
 
 
-    // Ambil data stok berdasarkan id_produk yang ada di keranjang
-    $stok = DB::table('stok')->whereIn('id_produk', $keranjang->pluck('id_produk'))->get();
+        // Ambil data stok berdasarkan id_produk yang ada di keranjang
+        $stok = DB::table('stok')->whereIn('id_produk', $keranjang->pluck('id_produk'))->get();
 
-    return view('dashboard.reseller.landingpage.keranjang', compact('keranjang', 'stok'));
-}
+        return view('dashboard.reseller.landingpage.keranjang', compact('keranjang', 'stok'));
+    }
 
-    
-    
+
+
     public function add(Request $request)
     {
         $request->validate([
@@ -60,7 +60,7 @@ class CartController extends Controller
             'warna' => 'nullable|string',
             'model_motif' => 'nullable|string',
         ]);
-    
+
         try {
             DB::table('keranjang')->insert([
                 'id_produk' => $request->id_produk,
@@ -72,7 +72,7 @@ class CartController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-    
+
             return response()->json(['message' => 'Produk berhasil ditambahkan ke keranjang!']);
         } catch (\Exception $e) {
             return response()->json([
@@ -82,8 +82,8 @@ class CartController extends Controller
             ], 500);
         }
     }
-    
-    
+
+
 
 
     public function destroy($id)
@@ -92,75 +92,91 @@ class CartController extends Controller
         if (!$keranjang) {
             return response()->json(['message' => 'Item tidak ditemukan'], 404);
         }
-    
+
         $keranjang->delete();
-    
+
         return response()->json(['message' => 'Item berhasil dihapus'], 200);
     }
-    
-    
 
     public function checkout(Request $request)
-{
-    $request->validate([
-        'total_harga' => 'required',
-        'qty_produk' => 'required|array', // Pastikan qty_produk berupa array
-        'id_stok' => 'required|array', // Pastikan id_stok berupa array
-    ]);
+    {
+        // Hapus semua data di keranjang
+        Keranjang::truncate();
 
-    $user = Auth::user();
-    $userInitials = strtoupper(substr($user->name, 0, 2));
-    $today = Carbon::now();
-    $dateFormatted = $today->format('dmy');
 
-    $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
-    $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT);
-
-    $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
-
-    $order = Pemesanan::create([
-        'id_user' => Auth::id(),
-        'order_id' => $orderId,
-        'tanggal_pemesanan' => Carbon::now(),
-        'total_harga' => $request->total_harga,
-    ]);
-
-    // Loop setiap produk yang dipesan
-    foreach ($request->qty_produk as $index => $qty) {
-        $id_produk = $request->id_produk[$index]; 
-        $id_stok = $request->id_stok[$index]; 
-        $harga = $request->harga[$index]; 
-        $total_harga = $qty * $harga; 
-
-        $pemesananProduk = PemesananProduk::create([
-            'id_pemesanan' => $order->id,
-            'id_produk' => $id_produk,
-            'qty_produk' => $qty,
-            'harga' => $harga,
-            'total_harga' => $total_harga,
+        // Simpan data pemesanan
+        $order = Pemesanan::create([
+            'id_user' => Auth::id(),
+            'order_id' => 'Order' . time(),
+            'tanggal_pemesanan' => Carbon::now(),
+            'total_harga' => $request->total_harga,
         ]);
 
-        // Tambahkan data ke tabel pengiriman
-        Pengiriman::create([
-            'id_pemesanan' => $order->id,
-            'id_pemesanan_produk' => $pemesananProduk->id,
-            'id_users' => Auth::id(),
-            'status_pengiriman' => 'BelumDibayar',
-        ]);
-
-        // Catat stok keluar di ROP
-        Rop::create([
-            'id_produk' => $id_produk,
-            'stok_keluar' => $qty,
-            'id_stok' => $id_stok,
-        ]);
-
-        // Update jumlah stok di tabel stok
-        Stok::where('id_produk', $id_produk)->decrement('jumlah', $qty);
+        return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
     }
 
-    return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
-}
+
+    public function checkout2(Request $request)
+    {
+        $request->validate([
+            'total_harga' => 'required',
+            'qty_produk' => 'required|array', // Pastikan qty_produk berupa array
+            'id_stok' => 'required|array', // Pastikan id_stok berupa array
+        ]);
+
+        $user = Auth::user();
+        $userInitials = strtoupper(substr($user->name, 0, 2));
+        $today = Carbon::now();
+        $dateFormatted = $today->format('dmy');
+
+        $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
+        $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT);
+
+        $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
+
+        $order = Pemesanan::create([
+            'id_user' => Auth::id(),
+            'order_id' => $orderId,
+            'tanggal_pemesanan' => Carbon::now(),
+            'total_harga' => $request->total_harga,
+        ]);
+
+        // Loop setiap produk yang dipesan
+        foreach ($request->qty_produk as $index => $qty) {
+            $id_produk = $request->id_produk[$index];
+            $id_stok = $request->id_stok[$index];
+            $harga = $request->harga[$index];
+            $total_harga = $qty * $harga;
+
+            $pemesananProduk = PemesananProduk::create([
+                'id_pemesanan' => $order->id,
+                'id_produk' => $id_produk,
+                'qty_produk' => $qty,
+                'harga' => $harga,
+                'total_harga' => $total_harga,
+            ]);
+
+            // Tambahkan data ke tabel pengiriman
+            Pengiriman::create([
+                'id_pemesanan' => $order->id,
+                'id_pemesanan_produk' => $pemesananProduk->id,
+                'id_users' => Auth::id(),
+                'status_pengiriman' => 'BelumDibayar',
+            ]);
+
+            // Catat stok keluar di ROP
+            Rop::create([
+                'id_produk' => $id_produk,
+                'stok_keluar' => $qty,
+                'id_stok' => $id_stok,
+            ]);
+
+            // Update jumlah stok di tabel stok
+            Stok::where('id_produk', $id_produk)->decrement('jumlah', $qty);
+        }
+
+        return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
+    }
 
 
 
