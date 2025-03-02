@@ -103,11 +103,20 @@ class CartController extends Controller
         // Hapus semua data di keranjang
         Keranjang::truncate();
 
+        $user = Auth::user();
+        $userInitials = strtoupper(substr($user->name, 0, 2));
+        $today = Carbon::now();
+        $dateFormatted = $today->format('dmy');
+
+        $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
+        $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT);
+
+        $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
 
         // Simpan data pemesanan
         $order = Pemesanan::create([
             'id_user' => Auth::id(),
-            'order_id' => 'Order' . time(),
+            'order_id' => $orderId,
             'tanggal_pemesanan' => Carbon::now(),
             'total_harga' => $request->total_harga,
         ]);

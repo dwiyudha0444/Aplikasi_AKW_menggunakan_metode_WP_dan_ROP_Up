@@ -56,28 +56,30 @@ class PaymentController extends Controller
     }
 
 
-    public function uploadPaymentProof(Request $request)
+    public function uploadPaymentProof2(Request $request)
     {
         $request->validate([
             'order_id' => 'required|exists:pemesanan,order_id',
+            // 'image_bukti_tf' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
-
-        // Cari order berdasarkan order_id
+    
         $order = Pemesanan::where('order_id', $request->order_id)->first();
-
         if (!$order) {
             return redirect()->back()->with('error', 'Order tidak ditemukan.');
         }
+    
 
-        // Update status pembayaran
-        $order->update([
-            'status_pemesanan' => 'waiting approvement'
-        ]);
-
+    
+            $order->update([
+                // 'image_bukti_tf' => $filename,
+                'status_pemesanan' => 'waiting approvement',
+            ]);
+        
+    
         return redirect()->route('history')->with('success', 'Status pembayaran berhasil diperbarui.');
     }
-
-    public function uploadPaymentProof2(Request $request)
+    
+    public function uploadPaymentProof(Request $request)
     {
         try {
             $request->validate([
@@ -121,7 +123,7 @@ class PaymentController extends Controller
                 Log::warning('No payment proof file uploaded', ['order_id' => $request->order_id]);
             }
 
-            return redirect()->back()->with('error', 'Failed to upload payment proof!');
+            return redirect()->back()->with('error', 'Failed to upload pay proof!');
         } catch (Exception $e) {
             Log::error('Error in uploadPaymentProof', [
                 'exception_message' => $e->getMessage(),
