@@ -13,6 +13,7 @@ use App\Http\Controllers\PemesananProdukController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\dashboard\admin\AdminDiskonController;
 use App\Http\Controllers\dashboard\admin\AdminStokController;
+use App\Http\Controllers\dashboard\admin\AdminUkuranController;
 use App\Http\Controllers\dashboard\kurir\KurirController;
 use App\Http\Controllers\landingpage\reseller\PengirimanController as ResellerPengirimanController;
 use App\Http\Controllers\dashboard\kurir\PengirimanController as KurirPengirimanController;
@@ -161,3 +162,5 @@ Route::get('/dashboard_owner/penjualan', [OwnerPenjualanController::class, 'inde
 Route::get('/dashboard_owner/penilaian', [OwnerPenilaianController::class, 'index'])->name('owner_penilaian');
 Route::get('/dashboard_owner/daftar_reseller', [OwnerDaftarResellerController::class, 'index'])->name('owner_daftarreseller');
 Route::get('/generate-pdf', [OwnerDaftarResellerController::class, 'generatePDF'])->name('generate.pdf');
+
+Route::get('/dashboard_admin/ukuran', [AdminUkuranController::class, 'index'])->name('ukuran_admin');
