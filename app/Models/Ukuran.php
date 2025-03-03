@@ -10,10 +10,10 @@ class Ukuran extends Model
     use HasFactory;
 
     // Nama tabel di database
-    protected $table = 'stok';
+    protected $table = 'ukuran';
 
     // Primary key
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_ukuran';
 
     // Kolom yang dapat diisi (mass assignable)
     protected $fillable = [

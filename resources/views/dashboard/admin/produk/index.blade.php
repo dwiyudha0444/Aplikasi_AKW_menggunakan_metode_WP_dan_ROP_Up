@@ -81,12 +81,15 @@
                                                             class="mr-25" data-toggle="tooltip" data-original-title="Edit">
                                                             <i class="icon-pencil"></i>
                                                         </a>
-                                                        {{-- <a href="{{ route('products.destroy', $product->id) }}",
-                                                            class="text-danger" data-toggle="tooltip"
-                                                            data-original-title="Hapus"
-                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
-                                                            <i class="icon-trash"></i>
-                                                        </a> --}}
+                                                        <form action="{{ route('produk.destroy', $product->id) }}" method="POST" style="display:inline;">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="text-danger border-0 bg-transparent"
+        onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
+        <i class="icon-trash"></i>
+    </button>
+</form>
+
                                                     </td>
                                                 </tr>
                                             @endforeach

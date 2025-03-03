@@ -132,6 +132,7 @@ Route::get('/dashboard_admin/produk/create', [ProdukController::class, 'create']
 Route::post('/dashboard_admin/produk/store', [ProdukController::class, 'store'])->name('store_admin_produk');
 Route::get('/dashboard_admin/produk/edit/{id}', [ProdukController::class, 'edit'])->name('edit_admin_produk');
 Route::put('/dashboard_admin/produk/update/{id}', [ProdukController::class, 'update'])->name('update_admin_produk');
+Route::delete('dashboard_admin/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 
 Route::get('/dashboard_admin/kategori', [KategoriController::class, 'index'])->name('admin_kategori');
 Route::get('/dashboard_admin/kategori/create', [KategoriController::class, 'create'])->name('create_admin_kategori');
@@ -163,4 +164,13 @@ Route::get('/dashboard_owner/penilaian', [OwnerPenilaianController::class, 'inde
 Route::get('/dashboard_owner/daftar_reseller', [OwnerDaftarResellerController::class, 'index'])->name('owner_daftarreseller');
 Route::get('/generate-pdf', [OwnerDaftarResellerController::class, 'generatePDF'])->name('generate.pdf');
 
-Route::get('/dashboard_admin/ukuran', [AdminUkuranController::class, 'index'])->name('ukuran_admin');
+Route::get('/dashboard_admin/ukuran', [AdminUkuranController::class, 'index'])->name('admin_ukuran');
+
+Route::prefix('admin')->group(function () {
+
+    Route::get('/ukuran/create', [AdminUkuranController::class, 'create'])->name('create_admin_ukuran');
+    Route::post('/ukuran/store', [AdminUkuranController::class, 'store'])->name('store_admin_ukuran');
+    Route::get('/ukuran/edit/{id_ukuran}', [AdminUkuranController::class, 'edit'])->name('edit_admin_ukuran');
+    Route::put('/ukuran/update/{id}', [AdminUkuranController::class, 'update'])->name('update_admin_ukuran');
+    Route::delete('/ukuran/destroy/{id}', [AdminUkuranController::class, 'destroy'])->name('destroy_admin_ukuran');
+});

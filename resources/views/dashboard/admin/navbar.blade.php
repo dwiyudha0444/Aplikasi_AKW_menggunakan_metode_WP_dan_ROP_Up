@@ -114,6 +114,10 @@
                                                     Produk</a>
                                             </li>
                                             <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('admin_ukuran') }}">Ukuran
+                                                    Produk</a>
+                                            </li>
+                                            <li class="nav-item">
                                                 <a class="nav-link" href="{{ route('admin_kategori') }}">Kategori</a>
                                             </li>
                                             <li class="nav-item">
