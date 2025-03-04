@@ -100,6 +100,9 @@ class CartController extends Controller
 
     public function checkout(Request $request)
 {
+    // Debugging sebelum menyimpan
+// dd($request->all());
+
     // Ambil data user
     $user = Auth::user();
     $userInitials = strtoupper(substr($user->name, 0, 2));
@@ -125,13 +128,14 @@ class CartController extends Controller
     $keranjang = Keranjang::all();
 
     // Simpan data ke tabel pemesanan_produk
-    foreach ($keranjang as $item) {
+    foreach ($keranjang as $index => $item) {
         PemesananProduk::create([
             'id_pemesanan' => $order->id,
             'id_produk' => $item->id_produk,
-            'qty_produk' => $request->input("total_item.{$item->id}", 0),
+            'qty_produk' => $request->qty_produk[$index],
         ]);
     }
+    
 
     // Hapus semua data di keranjang setelah checkout
     // Keranjang::where('id_user', Auth::id())->delete();

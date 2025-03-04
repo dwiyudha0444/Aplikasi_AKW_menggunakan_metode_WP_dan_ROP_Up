@@ -14,71 +14,71 @@
 
                     <!-- Data Dummy -->
 
+                    <form action="{{ route('cart.checkout') }}" method="POST" id="checkout-form">
+                        @csrf
+                        @foreach ($keranjang as $item)
+                            <div class="card rounded-3 mb-4 keranjang-item" id="keranjang-{{ $item->id }}">
+                                <div class="card-body p-4">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-2">
+                                            <img src="" class="img-fluid rounded-3" alt="pe">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="text-muted">Pilih Varian:</label>
+                                            <select class="form-select varian-select" name="varian[{{ $item->id }}]">
+                                                @foreach ($stok->where('id_produk', $item->id_produk) as $s)
+                                                    <option value="{{ $s->id }}" data-harga="{{ $s->harga }}"
+                                                        data-stok="{{ $s->jumlah }}">
+                                                        {{ $s->ukuran }} - {{ $s->warna }} - {{ $s->model_motif }} -
+                                                        Stok: {{ $s->jumlah }} -
+                                                        Rp{{ number_format($s->harga, 0, ',', '.') }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="number" class="form-control jumlah-input"
+                                                name="qty_produk[{{ $item->id }}]" value="1" min="1">
+                                        </div>
+                                        <div class="col-md-2 text-end">
+                                            <p class="total-item">Rp 0</p> <!-- Menampilkan total per item -->
+                                            <input type="text" class="total-item-input"
+                                                name="total_item[{{ $item->id }}]" value="0">
+                                            <button type="button" class="btn btn-danger hapus-btn"
+                                                data-id="{{ $item->id }}">Hapus</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
 
-                    @foreach ($keranjang as $item)
-                        <div class="card rounded-3 mb-4 keranjang-item" id="keranjang-{{ $item->id }}">
+
+                        <!-- Total Harga -->
+                        <div class="card rounded-3 mb-4">
                             <div class="card-body p-4">
-                                <div class="row d-flex align-items-center">
-                                    <div class="col-md-2">
-                                        <img src="" class="img-fluid rounded-3" alt="pe">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-3">
+                                        <p class="lead fw-normal mb-2"><strong>Total</strong></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="text-muted">Pilih Varian:</label>
-                                        <select class="form-select varian-select" name="varian[{{ $item->id }}]">
-                                            @foreach ($stok->where('id_produk', $item->id_produk) as $s)
-                                                <option value="{{ $s->id }}" data-harga="{{ $s->harga }}"
-                                                    data-stok="{{ $s->jumlah }}">
-                                                    {{ $s->ukuran }} - {{ $s->warna }} - {{ $s->model_motif }} -
-                                                    Stok: {{ $s->jumlah }} -
-                                                    Rp{{ number_format($s->harga, 0, ',', '.') }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="number" class="form-control jumlah-input"
-                                            name="qty_produk[{{ $item->id }}]" value="1" min="1">
-                                    </div>
-                                    <div class="col-md-2 text-end">
-                                        <p class="total-item">Rp 0</p> <!-- Menampilkan total per item -->
-                                        <input type="text" class="total-item-input"
-                                            name="total_item[{{ $item->id }}]" value="0">
-                                        <button type="button" class="btn btn-danger hapus-btn"
-                                            data-id="{{ $item->id }}">Hapus</button>
+                                    <div class="col-md-3">
+                                        <p>Total Produk: <span id="total-produk">0</span></p>
+                                        <p>Total Harga: Rp <span id="total-harga">0</span></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+
+                        <!-- Form Checkout -->
 
 
-                    <!-- Total Harga -->
-                    <div class="card rounded-3 mb-4">
-                        <div class="card-body p-4">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-md-3">
-                                    <p class="lead fw-normal mb-2"><strong>Total</strong></p>
-                                </div>
-                                <div class="col-md-3">
-                                    <p>Total Produk: <span id="total-produk">0</span></p>
-                                    <p>Total Harga: Rp <span id="total-harga">0</span></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Form Checkout -->
-                    <div class="card">
-                        <form action="{{ route('cart.checkout') }}" method="POST" id="checkout-form">
-                            @csrf
-                            <input type="hidden"  name="total_harga" id="total-harga-input">
-                            <button type="submit" class="btn btn-warning btn-block btn-lg">Checkout</button>
-                        </form>
-
-                    </div>
+                        <input type="hidden" name="total_harga" id="total-harga-input">
+                        <button type="submit" class="btn btn-warning btn-block btn-lg">Checkout</button>
+                    </form>
 
                 </div>
+
             </div>
+        </div>
     </section>
 
     <script>
