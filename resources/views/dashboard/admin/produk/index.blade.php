@@ -69,8 +69,7 @@
                                                     <td>
                                                         <!-- Menampilkan gambar produk jika ada -->
                                                         @if ($product->image)
-                                                            <img src="{{ $product->image_url }}"
-                                                                alt="{{ $product->nama }}"
+                                                            <img src="{{ $product->image_url }}" alt="{{ $product->nama }}"
                                                                 style="width: 100px; height: auto;">
                                                         @else
                                                             <span>No Image</span>
@@ -81,14 +80,16 @@
                                                             class="mr-25" data-toggle="tooltip" data-original-title="Edit">
                                                             <i class="icon-pencil"></i>
                                                         </a>
-                                                        <form action="{{ route('produk.destroy', $product->id) }}" method="POST" style="display:inline;">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="text-danger border-0 bg-transparent"
-        onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
-        <i class="icon-trash"></i>
-    </button>
-</form>
+                                                        <form action="{{ route('produk.destroy', $product->id) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="text-danger border-0 bg-transparent"
+                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
+                                                                <i class="icon-trash"></i>
+                                                            </button>
+                                                        </form>
 
                                                     </td>
                                                 </tr>

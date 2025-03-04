@@ -99,30 +99,46 @@ class CartController extends Controller
     }
 
     public function checkout(Request $request)
-    {
-        // Hapus semua data di keranjang
-        Keranjang::truncate();
+{
+    // Ambil data user
+    $user = Auth::user();
+    $userInitials = strtoupper(substr($user->name, 0, 2));
+    $today = Carbon::now();
+    $dateFormatted = $today->format('dmy');
 
-        $user = Auth::user();
-        $userInitials = strtoupper(substr($user->name, 0, 2));
-        $today = Carbon::now();
-        $dateFormatted = $today->format('dmy');
+    // Hitung jumlah pesanan untuk hari ini
+    $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
+    $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT);
 
-        $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
-        $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT);
+    // Buat order ID
+    $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
 
-        $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
+    // Simpan data pemesanan
+    $order = Pemesanan::create([
+        'id_user' => Auth::id(),
+        'order_id' => $orderId,
+        'tanggal_pemesanan' => Carbon::now(),
+        'total_harga' => $request->total_harga,
+    ]);
 
-        // Simpan data pemesanan
-        $order = Pemesanan::create([
-            'id_user' => Auth::id(),
-            'order_id' => $orderId,
-            'tanggal_pemesanan' => Carbon::now(),
-            'total_harga' => $request->total_harga,
+    // Ambil semua data di keranjang
+    $keranjang = Keranjang::all();
+
+    // Simpan data ke tabel pemesanan_produk
+    foreach ($keranjang as $item) {
+        PemesananProduk::create([
+            'id_pemesanan' => $order->id,
+            'id_produk' => $item->id_produk,
+            'qty_produk' => $request->input("total_item.{$item->id}", 0),
         ]);
-
-        return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
     }
+
+    // Hapus semua data di keranjang setelah checkout
+    // Keranjang::where('id_user', Auth::id())->delete();
+
+    return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
+}
+
 
 
     public function checkout2(Request $request)

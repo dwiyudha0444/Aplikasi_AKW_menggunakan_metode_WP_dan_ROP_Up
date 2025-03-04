@@ -24,11 +24,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="text-muted">Pilih Varian:</label>
-                                        <select class="form-select varian-select">
+                                        <select class="form-select varian-select" name="varian[{{ $item->id }}]">
                                             @foreach ($stok->where('id_produk', $item->id_produk) as $s)
-                                                <option
-                                                    value="{{ $s->ukuran }} - {{ $s->warna }} - {{ $s->model_motif }} - Stok: {{ $s->jumlah }}"
-                                                    data-harga="{{ $s->harga }}">
+                                                <option value="{{ $s->id }}" data-harga="{{ $s->harga }}"
+                                                    data-stok="{{ $s->jumlah }}">
                                                     {{ $s->ukuran }} - {{ $s->warna }} - {{ $s->model_motif }} -
                                                     Stok: {{ $s->jumlah }} -
                                                     Rp{{ number_format($s->harga, 0, ',', '.') }}
@@ -37,10 +36,13 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="number" class="form-control jumlah-input" value="1"
-                                            min="1">
+                                        <input type="number" class="form-control jumlah-input"
+                                            name="qty_produk[{{ $item->id }}]" value="1" min="1">
                                     </div>
                                     <div class="col-md-2 text-end">
+                                        <p class="total-item">Rp 0</p> <!-- Menampilkan total per item -->
+                                        <input type="text" class="total-item-input"
+                                            name="total_item[{{ $item->id }}]" value="0">
                                         <button type="button" class="btn btn-danger hapus-btn"
                                             data-id="{{ $item->id }}">Hapus</button>
                                     </div>
@@ -50,8 +52,7 @@
                     @endforeach
 
 
-
-
+                    <!-- Total Harga -->
                     <div class="card rounded-3 mb-4">
                         <div class="card-body p-4">
                             <div class="row d-flex justify-content-between align-items-center">
@@ -66,20 +67,18 @@
                         </div>
                     </div>
 
-
+                    <!-- Form Checkout -->
                     <div class="card">
-                        <form action="{{ route('cart.checkout') }}" method="POST">
+                        <form action="{{ route('cart.checkout') }}" method="POST" id="checkout-form">
                             @csrf
-                            <input type="hidden" name="total_harga" id="total-harga-input">
+                            <input type="hidden"  name="total_harga" id="total-harga-input">
                             <button type="submit" class="btn btn-warning btn-block btn-lg">Checkout</button>
                         </form>
 
-
-
                     </div>
+
                 </div>
             </div>
-        </div>
     </section>
 
     <script>
@@ -89,15 +88,29 @@
                 let totalProduk = 0;
 
                 document.querySelectorAll(".keranjang-item").forEach(item => {
-                    let jumlah = item.querySelector(".jumlah-input").value;
-                    let harga = item.querySelector(".varian-select").selectedOptions[0].dataset.harga;
-                    totalHarga += jumlah * harga;
-                    totalProduk += parseInt(jumlah);
+                    let jumlahInput = item.querySelector(".jumlah-input");
+                    let varianSelect = item.querySelector(".varian-select");
+                    let totalItemElement = item.querySelector(".total-item");
+                    let totalItemInput = item.querySelector(".total-item-input");
+
+                    let jumlah = parseInt(jumlahInput.value) || 0;
+                    let harga = parseFloat(varianSelect.selectedOptions[0].dataset.harga) || 0;
+                    let totalItem = jumlah * harga;
+
+                    totalHarga += totalItem;
+                    totalProduk += jumlah;
+
+                    // Update tampilan total per item
+                    totalItemElement.textContent = "Rp " + totalItem.toLocaleString("id-ID");
+
+                    // Update input hidden total per item
+                    totalItemInput.value = jumlah;
                 });
 
-                document.getElementById("total-harga").textContent = totalHarga.toLocaleString();
+                // Update total keseluruhan
+                document.getElementById("total-harga").textContent = totalHarga.toLocaleString("id-ID");
                 document.getElementById("total-produk").textContent = totalProduk;
-                document.getElementById("total-harga-input").value = totalHarga; // Update input hidden
+                document.getElementById("total-harga-input").value = totalHarga;
             }
 
             // Update total saat jumlah produk atau varian berubah
@@ -109,6 +122,7 @@
             updateTotal();
         });
     </script>
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
