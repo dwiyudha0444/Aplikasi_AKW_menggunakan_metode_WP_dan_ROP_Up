@@ -11,8 +11,9 @@ class TransactionController extends Controller
     {
         $transactions = Pemesanan::where('id_user', auth()->id())
             ->orderBy('created_at', 'desc')
-            ->get();
-
+            ->paginate(25); // Tambahkan pagination dengan 25 data per halaman
+    
         return view('dashboard.reseller.landingpage.history', compact('transactions'));
     }
+    
 }
