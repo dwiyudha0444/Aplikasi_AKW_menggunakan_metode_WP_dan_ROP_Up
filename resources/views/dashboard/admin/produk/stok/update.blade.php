@@ -70,15 +70,14 @@
                         <div class="form-group">
                             <label for="ukuran">Ukuran</label>
                             <select class="form-control" id="ukuran" name="ukuran" required>
-                            
-                                <option value="XS" {{ $stok->ukuran == 'XS' ? 'selected' : '' }}>XS</option>
-                                <option value="S" {{ $stok->ukuran == 'S' ? 'selected' : '' }}>S</option>
-                                <option value="M" {{ $stok->ukuran == 'M' ? 'selected' : '' }}>M</option>
-                                <option value="L" {{ $stok->ukuran == 'L' ? 'selected' : '' }}>L</option>
-                                <option value="XL" {{ $stok->ukuran == 'XL' ? 'selected' : '' }}>XL</option>
-                                <option value="XXL" {{ $stok->ukuran == 'XXL' ? 'selected' : '' }}>XXL</option>
-                                <option value="XXXL" {{ $stok->ukuran == 'XXXL' ? 'selected' : '' }}>XXXL</option>
-                                <option value="XXXXL" {{ $stok->ukuran == 'XXXXL' ? 'selected' : '' }}>XXXXL</option>
+                                <option value="" disabled>Pilih Ukuran</option>
+                                @foreach ($ukuranList as $ukuran)
+                                    <option value="{{ $ukuran->ukuran }}"
+                                        {{ $stok->ukuran == $ukuran->ukuran ? 'selected' : '' }}>
+                                        {{ $ukuran->ukuran }}
+                                    </option>
+                                @endforeach
+
                             </select>
                         </div>
 

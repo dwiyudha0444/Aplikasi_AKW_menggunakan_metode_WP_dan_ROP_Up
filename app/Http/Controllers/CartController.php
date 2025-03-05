@@ -99,49 +99,61 @@ class CartController extends Controller
     }
 
     public function checkout(Request $request)
-{
-    // Debugging sebelum menyimpan
-// dd($request->all());
+    {
+        // Debugging sebelum menyimpan
+        // dd($request->all());
 
-    // Ambil data user
-    $user = Auth::user();
-    $userInitials = strtoupper(substr($user->name, 0, 2));
-    $today = Carbon::now();
-    $dateFormatted = $today->format('dmy');
+        // Ambil data user
+        $user = Auth::user();
+        $userInitials = strtoupper(substr($user->name, 0, 2));
+        $today = Carbon::now();
+        $dateFormatted = $today->format('dmy');
 
-    // Hitung jumlah pesanan untuk hari ini
-    $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
-    $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT);
+        // Hitung jumlah pesanan untuk hari ini
+        $orderCount = Pemesanan::whereDate('tanggal_pemesanan', Carbon::today())->count();
+        $orderIncrement = str_pad($orderCount + 1, 3, '0', STR_PAD_LEFT);
 
-    // Buat order ID
-    $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
+        // Buat order ID
+        $orderId = $userInitials . '-' . $dateFormatted . $orderIncrement;
 
-    // Simpan data pemesanan
-    $order = Pemesanan::create([
-        'id_user' => Auth::id(),
-        'order_id' => $orderId,
-        'tanggal_pemesanan' => Carbon::now(),
-        'total_harga' => $request->total_harga,
-    ]);
-
-    // Ambil semua data di keranjang
-    $keranjang = Keranjang::all();
-
-    // Simpan data ke tabel pemesanan_produk
-    foreach ($keranjang as $index => $item) {
-        PemesananProduk::create([
-            'id_pemesanan' => $order->id,
-            'id_produk' => $item->id_produk,
-            'qty_produk' => $request->qty_produk[$index],
+        // Simpan data pemesanan
+        $order = Pemesanan::create([
+            'id_user' => Auth::id(),
+            'order_id' => $orderId,
+            'tanggal_pemesanan' => Carbon::now(),
+            'total_harga' => $request->total_harga,
         ]);
+
+        // Ambil semua data di keranjang
+        $keranjang = Keranjang::all();
+
+        // Simpan data ke tabel pemesanan_produk
+        foreach ($keranjang as $index => $item) {
+            $pemesananProduk = PemesananProduk::create([
+                'id_pemesanan' => $order->id,
+                'id_produk' => $item->id_produk,
+                'qty_produk' => $request->qty_produk[$index],
+            ]);
+
+            Pengiriman::create([
+                'id_pemesanan' => $order->id,
+                'id_pemesanan_produk' => $pemesananProduk->id,
+                'id_users' => Auth::id(),
+                'status_pengiriman' => 'BelumDibayar',
+            ]);
+
+            Rop::create([
+                'id_produk' => $item->id_produk,
+                'stok_keluar' => $request->qty_produk[$index],
+                'id_stok' => $request->id_stok[$index],
+            ]);
+        }
+
+        // Hapus semua data di keranjang setelah checkout
+        Keranjang::truncate();
+
+        return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
     }
-    
-
-    // Hapus semua data di keranjang setelah checkout
-    // Keranjang::where('id_user', Auth::id())->delete();
-
-    return redirect()->to('dashboard_reseller/cart/payment/' . $order->order_id);
-}
 
 
 

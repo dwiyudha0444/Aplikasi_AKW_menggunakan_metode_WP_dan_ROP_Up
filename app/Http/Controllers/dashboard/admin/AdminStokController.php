@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\Produk;
 use App\Models\Stok;
+use App\Models\Ukuran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminStokController extends Controller
 {
@@ -29,16 +31,17 @@ class AdminStokController extends Controller
         $stok = Stok::orderBy('created_at', 'desc')->get();
         $produk = Produk::orderBy('created_at', 'desc')->get();
         $kategori = Kategori::orderBy('created_at', 'desc')->get();
-
+        $ukuran = Ukuran::all();
         // Mengirimkan data ke view menggunakan compact
-        return view('dashboard.admin.produk.stok.create', compact('stok', 'produk', 'kategori'));
+        return view('dashboard.admin.produk.stok.create', compact('ukuran','stok', 'produk', 'kategori'));
     }
 
     public function edit($id)
     {
         $stok = Stok::findOrFail($id);
         $produk = Produk::all();
-        return view('dashboard.admin.produk.stok.update', compact('stok', 'produk'));
+        $ukuranList = Ukuran::all();
+        return view('dashboard.admin.produk.stok.update', compact('ukuranList','stok', 'produk'));
     }
     
 

@@ -35,6 +35,9 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            <!-- Input hidden untuk menyimpan id_stok -->
+                                            <input type="text" class="id-stok-input" name="id_stok[{{ $item->id }}]"
+                                                value="">
                                         </div>
                                         <div class="col-md-2">
                                             <input type="number" class="form-control jumlah-input"
@@ -80,6 +83,21 @@
             </div>
         </div>
     </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Saat halaman dimuat, atur nilai id_stok pertama kali
+        document.querySelectorAll(".varian-select").forEach(function (select) {
+            let hiddenInput = select.closest(".keranjang-item").querySelector(".id-stok-input");
+            hiddenInput.value = select.value;
+
+            select.addEventListener("change", function () {
+                hiddenInput.value = this.value; // Update id_stok saat varian berubah
+            });
+        });
+    });
+</script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

@@ -26,6 +26,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Penilaian;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -119,6 +120,12 @@ Route::post('/login_proses', [LoginController::class, 'login_proses'])->name('lo
 Route::get('/register', [RegisterController::class, 'index'])->name('form_register');
 Route::post('/register', [RegisterController::class, 'register_proses'])->name('register');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/');
+})->name('logout2');
 
 Route::get('/dashboard_admin', [AdminAdminController::class, 'index'])->name('dashboard_admin');
 

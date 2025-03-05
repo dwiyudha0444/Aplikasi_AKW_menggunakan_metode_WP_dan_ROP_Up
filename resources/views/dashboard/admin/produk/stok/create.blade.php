@@ -64,16 +64,12 @@
                             <label for="ukuran">Ukuran</label>
                             <select class="form-control" id="ukuran" name="ukuran" required>
                                 <option value="" disabled selected>Pilih Ukuran</option>
-                                <option value="XS">S</option>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                                <option value="XXL">XXL</option>
-                                <option value="XXXL">XXXL</option>
-                                <option value="XXXXL">XXXXL</option>
+                                @foreach ($ukuran as $u)
+                                    <option value="{{ $u->id }}">{{ $u->ukuran }}</option>
+                                @endforeach
                             </select>
                         </div>
+
 
                         <div class="form-group">
                             <label for="warna">Warna</label>
