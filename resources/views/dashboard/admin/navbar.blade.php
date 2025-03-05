@@ -69,34 +69,13 @@
                     <ul class="navbar-nav flex-column">
 
                         @if (Auth::check() && Auth::user()->role === 'admin')
-                            <li class="nav-item active">
-                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                    data-target="#dash_drp">
+                            <li class="nav-item">
+                                <a class="nav-link" href="dashboard1.html">
                                     <span class="feather-icon"><i data-feather="activity"></i></span>
                                     <span class="nav-link-text">Dashboard</span>
                                 </a>
-                                <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
-                                    <li class="nav-item">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item active">
-                                                <a class="nav-link" href="dashboard1.html">CRM</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard2.html">Project</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard3.html">Statistics</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard4.html">Classic</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard5.html">Analytics</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                                     data-target="#app_drp">
@@ -175,33 +154,12 @@
 
                         @if (Auth::check() && Auth::user()->role === 'kurir')
                             <li class="nav-item active">
-                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                    data-target="#dash_drp">
+                                <a class="nav-link" href="dashboard_kurir.html">
                                     <span class="feather-icon"><i data-feather="activity"></i></span>
                                     <span class="nav-link-text">Dashboard Kurir</span>
                                 </a>
-                                <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
-                                    <li class="nav-item">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item active">
-                                                <a class="nav-link" href="dashboard1.html">CRM</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard2.html">Project</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard3.html">Statistics</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard4.html">Classic</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard5.html">Analytics</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                                     data-target="#app_drp">
@@ -223,33 +181,12 @@
 
                         @if (Auth::check() && Auth::user()->role === 'owner')
                             <li class="nav-item active">
-                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                                    data-target="#dash_drp">
+                                <a class="nav-link" href="dashboard1.html">
                                     <span class="feather-icon"><i data-feather="activity"></i></span>
                                     <span class="nav-link-text">Dashboard Owner</span>
                                 </a>
-                                <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
-                                    <li class="nav-item">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item active">
-                                                <a class="nav-link" href="dashboard1.html">CRM</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard2.html">Project</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard3.html">Statistics</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard4.html">Classic</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="dashboard5.html">Analytics</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                                     data-target="#penjualan_drp">
