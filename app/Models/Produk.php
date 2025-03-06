@@ -9,6 +9,8 @@ class Produk extends Model
 {
     protected $table = 'produk';
 
+    protected $primaryKey = 'id_produk';
+
     protected $fillable = [
         'nama',
         'id_kategori',
@@ -19,7 +21,7 @@ class Produk extends Model
 
     public function kategori()
     {
-        return $this->belongsTo(Kategori::class, 'id_kategori', 'id');
+        return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
     }
 
     public function pemesananProduk()

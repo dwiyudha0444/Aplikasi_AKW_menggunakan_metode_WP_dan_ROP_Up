@@ -11,6 +11,8 @@ class Pengiriman extends Model
 
     protected $table = 'pengiriman';
 
+    protected $primaryKey = 'id_pengiriman';
+
     protected $fillable = ['id_users','id_pemesanan','id_pemesanan_produk', 'status_pengiriman','konfirmasi_reseller'];
 
     public function pemesanan()

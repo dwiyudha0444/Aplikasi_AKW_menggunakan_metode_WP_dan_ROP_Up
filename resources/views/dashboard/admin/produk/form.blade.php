@@ -50,15 +50,9 @@
                             <select class="form-control" id="id_kategori" name="id_kategori" required>
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($kategori as $kate)
-                                    <option value="{{ $kate->id }}">{{ $kate->nama }}</option>
+                                    <option value="{{ $kate->id_kategori }}">{{ $kate->nama }}</option>
                                 @endforeach
                             </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="harga">Harga</label>
-                            <input type="number" class="form-control" id="harga" name="harga"
-                                placeholder="Harga Produk" required>
                         </div>
 
                         <div class="form-group">

@@ -24,13 +24,13 @@
                 <section class="hk-sec-wrapper">
                     <h5 class="hk-sec-title">Tabel Diskon</h5>
                     <p class="mb-40">Daftar diskon yang tersedia</p>
-                    <div class="row mb-3">
+                    {{-- <div class="row mb-3">
                         <div class="col-sm">
                             <a href="{{ route('create_admin_diskon') }}" class="btn btn-primary">
                                 <i class="icon-plus"></i> Tambah Diskon
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
@@ -64,12 +64,12 @@
                                                     <td>
                                                         <div class="d-flex justify-content-center w-100">
                                                             <div class="d-flex w-50">
-                                                                <a href="{{ route('edit_admin_diskon', $item->id) }}"
+                                                                <a href="{{ route('edit_admin_diskon', $item->id_diskon) }}"
                                                                     class="btn btn-warning">
                                                                     <i class="icon-pencil"></i> Edit
                                                                 </a>
-                                                                <form
-                                                                    action="{{ route('destroy_admin_diskon', $item->id) }}"
+                                                                {{-- <form
+                                                                    action="{{ route('destroy_admin_diskon', $item->id_diskon) }}"
                                                                     method="POST"
                                                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus diskon ini?')">
                                                                     @csrf
@@ -77,7 +77,7 @@
                                                                     <button type="submit" class="btn btn-danger ml-2">
                                                                         <i class="icon-trash"></i> Hapus
                                                                     </button>
-                                                                </form>
+                                                                </form> --}}
                                                             </div>
                                                         </div>
 

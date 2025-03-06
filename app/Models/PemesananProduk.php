@@ -11,6 +11,8 @@ class PemesananProduk extends Model
 
     protected $table = 'pemesanan_produk';
 
+    protected $primaryKey = 'id_pemesanan_produk';
+
     protected $fillable = ['id_pemesanan', 'id_produk', 'qty_produk', 'harga', 'total_harga'];
 
     public function pemesanan()

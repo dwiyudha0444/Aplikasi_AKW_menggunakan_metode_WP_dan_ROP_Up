@@ -39,7 +39,7 @@ class PemesananProdukController extends Controller
     {
         // Validasi data yang diterima dari form
         $request->validate([
-            'id_produk' => 'required|exists:produk,id', // Memastikan produk ada di tabel produk
+            'id_produk' => 'required|exists:produk,id_produk', // Memastikan produk ada di tabel produk
             'qty_produk' => 'required|numeric|min:1', // Memastikan jumlah produk valid
             // 'status_pemesanan' => 'required|in:pending,terkonfirmasi,dikirim', // Jika status dibutuhkan
         ]);

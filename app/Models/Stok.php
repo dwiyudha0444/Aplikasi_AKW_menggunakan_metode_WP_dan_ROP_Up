@@ -13,7 +13,7 @@ class Stok extends Model
     protected $table = 'stok';
 
     // Primary key
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_stok';
 
     // Kolom yang dapat diisi (mass assignable)
     protected $fillable = [

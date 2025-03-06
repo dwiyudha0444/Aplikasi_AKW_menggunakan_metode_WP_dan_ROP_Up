@@ -10,7 +10,7 @@ class Diskon extends Model
     use HasFactory;
 
     protected $table = 'diskon'; // Nama tabel di database
-    protected $primaryKey = 'id_produk'; // Primary key tabel
+    protected $primaryKey = 'id_diskon'; // Primary key tabel
     public $incrementing = false; // Karena id_produk bukan auto-increment
     protected $keyType = 'bigint'; // Tipe data primary key
 

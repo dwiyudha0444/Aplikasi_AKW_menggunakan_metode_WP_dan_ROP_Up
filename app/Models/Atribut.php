@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Atribut extends Model
 {
     protected $table = 'atribut';
+    
 
     protected $fillable = [
         'kualitas_produk',

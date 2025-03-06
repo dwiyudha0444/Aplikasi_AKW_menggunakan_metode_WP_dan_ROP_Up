@@ -11,6 +11,8 @@ class Penilaian extends Model
 
     protected $table = 'penilaian'; // Nama tabel di database
 
+    protected $primaryKey = 'id_penilaian';
+
     // Kolom yang dapat diisi (mass assignable)
     protected $fillable = [
         'id_user',

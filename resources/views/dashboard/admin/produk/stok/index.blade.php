@@ -78,14 +78,14 @@
                                                     <td>{{ $item->jumlah }}</td>
                                                     <td>
                                                         @php
-                                                            $max = $maxStok->firstWhere('id_stok', $item->id);
+                                                            $max = $maxStok->firstWhere('id_stok', $item->id_stok);
                                                         @endphp
                                                         {{ $max ? number_format($max->max_stok_keluar, 2) : '0' }}
                                                     </td>
                                                     <td>30 Hari</td>
                                                     <td>
                                                         @php
-                                                            $avg = $avgStok->firstWhere('id_stok', $item->id);
+                                                            $avg = $avgStok->firstWhere('id_stok', $item->id_stok);
                                                         @endphp
                                                         {{ $avg ? number_format($avg->avg_stok_keluar, 2) : '0' }}
                                                     </td>
@@ -109,13 +109,13 @@
                                                     <td>
                                                         <div class="d-flex justify-content-center w-100">
                                                             <div class="d-flex w-50">
-                                                                <a href="{{ route('edit_admin_stok', $item->id) }}"
+                                                                <a href="{{ route('edit_admin_stok', $item->id_stok) }}"
                                                                     class="btn btn-warning mr-2" data-toggle="tooltip"
                                                                     data-original-title="Edit">
                                                                     <i class="icon-pencil"></i> Edit
                                                                 </a>
 
-                                                                <form action="{{ route('destroy_admin_stok', $item->id) }}"
+                                                                <form action="{{ route('destroy_admin_stok', $item->id_stok) }}"
                                                                     method="POST"
                                                                     onsubmit="return confirm('Are you sure you want to delete this item?')">
                                                                     @csrf

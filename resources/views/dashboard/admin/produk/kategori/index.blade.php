@@ -62,14 +62,14 @@
                                                     <td>
                                                         <div class="d-flex justify-content-center w-100">
                                                             <div class="d-flex w-50">
-                                                                <a href="{{ route('edit_admin_kategori', $kategori->id) }}"
+                                                                <a href="{{ route('edit_admin_kategori', $kategori->id_kategori) }}"
                                                                     class="btn btn-warning mr-2" data-toggle="tooltip"
                                                                     data-original-title="Edit">
                                                                     <i class="icon-pencil"></i> Edit
                                                                 </a>
 
                                                                 <form
-                                                                    action="{{ route('destroy_admin_kategori', $kategori->id) }}"
+                                                                    action="{{ route('destroy_admin_kategori', $kategori->id_kategori) }}"
                                                                     method="POST"
                                                                     onsubmit="return confirm('Are you sure you want to delete this category?')">
                                                                     @csrf

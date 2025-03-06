@@ -65,18 +65,18 @@
                                                     <td>
                                                         <button type="button" class="btn btn-sm btn-primary"
                                                             data-toggle="modal"
-                                                            data-target="#buktiTfModal-{{ $item->id }}">
+                                                            data-target="#buktiTfModal-{{ $item->id_pemesanan }}">
                                                             Lihat Bukti TF
                                                         </button>
-                                                        <div class="modal fade" id="buktiTfModal-{{ $item->id }}"
+                                                        <div class="modal fade" id="buktiTfModal-{{ $item->id_pemesanan }}"
                                                             tabindex="-1" role="dialog"
-                                                            aria-labelledby="modalLabel{{ $item->id }}"
+                                                            aria-labelledby="modalLabel{{ $item->id_pemesanan }}"
                                                             aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
-                                                                            id="modalLabel{{ $item->id }}">Bukti
+                                                                            id="modalLabel{{ $item->id_pemesanan }}">Bukti
                                                                             Transfer</h5>
                                                                         <button type="button" class="close"
                                                                             data-dismiss="modal" aria-label="Close">
@@ -96,7 +96,7 @@
                                                                         @if ($item->status_pemesanan != 'paid' && $item->status_pemesanan != 'rejected')
                                                                             <!-- Tombol Konfirmasi -->
                                                                             <form
-                                                                                action="{{ route('pemesanan.updateStatus', $item->id) }}"
+                                                                                action="{{ route('pemesanan.updateStatus', $item->id_pemesanan) }}"
                                                                                 method="POST" style="display:inline;">
                                                                                 @csrf
                                                                                 @method('PATCH')
@@ -108,7 +108,7 @@
 
                                                                             <!-- Tombol Tolak -->
                                                                             <form
-                                                                                action="{{ route('pemesanan.updateStatus', $item->id) }}"
+                                                                                action="{{ route('pemesanan.updateStatus', $item->id_pemesanan) }}"
                                                                                 method="POST" style="display:inline;">
                                                                                 @csrf
                                                                                 @method('PATCH')
@@ -134,11 +134,11 @@
 
                                                         <a href="javascript:void(0);" class="text-danger"
                                                             data-toggle="tooltip" data-original-title="Hapus"
-                                                            onclick="event.preventDefault(); if(confirm('Apakah Anda yakin ingin menghapus pemesanan ini?')) { document.getElementById('delete-form-{{ $item->id }}').submit(); }">
+                                                            onclick="event.preventDefault(); if(confirm('Apakah Anda yakin ingin menghapus pemesanan ini?')) { document.getElementById('delete-form-{{ $item->id_pemesanan }}').submit(); }">
                                                             <i class="icon-trash"></i>
                                                         </a>
-                                                        <form id="delete-form-{{ $item->id }}"
-                                                            action="{{ route('pemesanan.destroy', $item->id) }}"
+                                                        <form id="delete-form-{{ $item->id_pemesanan }}"
+                                                            action="{{ route('pemesanan.destroy', $item->id_pemesanan) }}"
                                                             method="POST" style="display: none;">
                                                             @csrf
                                                             @method('DELETE')

@@ -40,12 +40,12 @@ class CartController extends Controller
     {
         // Ambil data keranjang
         $keranjang = Keranjang::all(); // Pastikan menggunakan Eloquent
-
+        $diskon = Diskon::latest()->value('potongan_diskon');
 
         // Ambil data stok berdasarkan id_produk yang ada di keranjang
         $stok = DB::table('stok')->whereIn('id_produk', $keranjang->pluck('id_produk'))->get();
 
-        return view('dashboard.reseller.landingpage.keranjang', compact('keranjang', 'stok'));
+        return view('dashboard.reseller.landingpage.keranjang', compact('keranjang', 'stok','diskon'));
     }
 
 
@@ -53,8 +53,8 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $request->validate([
-            'id_produk' => 'required|exists:produk,id',
-            'id_ukuran' => 'nullable|exists:ukuran,id',
+            'id_produk' => 'required|exists:produk,id_produk',
+            'id_ukuran' => 'nullable|exists:ukuran,id_ukuran',
             'stok' => 'nullable|integer|min:1',
             'harga' => 'nullable|numeric|min:0',
             'warna' => 'nullable|string',
@@ -102,6 +102,7 @@ class CartController extends Controller
     {
         // Debugging sebelum menyimpan
         // dd($request->all());
+        
 
         // Ambil data user
         $user = Auth::user();
@@ -130,22 +131,24 @@ class CartController extends Controller
         // Simpan data ke tabel pemesanan_produk
         foreach ($keranjang as $index => $item) {
             $pemesananProduk = PemesananProduk::create([
-                'id_pemesanan' => $order->id,
+                'id_pemesanan' => $order->id_pemesanan,
                 'id_produk' => $item->id_produk,
-                'qty_produk' => $request->qty_produk[$index],
+                'qty_produk' => $request->qty_produk[$item->id_keranjang] ?? 0,
+
             ]);
 
             Pengiriman::create([
-                'id_pemesanan' => $order->id,
-                'id_pemesanan_produk' => $pemesananProduk->id,
+                'id_pemesanan' => $order->id_pemesanan,
+                'id_pemesanan_produk' => $pemesananProduk->id_pemesanan_produk,
                 'id_users' => Auth::id(),
                 'status_pengiriman' => 'BelumDibayar',
             ]);
 
             Rop::create([
                 'id_produk' => $item->id_produk,
-                'stok_keluar' => $request->qty_produk[$index],
-                'id_stok' => $request->id_stok[$index],
+                'stok_keluar' => $request->qty_produk[$item->id_keranjang] ?? 0,
+                'id_stok' => $request->id_stok[$item->id_keranjang] ?? null,
+
             ]);
         }
 

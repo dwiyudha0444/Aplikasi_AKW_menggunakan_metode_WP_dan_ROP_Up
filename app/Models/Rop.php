@@ -11,7 +11,7 @@ class Rop extends Model
     protected $table = 'rop';
 
     // Primary key
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_rop';
 
     // Kolom yang dapat diisi (mass assignable)
     protected $fillable = [

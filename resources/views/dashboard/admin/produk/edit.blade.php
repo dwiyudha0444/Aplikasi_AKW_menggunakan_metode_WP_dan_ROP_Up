@@ -37,7 +37,7 @@
                         </div>
                     @endif
                     <!-- Form -->
-                    <form action="{{ route('update_admin_produk', $produk->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('update_admin_produk', $produk->id_produk) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -51,25 +51,25 @@
                             <select class="form-control" id="id_kategori" name="id_kategori" required>
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($kategori as $kate)
-                                    <option value="{{ $kate->id }}"
-                                        {{ $produk->id_kategori == $kate->id ? 'selected' : '' }}>
+                                    <option value="{{ $kate->id_kategori }}"
+                                        {{ $produk->id_kategori == $kate->id_kategori ? 'selected' : '' }}>
                                         {{ $kate->nama }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="harga">Harga</label>
                             <input type="number" class="form-control" id="harga" name="harga"
                                 value="{{ $produk->harga }}" placeholder="Harga Produk" required>
-                        </div>
+                        </div> --}}
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="stok">Stok</label>
                             <input type="number" class="form-control" id="stok" name="stok"
                                 value="{{ $produk->stok }}" placeholder="Stok Produk" required>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label for="image">Gambar Produk</label>

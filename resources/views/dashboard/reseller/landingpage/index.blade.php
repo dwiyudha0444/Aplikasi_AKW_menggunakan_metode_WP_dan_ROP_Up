@@ -38,7 +38,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-outline-dark mt-auto add-to-cart"
-    data-id="{{ $product->id }}"
+    data-id="{{ $product->id_produk }}"
     data-id-ukuran="{{ $product->id_ukuran ?? '' }}"
     data-stok="1"
     data-harga="{{ $product->harga }}"

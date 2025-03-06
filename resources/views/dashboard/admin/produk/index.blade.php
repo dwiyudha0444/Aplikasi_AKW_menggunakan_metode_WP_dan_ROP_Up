@@ -52,7 +52,7 @@
                                                 <th>#</th>
                                                 <th>Nama</th>
                                                 <th>Kategori</th>
-                                                <th>Harga</th>
+                                                {{-- <th>Harga</th> --}}
                                                 {{-- <th>Stok</th> --}}
                                                 <th>Gambar</th>
                                                 <th>Aksi</th>
@@ -64,7 +64,7 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $product->nama }}</td>
                                                     <td>{{ $product->kategori->nama }}</td>
-                                                    <td>{{ number_format($product->harga, 0, ',', '.') }}</td>
+                                                    {{-- <td>{{ number_format($product->harga, 0, ',', '.') }}</td> --}}
                                                     {{-- <td>{{ $product->stok }}</td> --}}
                                                     <td>
                                                         <!-- Menampilkan gambar produk jika ada -->
@@ -76,11 +76,11 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('edit_admin_produk', $product->id) }}"
+                                                        <a href="{{ route('edit_admin_produk', $product->id_produk) }}"
                                                             class="mr-25" data-toggle="tooltip" data-original-title="Edit">
                                                             <i class="icon-pencil"></i>
                                                         </a>
-                                                        <form action="{{ route('produk.destroy', $product->id) }}"
+                                                        <form action="{{ route('produk.destroy', $product->id_produk) }}"
                                                             method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')

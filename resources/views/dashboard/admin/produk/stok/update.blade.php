@@ -37,7 +37,7 @@
                         </div>
                     @endif
                     <!-- Form -->
-                    <form action="{{ route('update_admin_stok', $stok->id) }}" method="POST">
+                    <form action="{{ route('update_admin_stok', $stok->id_stok) }}" method="POST">
                         @csrf
                         @method('PUT')
 

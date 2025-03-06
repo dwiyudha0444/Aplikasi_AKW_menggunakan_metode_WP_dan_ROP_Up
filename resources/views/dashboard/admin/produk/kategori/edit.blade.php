@@ -37,7 +37,7 @@
                         </div>
                     @endif
                     <!-- Form -->
-                    <form action="{{ route('update_admin_kategori', $kategori->id) }}" method="POST">
+                    <form action="{{ route('update_admin_kategori', $kategori->id_kategori) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="form-group">

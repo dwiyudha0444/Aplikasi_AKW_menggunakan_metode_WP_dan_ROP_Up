@@ -89,9 +89,9 @@ Route::delete('/dashboard_reseller/pemesanan/delete/{id}', [PemesananController:
 Route::get('/dashboard_reseller/pemesanan_produk', [PemesananProdukController::class, 'index'])->name('pemesanan_produk.index');
 Route::get('/dashboard_reseller/pemesanan_produk/create', [PemesananProdukController::class, 'create'])->name('pemesanan_produk.create');
 Route::post('/dashboard_reseller/pemesanan_produk/store', [PemesananProdukController::class, 'store'])->name('pemesanan_produk.store');
-Route::get('/dashboard_reseller/pemesanan_produk/edit/{id}', [PemesananProdukController::class, 'edit'])->name('pemesanan_produk.edit');
-Route::put('/dashboard_reseller/pemesanan_produk/update/{id}', [PemesananProdukController::class, 'update'])->name('pemesanan_produk.update');
-Route::delete('/dashboard_reseller/pemesanan_produk/delete/{id}', [PemesananProdukController::class, 'destroy'])->name('pemesanan_produk.destroy');
+Route::get('/dashboard_reseller/pemesanan_produk/edit/{id_produk}', [PemesananProdukController::class, 'edit'])->name('pemesanan_produk.edit');
+Route::put('/dashboard_reseller/pemesanan_produk/update/{id_produk}', [PemesananProdukController::class, 'update'])->name('pemesanan_produk.update');
+Route::delete('/dashboard_reseller/pemesanan_produk/delete/{id_produk}', [PemesananProdukController::class, 'destroy'])->name('pemesanan_produk.destroy');
 
 // pengiriman
 // Route untuk Kurir
@@ -137,30 +137,30 @@ Route::put('/dashboard_admin/daftar_akun/update/{id}', [DaftarAkunController::cl
 Route::get('/dashboard_admin/produk', [ProdukController::class, 'index'])->name('admin_produk');
 Route::get('/dashboard_admin/produk/create', [ProdukController::class, 'create'])->name('create_admin_produk');
 Route::post('/dashboard_admin/produk/store', [ProdukController::class, 'store'])->name('store_admin_produk');
-Route::get('/dashboard_admin/produk/edit/{id}', [ProdukController::class, 'edit'])->name('edit_admin_produk');
-Route::put('/dashboard_admin/produk/update/{id}', [ProdukController::class, 'update'])->name('update_admin_produk');
-Route::delete('dashboard_admin/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+Route::get('/dashboard_admin/produk/edit/{id_produk}', [ProdukController::class, 'edit'])->name('edit_admin_produk');
+Route::put('/dashboard_admin/produk/update/{id_produk}', [ProdukController::class, 'update'])->name('update_admin_produk');
+Route::delete('dashboard_admin/produk/{id_produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 
 Route::get('/dashboard_admin/kategori', [KategoriController::class, 'index'])->name('admin_kategori');
 Route::get('/dashboard_admin/kategori/create', [KategoriController::class, 'create'])->name('create_admin_kategori');
 Route::post('/dashboard_admin/kategori/store', [KategoriController::class, 'store'])->name('store_admin_kategori');
-Route::get('/dashboard_admin/kategori/edit/{id}', [KategoriController::class, 'edit'])->name('edit_admin_kategori');
-Route::put('/dashboard_admin/kategori/update/{id}', [KategoriController::class, 'update'])->name('update_admin_kategori');
-Route::delete('/dashboard_admin/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('destroy_admin_kategori');
+Route::get('/dashboard_admin/kategori/edit/{id_kategori}', [KategoriController::class, 'edit'])->name('edit_admin_kategori');
+Route::put('/dashboard_admin/kategori/update/{id_kategori}', [KategoriController::class, 'update'])->name('update_admin_kategori');
+Route::delete('/dashboard_admin/kategori/delete/{id_kategori}', [KategoriController::class, 'destroy'])->name('destroy_admin_kategori');
 
 Route::get('/dashboard_admin/stok', [AdminStokController::class, 'index'])->name('admin_stok');
 Route::get('/dashboard_admin/stok/create', [AdminStokController::class, 'create'])->name('create_admin_stok');
-Route::get('/dashboard_admin/stok/edit/{id}', [AdminStokController::class, 'edit'])->name('edit_admin_stok');
+Route::get('/dashboard_admin/stok/edit/{id_stok}', [AdminStokController::class, 'edit'])->name('edit_admin_stok');
 Route::post('/dashboard_admin/stok/create/store', [AdminStokController::class, 'store'])->name('store_admin_stok');
-Route::put('/dashboard_admin/stok/edit/update/{id}', [AdminStokController::class, 'update'])->name('update_admin_stok');
-Route::delete('/dashboard_admin/stok/delete/{id}', [AdminStokController::class, 'destroy'])->name('destroy_admin_stok');
+Route::put('/dashboard_admin/stok/edit/update/{id_stok}', [AdminStokController::class, 'update'])->name('update_admin_stok');
+Route::delete('/dashboard_admin/stok/delete/{id_stok}', [AdminStokController::class, 'destroy'])->name('destroy_admin_stok');
 
 Route::get('/dashboard_admin/diskon', [AdminDiskonController::class, 'index'])->name('admin_diskon');
 Route::get('/dashboard_admin/diskon/create', [AdminDiskonController::class, 'create'])->name('create_admin_diskon');
-Route::get('/dashboard_admin/diskon/edit/{id}', [AdminDiskonController::class, 'edit'])->name('edit_admin_diskon');
+Route::get('/dashboard_admin/diskon/edit/{id_diskon}', [AdminDiskonController::class, 'edit'])->name('edit_admin_diskon');
 Route::post('/dashboard_admin/diskon/store', [AdminDiskonController::class, 'store'])->name('store_admin_diskon');
-Route::delete('/dashboard_admin/diskon/delete/{id}', [AdminDiskonController::class, 'destroy'])->name('destroy_admin_diskon');
-Route::put('/dashboard_admin/diskon/update/{id}', [AdminDiskonController::class, 'update'])->name('update_admin_diskon');
+Route::delete('/dashboard_admin/diskon/delete/{id_diskon}', [AdminDiskonController::class, 'destroy'])->name('destroy_admin_diskon');
+Route::put('/dashboard_admin/diskon/update/{id_diskon}', [AdminDiskonController::class, 'update'])->name('update_admin_diskon');
 
 
 // owner

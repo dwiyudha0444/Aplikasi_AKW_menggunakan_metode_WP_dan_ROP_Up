@@ -10,7 +10,7 @@ class KategoriController extends Controller
 {
     public function index()
     {
-        // Ambil data pengguna yang terbaru berdasarkan tanggal pembuatan
+        // Ambil data kategori yang terbaru berdasarkan tanggal pembuatan
         $kategori = Kategori::orderBy('created_at', 'desc')->get();
     
         // Kirim data ke view
@@ -38,13 +38,13 @@ class KategoriController extends Controller
         return redirect()->route('admin_kategori')->with('success', 'Kategori berhasil ditambahkan');
     }
 
-    public function edit($id)
+    public function edit($id_kategori)
     {
-        $kategori = Kategori::findOrFail($id);
+        $kategori = Kategori::findOrFail($id_kategori);
         return view('dashboard.admin.produk.kategori.edit', compact('kategori'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_kategori)
     {
         // Validasi input
         $validatedData = $request->validate([
@@ -52,7 +52,7 @@ class KategoriController extends Controller
         ]);
 
         // Mencari kategori berdasarkan ID dan update
-        $kategori =Kategori::findOrFail($id);
+        $kategori = Kategori::findOrFail($id_kategori);
         $kategori->update([
             'nama' => $validatedData['nama'],
         ]);
@@ -62,13 +62,12 @@ class KategoriController extends Controller
     }
 
     // Menghapus kategori
-    public function destroy($id)
+    public function destroy($id_kategori)
     {
-        $kategori =Kategori::findOrFail($id);
+        $kategori = Kategori::findOrFail($id_kategori);
         $kategori->delete();
 
         // Redirect ke halaman daftar kategori dengan pesan sukses
         return redirect()->route('admin_kategori')->with('success', 'Kategori berhasil dihapus');
     }
-
 }

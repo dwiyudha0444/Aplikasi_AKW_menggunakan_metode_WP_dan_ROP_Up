@@ -26,9 +26,9 @@ class ProdukController extends Controller
         return view('dashboard.admin.produk.form', compact('kategori'));
     }
 
-    public function edit($id)
+    public function edit($id_produk)
     {
-        $produk = Produk::findOrFail($id);
+        $produk = Produk::findOrFail($id_produk);
         $kategori = Kategori::all();
         return view('dashboard.admin.produk.edit', compact('produk', 'kategori'));
     }
@@ -37,9 +37,8 @@ class ProdukController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255', 
-            'id_kategori' => 'required|exists:kategori,id', 
-            'harga' => 'required|numeric|min:0',
-            // 'stok' => 'required|numeric|min:0',
+            'id_kategori' => 'required|exists:kategori,id_kategori', 
+            // 'harga' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
@@ -47,8 +46,7 @@ class ProdukController extends Controller
             $produk = new Produk;
             $produk->nama = $request->input('nama');
             $produk->id_kategori = $request->input('id_kategori');
-            $produk->harga = $request->input('harga');
-            // $produk->stok = $request->input('stok');
+            // $produk->harga = $request->input('harga');
 
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
@@ -65,9 +63,9 @@ class ProdukController extends Controller
         }
     }
 
-
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_produk)
     {
+        // dd($request->all());
         try {
             if ($request->hasFile('image')) {
                 Log::info('File ditemukan:', [
@@ -81,19 +79,17 @@ class ProdukController extends Controller
 
             $validated = $request->validate([
                 'nama' => 'required|string|max:255',
-                'id_kategori' => 'required|exists:kategori,id',
-                'harga' => 'required|numeric',
-                // 'stok' => 'required|numeric|min:1',
+                'id_kategori' => 'required|exists:kategori,id_kategori',
+                // 'harga' => 'required|numeric',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            $produk = Produk::findOrFail($id);
+            $produk = Produk::findOrFail($id_produk);
 
             $produk->update([
                 'nama' => $validated['nama'],
                 'id_kategori' => $validated['id_kategori'],
-                'harga' => $validated['harga'],
-                // 'stok' => $validated['stok'],
+                // 'harga' => $validated['harga'],
             ]);
 
             if ($request->hasFile('image')) {
@@ -114,10 +110,10 @@ class ProdukController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id_produk)
     {
         try {
-            $produk = Produk::findOrFail($id);
+            $produk = Produk::findOrFail($id_produk);
             $produk->delete();
 
             return redirect()->route('admin_produk')->with('success', 'Produk berhasil dihapus!');
