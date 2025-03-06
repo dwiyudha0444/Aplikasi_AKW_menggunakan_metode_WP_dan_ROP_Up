@@ -121,7 +121,7 @@ class CartController extends Controller
             'id_user' => Auth::id(),
             'order_id' => $orderId,
             'tanggal_pemesanan' => Carbon::now(),
-            'total_harga' => $request->total_harga,
+            'total_harga' => $request->total_harga_diskon,
         ]);
 
         // Ambil semua data di keranjang

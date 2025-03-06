@@ -66,7 +66,13 @@
                                     <div class="col-md-3">
                                         <p>Total Produk: <span id="total-produk">0</span></p>
                                         <p>Total Harga: Rp <span id="total-harga">0</span></p>
+                                        <p>Harga Setelah Diskon: Rp <span id="total-harga-diskon">0</span></p>
+
+                                        <!-- Input tersembunyi untuk dikirim ke backend -->
+                                        <input type="hidden" id="total-harga-input" name="total_harga">
+                                        <input type="hidden" id="total-harga-diskon-input" name="total_harga_diskon">
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -84,19 +90,19 @@
         </div>
     </section>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Saat halaman dimuat, atur nilai id_stok pertama kali
-        document.querySelectorAll(".varian-select").forEach(function (select) {
-            let hiddenInput = select.closest(".keranjang-item").querySelector(".id-stok-input");
-            hiddenInput.value = select.value;
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Saat halaman dimuat, atur nilai id_stok pertama kali
+            document.querySelectorAll(".varian-select").forEach(function(select) {
+                let hiddenInput = select.closest(".keranjang-item").querySelector(".id-stok-input");
+                hiddenInput.value = select.value;
 
-            select.addEventListener("change", function () {
-                hiddenInput.value = this.value; // Update id_stok saat varian berubah
+                select.addEventListener("change", function() {
+                    hiddenInput.value = this.value; // Update id_stok saat varian berubah
+                });
             });
         });
-    });
-</script>
+    </script>
 
 
     <script>
@@ -125,10 +131,19 @@
                     totalItemInput.value = jumlah;
                 });
 
-                // Update total keseluruhan
+                // Hitung total harga setelah diskon 10%
+                let totalDiskon = totalHarga * 0.1;
+                let totalHargaDiskon = totalHarga - totalDiskon;
+
+                // Update tampilan total keseluruhan
                 document.getElementById("total-harga").textContent = totalHarga.toLocaleString("id-ID");
                 document.getElementById("total-produk").textContent = totalProduk;
                 document.getElementById("total-harga-input").value = totalHarga;
+
+                // Update tampilan total setelah diskon
+                document.getElementById("total-harga-diskon").textContent = totalHargaDiskon.toLocaleString(
+                    "id-ID");
+                document.getElementById("total-harga-diskon-input").value = totalHargaDiskon;
             }
 
             // Update total saat jumlah produk atau varian berubah
@@ -140,6 +155,7 @@
             updateTotal();
         });
     </script>
+
 
 
 
