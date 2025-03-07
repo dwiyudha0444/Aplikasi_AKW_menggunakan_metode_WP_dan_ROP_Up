@@ -5,7 +5,7 @@
         <h2>Update Status Pengiriman</h2>
         
         <!-- Form untuk memilih status pengiriman -->
-        <form action="{{ route('update_pengiriman_produk', $pengiriman->id) }}" method="POST">
+        <form action="{{ route('update_pengiriman_produk', $pengiriman->id_pengiriman) }}" method="POST">
             @csrf
             @method('PUT') <!-- Jika menggunakan PUT atau PATCH untuk update -->
             

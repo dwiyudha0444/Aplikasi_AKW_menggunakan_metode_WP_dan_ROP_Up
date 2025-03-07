@@ -85,7 +85,7 @@
                                                     <td>{{ number_format($item->pemesanan_produk->total_harga, 0, ',', '.') }}</td>
                                                     <td>{{ $item->created_at }}</td>
                                                     <td>
-                                                        <a href="{{ route('edit_pengiriman_produk', $item->id) }}"
+                                                        <a href="{{ route('edit_pengiriman_produk', $item->id_pengiriman) }}"
                                                             class="mr-25" data-toggle="tooltip" data-original-title="Edit">
                                                             <i class="icon-pencil"></i>
                                                         </a>

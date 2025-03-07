@@ -16,9 +16,9 @@ class PengirimanController extends Controller
         return view('dashboard.kurir.pengiriman.index', compact('pengiriman'));
     }
 
-    public function edit($id)
+    public function edit($id_pengiriman)
     {
-        $pengiriman = Pengiriman::findOrFail($id);  // Mengambil satu pemesanan berdasarkan ID
+        $pengiriman = Pengiriman::findOrFail($id_pengiriman);  // Mengambil satu pemesanan berdasarkan ID
         return view('dashboard.kurir.pengiriman.update', compact('pengiriman'));
     }
 

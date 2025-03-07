@@ -154,7 +154,7 @@
 
                         @if (Auth::check() && Auth::user()->role === 'kurir')
                             <li class="nav-item active">
-                                <a class="nav-link" href="dashboard_kurir.html">
+                                <a class="nav-link" href="{{route('dashboard_kurir')}}">
                                     <span class="feather-icon"><i data-feather="activity"></i></span>
                                     <span class="nav-link-text">Dashboard Kurir</span>
                                 </a>

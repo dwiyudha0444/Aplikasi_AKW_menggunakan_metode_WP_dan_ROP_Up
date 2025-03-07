@@ -97,8 +97,8 @@ Route::delete('/dashboard_reseller/pemesanan_produk/delete/{id_produk}', [Pemesa
 // Route untuk Kurir
 Route::get('/dashboard_kurir/pengiriman', [KurirPengirimanController::class, 'index'])
     ->name('dashboard_kurir_pengiriman');
-Route::get('/dashboard_kurir/pengiriman/edit/{id}', [KurirPengirimanController::class, 'edit'])->name('edit_pengiriman_produk');
-Route::put('/dashboard_kurir/pengiriman/edit/{id}', [KurirPengirimanController::class, 'update'])->name('update_pengiriman_produk');
+Route::get('/dashboard_kurir/pengiriman/edit/{id_pengiriman}', [KurirPengirimanController::class, 'edit'])->name('edit_pengiriman_produk');
+Route::put('/dashboard_kurir/pengiriman/edit/{id_pengiriman}', [KurirPengirimanController::class, 'update'])->name('update_pengiriman_produk');
 
 // kurir
 Route::get('/dashboard_kurir', [KurirController::class, 'index'])->name('dashboard_kurir');
