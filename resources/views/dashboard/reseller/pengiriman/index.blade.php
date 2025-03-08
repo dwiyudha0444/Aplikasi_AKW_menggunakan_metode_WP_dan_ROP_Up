@@ -163,7 +163,7 @@
                 </div>
             @elseif ($item->status_pengiriman === 'Selesai')
                 <div class="product-footer">
-                    <form action="{{ route('produk.diterima', $item->id) }}" method="POST">
+                    <form action="{{ route('produk.diterima', $item->id_pengiriman) }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-success">Diterima</button>
                     </form>

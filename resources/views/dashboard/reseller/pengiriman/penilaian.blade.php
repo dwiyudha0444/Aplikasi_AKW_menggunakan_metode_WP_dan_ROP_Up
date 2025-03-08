@@ -4,7 +4,7 @@
     <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="card shadow-sm p-4" style="width: 600px;">
             <h2 class="mb-4 text-center">Penilaian Produk</h2>
-            <form action="{{ route('penilaian.store', $id) }}" method="POST">
+            <form action="{{ route('penilaian.store', $id_penilaian) }}" method="POST">
                 @csrf
                 <input type="text" name="id_pemesanan" value="{{ $id_pemesanan }}">
                 <input type="text" name="id_pemesanan_produk" value="{{ $id_pemesanan_produk }}">

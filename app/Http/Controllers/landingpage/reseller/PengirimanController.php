@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Log;
 
 class PengirimanController extends Controller
 {
-    public function index($id = null)
+    public function index($id_pengiriman = null)
     {
         // Ambil data pengiriman berdasarkan ID (jika ada), atau ambil semua data
-        $pengiriman = $id ? Pengiriman::where('id', $id)->get() : Pengiriman::where('id_users', auth()->id())->paginate(5);
+        $pengiriman = $id_pengiriman ? Pengiriman::where('id', $id_pengiriman)->get() : Pengiriman::where('id_users', auth()->id())->paginate(5);
         // Kirim data ke view
-        return view('dashboard.reseller.pengiriman.index', compact('id', 'pengiriman'));
+        return view('dashboard.reseller.pengiriman.index', compact('id_pengiriman', 'pengiriman'));
     }
 
     public function diterima(Request $request, $id)
@@ -47,14 +47,14 @@ class PengirimanController extends Controller
 }
 
 
-    public function indexPenilaian($id ,$id_pemesanan,$id_pemesanan_produk)
+    public function indexPenilaian($id_penilaian ,$id_pemesanan,$id_pemesanan_produk)
     {
         // Ambil data produk dari database menggunakan model
         $pengiriman = Pengiriman::all(); // Pastikan model `Product` sesuai dengan nama model Anda
         $atribut = Atribut::all();
         $pemesananProduk = PemesananProduk::all();
         // Kirim data produk ke view
-        return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman','id','id_pemesanan','id_pemesanan_produk'));
+        return view('dashboard.reseller.pengiriman.penilaian', compact('pengiriman','id_penilaian','id_pemesanan','id_pemesanan_produk'));
     }
 
 

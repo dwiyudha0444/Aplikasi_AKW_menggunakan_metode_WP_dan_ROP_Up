@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 
 class PenilaianController extends Controller
 {
-    public function store(Request $request, $id)
+    public function store(Request $request, $id_penilaian)
     {
         $request->validate([
-            'id_pemesanan' => 'required|exists:pemesanan,id',
-            'id_pemesanan_produk' => 'required|exists:pemesanan_produk,id',
+            'id_pemesanan' => 'required|exists:pemesanan,id_pemesanan',
+            'id_pemesanan_produk' => 'required|exists:pemesanan_produk,id_pemesanan_produk',
             'kualitas_produk' => 'required|integer|min:1|max:10',
             'harga_produk' => 'required|integer|min:1|max:10',
             'layanan_pelanggan' => 'required|integer|min:1|max:10',
