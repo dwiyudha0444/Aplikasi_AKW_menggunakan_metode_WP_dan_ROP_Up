@@ -96,11 +96,11 @@ class PemesananController extends Controller
     {
         // Mencari pemesanan berdasarkan ID
         $pemesanan = Pemesanan::findOrFail($id);
-        
+    
         // Memperbarui status pemesanan
         $pemesanan->status_pemesanan = $request->status_pemesanan;
         $pemesanan->save();
-        
+    
         // Memperbarui status pengiriman menjadi "Dikemas" untuk semua pengiriman dengan id_pemesanan yang sama
         $pengiriman = Pengiriman::where('id_pemesanan', $id);
         
@@ -109,9 +109,27 @@ class PemesananController extends Controller
             $pengiriman->update(['status_pengiriman' => 'Dikemas']);
         }
     
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Status pemesanan dan pengiriman berhasil diperbarui menjadi Dikemas.');
-    }
+        // Mengambil nomor telepon user dari tabel Users berdasarkan id_user di Pemesanan
+        $user = User::find($pemesanan->id_user);
     
+        // Pastikan user ada dan memiliki nomor HP
+        if ($user && !empty($user->nomer_hp)) {
+            $nomorTujuan = preg_replace('/[^0-9]/', '', $user->nomer_hp); // Hanya angka
+            $nomorTujuan = ltrim($nomorTujuan, '0'); // Hapus 0 di depan jika ada
+            $nomorTujuan = "62" . $nomorTujuan; // Tambahkan kode negara Indonesia
+    
+            // URL WhatsApp dengan pesan otomatis
+            $url = "https://wa.me/$nomorTujuan?text=Dear%20Reseller,%20pesananmu%20sedang%20dikemas,%20harap%20menunggu%20sekitar%2030%20hari,%20dikarenakan%20ini%20barang%20Pre-Order.%0A%0ATerima%20kasih.";
+    
+            // Redirect dengan pesan sukses + kirim URL ke view
+            return redirect()->back()->with([
+                'success' => 'Status pemesanan dan pengiriman berhasil diperbarui menjadi Dikemas.',
+                'wa_url' => $url
+            ]);
+        }
+    
+        // Jika nomor HP tidak tersedia
+        return redirect()->back()->with('error', 'Nomor HP tidak ditemukan untuk user terkait.');
+    }
     
 }

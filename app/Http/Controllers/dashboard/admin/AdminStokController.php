@@ -14,12 +14,13 @@ class AdminStokController extends Controller
 {
     public function index()
     {
-        $stok = Stok::orderBy('created_at', 'desc')->get();
+        $stok = Stok::orderBy('created_at', 'desc')->paginate(30); // Menampilkan 30 data per halaman
         $avgStok = ROPHelper::getAverageStokKeluarPerDay();
         $maxStok = ROPHelper::getMaxStokKeluarPerDay();
-
+    
         return view('dashboard.admin.produk.stok.index', compact('stok', 'avgStok', 'maxStok'));
     }
+    
 
     public function create()
     {
@@ -42,8 +43,9 @@ class AdminStokController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
-            'id_produk' => 'required|exists:produk,id',
+            'id_produk' => 'required|exists:produk,id_produk',
             'jumlah' => 'required|integer|min:1',
             'warna' => 'required|string|max:50',
             'model_motif' => 'required|string|max:100',
@@ -62,7 +64,7 @@ class AdminStokController extends Controller
                 'jumlah_keluar' => 0,
             ]);
 
-            return redirect()->route('admin_stok')->with('success', 'Data stok berhasil ditambahkan!');
+            return redirect()->route('create_admin_stok')->with('success', 'Data stok berhasil ditambahkan!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data stok: ' . $e->getMessage());
         }

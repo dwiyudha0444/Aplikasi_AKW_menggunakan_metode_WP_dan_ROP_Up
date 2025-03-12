@@ -26,7 +26,7 @@
                     <i class="bi-cart-fill me-1"></i> Cart
                 </a>
 
-                <form action="{{ route('logout2') }}" method="POST">
+                <form action="{{ route('login') }}" method="POST">
                     @csrf
                     <button class="btn btn-outline-danger" type="submit">
                         <i class="bi-box-arrow-right me-1"></i>

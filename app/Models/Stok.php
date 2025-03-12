@@ -36,6 +36,11 @@ class Stok extends Model
         return $this->belongsTo(Produk::class, 'id_produk');
     }
 
+    public function ukuran()
+    {
+        return $this->belongsTo(Ukuran::class, 'ukuran');
+    }
+
     /**
      * Relasi ke tabel Kategori (jika ada)
      * Asumsikan id_kategori adalah foreign key ke tabel kategori

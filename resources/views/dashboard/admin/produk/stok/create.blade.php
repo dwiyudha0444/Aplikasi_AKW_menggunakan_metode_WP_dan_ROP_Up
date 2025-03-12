@@ -36,6 +36,7 @@
                             {{ session('error') }}
                         </div>
                     @endif
+
                     <!-- Form -->
                     <form action="{{ route('store_admin_stok') }}" method="POST">
                         @csrf
@@ -45,7 +46,7 @@
                             <select class="form-control" id="id_produk" name="id_produk" required>
                                 <option value="">Pilih Produk</option>
                                 @foreach ($produk as $item)
-                                    <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    <option value="{{ $item->id_produk }}">{{ $item->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -65,7 +66,7 @@
                             <select class="form-control" id="ukuran" name="ukuran" required>
                                 <option value="" disabled selected>Pilih Ukuran</option>
                                 @foreach ($ukuran as $u)
-                                    <option value="{{ $u->id }}">{{ $u->ukuran }}</option>
+                                    <option value="{{ $u->ukuran }}">{{ $u->ukuran }}</option>
                                 @endforeach
                             </select>
                         </div>

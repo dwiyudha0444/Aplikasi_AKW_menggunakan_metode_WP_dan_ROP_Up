@@ -47,91 +47,101 @@
                                         </div>
                                     @endif
                                     <table class="table table-hover table-bordered mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>ID Produk</th>
-                                                {{-- <th>ID Kategori</th> --}}
-                                                <th>Ukuran</th>
-                                                <th>Warna</th>
-                                                <th>Model Motif</th>
-                                                <th>Harga</th>
-                                                <th>Jumlah</th>
-                                                <th>PJ Max</th>
-                                                <th>WT Max</th>
-                                                <th>PJ Rata-Rata</th>
-                                                <th>WT Rata-Rata</th>
-                                                <th>SS</th>
-                                                <th>ROP</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($stok as $index => $item)
-                                                <tr>
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $item->id_produk }}</td>
-                                                    <td>{{ $item->ukuran }}</td>
-                                                    <td>{{ $item->warna }}</td>
-                                                    <td>{{ $item->model_motif }}</td>
-                                                    <td>{{ $item->harga }}</td>
-                                                    <td>{{ $item->jumlah }}</td>
-                                                    <td>
-                                                        @php
-                                                            $max = $maxStok->firstWhere('id_stok', $item->id_stok);
-                                                        @endphp
-                                                        {{ $max ? number_format($max->max_stok_keluar, 2) : '0' }}
-                                                    </td>
-                                                    <td>30 Hari</td>
-                                                    <td>
-                                                        @php
-                                                            $avg = $avgStok->firstWhere('id_stok', $item->id_stok);
-                                                        @endphp
-                                                        {{ $avg ? number_format($avg->avg_stok_keluar, 2) : '0' }}
-                                                    </td>
-                                                    <td>30 Hari</td>
-                                                    @php
-    // Check if $max and $avg are collections and then perform the logic.
-    $maxStokKeluar = $max && is_object($max) ? intval($max->max_stok_keluar) : 0;
-    $avgStokKeluar = $avg && is_object($avg) ? intval($avg->avg_stok_keluar) : 0;
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>ID Produk</th>
+            {{-- <th>ID Kategori</th> --}}
+            <th>Ukuran</th>
+            <th>Warna</th>
+            <th>Model Motif</th>
+            <th>Harga</th>
+            <th>Jumlah</th>
+            <th>PJ Max</th>
+            <th>WT Max</th>
+            <th>PJ Rata-Rata</th>
+            <th>WT Rata-Rata</th>
+            <th>SS</th>
+            <th>ROP</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($stok as $index => $item)
+            <tr>
+                <td>{{ $stok->firstItem() + $index }}</td>
+                <td>{{ $item->produk->nama }}</td>
+                <td>{{ $item->ukuran }}</td>
+                <td>{{ $item->warna }}</td>
+                <td>{{ $item->model_motif }}</td>
+                <td>{{ number_format($item->harga, 0, ',', '.') }}</td>
+                <td>{{ $item->jumlah }}</td>
+                <td>
+                    @php
+                        $max = $maxStok->firstWhere('id_stok', $item->id_stok);
+                    @endphp
+                    {{ $max ? number_format($max->max_stok_keluar, 2) : '0' }}
+                </td>
+                <td>30 Hari</td>
+                <td>
+                    @php
+                        $avg = $avgStok->firstWhere('id_stok', $item->id_stok);
+                    @endphp
+                    {{ $avg ? number_format($avg->avg_stok_keluar, 2) : '0' }}
+                </td>
+                <td>30 Hari</td>
+                @php
+                    $maxStokKeluar = $max ? intval($max->max_stok_keluar) : 0;
+                    $avgStokKeluar = $avg ? intval($avg->avg_stok_keluar) : 0;
+                    $result = $maxStokKeluar * 30 - $avgStokKeluar * 30;
+                @endphp
+                <td>{{ number_format($result, 2) }}</td>
+                <td>{{ number_format($result + $avgStokKeluar * 30, 2) }}</td>
+                <td>
+                    <div class="d-flex justify-content-center w-100">
+                        <div class="d-flex w-50">
+                            <a href="{{ route('edit_admin_stok', $item->id_stok) }}" class="btn btn-warning mr-2">
+                                <i class="icon-pencil"></i> Edit
+                            </a>
+                            <form action="{{ route('destroy_admin_stok', $item->id_stok) }}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this item?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger ml-2">
+                                    <i class="icon-trash"></i> Hapus
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
-    // Perform your calculations
-    $result = ($maxStokKeluar * 30) - ($avgStokKeluar * 30);
-@endphp
+<!-- Tombol Previous & Next -->
+<div class="d-flex justify-content-between mt-3">
+    <div>
+        @if ($stok->onFirstPage())
+            <button class="btn btn-secondary" disabled>Previous</button>
+        @else
+            <a href="{{ $stok->previousPageUrl() }}" class="btn btn-primary">Previous</a>
+        @endif
+    </div>
 
-<td>
-    {{ number_format($result, 2) }}
-</td>
-<td>
-    {{ number_format($result + ($avgStokKeluar*30), 2) }}
-</td>
+    <div>
+        {{ $stok->links() }}
+    </div>
 
-                                                    <td>
-                                                        <div class="d-flex justify-content-center w-100">
-                                                            <div class="d-flex w-50">
-                                                                <a href="{{ route('edit_admin_stok', $item->id_stok) }}"
-                                                                    class="btn btn-warning mr-2" data-toggle="tooltip"
-                                                                    data-original-title="Edit">
-                                                                    <i class="icon-pencil"></i> Edit
-                                                                </a>
+    <div>
+        @if ($stok->hasMorePages())
+            <a href="{{ $stok->nextPageUrl() }}" class="btn btn-primary">Next</a>
+        @else
+            <button class="btn btn-secondary" disabled>Next</button>
+        @endif
+    </div>
+</div>
 
-                                                                <form action="{{ route('destroy_admin_stok', $item->id_stok) }}"
-                                                                    method="POST"
-                                                                    onsubmit="return confirm('Are you sure you want to delete this item?')">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger ml-2">
-                                                                        <i class="icon-trash"></i> Hapus
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
 
                                 </div>
                             </div>

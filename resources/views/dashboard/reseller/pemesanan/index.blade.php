@@ -14,6 +14,12 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if (session('wa_url'))
+            <script>
+                window.open("{{ session('wa_url') }}", "_blank");
+            </script>
+        @endif
+
         <div class="hk-pg-header">
             <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
                             data-feather="archive"></i></span></span>Daftar Pemesanan</h4>

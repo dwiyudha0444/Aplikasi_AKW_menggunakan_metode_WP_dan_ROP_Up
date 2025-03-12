@@ -22,7 +22,8 @@
                                 <div class="card-body p-4">
                                     <div class="row d-flex align-items-center">
                                         <div class="col-md-2">
-                                            <img src="" class="img-fluid rounded-3" alt="pe">
+         <img class="card-img-top" src="{{ asset($item->produk->image) }}" alt="{{ $item->produk->nama }}" />
+ 
                                         </div>
                                         <div class="col-md-6">
                                             <label class="text-muted">Pilih Varian:</label>

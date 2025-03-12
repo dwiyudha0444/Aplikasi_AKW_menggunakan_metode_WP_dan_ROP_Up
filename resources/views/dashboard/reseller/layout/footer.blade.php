@@ -23,9 +23,9 @@
             <div class="col-md-4">
                 <h5>Ikuti Kami</h5>
                 <a href="#" class="text-light me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                <a href="#" class="text-light me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                {{-- <a href="#" class="text-light me-3"><i class="fab fa-twitter fa-lg"></i></a> --}}
                 <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                <a href="#" class="text-light"><i class="fab fa-linkedin fa-lg"></i></a>
+                {{-- <a href="#" class="text-light"><i class="fab fa-linkedin fa-lg"></i></a> --}}
             </div>
         </div>
         <hr class="bg-light">
