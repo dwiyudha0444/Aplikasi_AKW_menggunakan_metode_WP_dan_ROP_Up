@@ -36,9 +36,12 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <!-- Input hidden untuk menyimpan id_stok -->
+                                            
                                             <input type="text" class="id-stok-input" name="id_stok[{{ $item->id_keranjang }}]"
                                                 value="">
+
+                                                <input type="text" class="harga-input" name="harga[{{ $item->id_keranjang }}]" value="" readonly>
+
                                         </div>
                                         <div class="col-md-2">
                                             <input type="number" class="form-control jumlah-input"
@@ -91,19 +94,25 @@
         </div>
     </section>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Saat halaman dimuat, atur nilai id_stok pertama kali
-            document.querySelectorAll(".varian-select").forEach(function(select) {
-                let hiddenInput = select.closest(".keranjang-item").querySelector(".id-stok-input");
-                hiddenInput.value = select.value;
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".varian-select").forEach(function(select) {
+            let container = select.closest(".col-md-6");
+            let hiddenInput = container.querySelector(".id-stok-input");
+            let hargaInput = container.querySelector(".harga-input");
 
-                select.addEventListener("change", function() {
-                    hiddenInput.value = this.value; // Update id_stok saat varian berubah
-                });
-            });
+            function updateFields() {
+                let selectedOption = select.options[select.selectedIndex];
+                hiddenInput.value = selectedOption.value;
+                hargaInput.value = "Rp" + parseInt(selectedOption.getAttribute("data-harga")).toLocaleString("id-ID");
+            }
+
+            updateFields(); // Atur nilai awal saat halaman dimuat
+
+            select.addEventListener("change", updateFields);
         });
-    </script>
+    });
+</script>
 
 
     <script>

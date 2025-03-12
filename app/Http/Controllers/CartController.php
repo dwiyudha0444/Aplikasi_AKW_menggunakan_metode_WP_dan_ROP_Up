@@ -133,9 +133,13 @@ class CartController extends Controller
             $pemesananProduk = PemesananProduk::create([
                 'id_pemesanan' => $order->id_pemesanan,
                 'id_produk' => $item->id_produk,
-                'qty_produk' => $request->qty_produk[$item->id_keranjang] ?? 0,
-
+                'qty_produk' => (int) ($request->qty_produk[$item->id_keranjang] ?? 0),
+                'harga' => (float) str_replace(['Rp', '.'], '', $request->harga[$item->id_keranjang] ?? 0), 
+                'total_harga' => ((int) ($request->qty_produk[$item->id_keranjang] ?? 0)) * 
+                                 ((float) str_replace(['Rp', '.'], '', $request->harga[$item->id_keranjang] ?? 0)),
             ]);
+            
+            
 
             Pengiriman::create([
                 'id_pemesanan' => $order->id_pemesanan,

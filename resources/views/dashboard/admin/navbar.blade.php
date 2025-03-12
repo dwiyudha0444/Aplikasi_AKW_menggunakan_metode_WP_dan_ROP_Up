@@ -3,8 +3,9 @@
             <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><span
                     class="feather-icon"><i data-feather="menu"></i></span></a>
             <a class="navbar-brand" href="dashboard1.html">
-                <img class="brand-img d-inline-block" src="dist/img/logo-dark.png" alt="brand" />
-            </a>
+    <span class="brand-text font-weight-bold">AZZAHRA</span>
+</a>
+
             <ul class="navbar-nav hk-navbar-content">
                 <li class="nav-item dropdown dropdown-authentication">
                     <a class="nav-link dropdown-toggle no-caret" href="#" role="button" data-toggle="dropdown"
@@ -70,7 +71,7 @@
 
                         @if (Auth::check() && Auth::user()->role === 'admin')
                             <li class="nav-item">
-                                <a class="nav-link" href="dashboard1.html">
+                                <a class="nav-link" href="{{route('dashboard_admin')}}">
                                     <span class="feather-icon"><i data-feather="activity"></i></span>
                                     <span class="nav-link-text">Dashboard</span>
                                 </a>

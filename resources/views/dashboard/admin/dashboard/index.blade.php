@@ -5,38 +5,10 @@
         <!-- Title -->
         <div class="hk-pg-header align-items-top">
             <div>
-                <h2 class="hk-pg-title font-weight-600 mb-10">Customer Management</h2>
+                <h2 class="hk-pg-title font-weight-600 mb-10">Dashboard Admin</h2>
                 <p>Questions about onboarding lead data? <a href="#">Learn more.</a></p>
             </div>
-            <div class="d-flex w-500p">
-                <select class="form-control custom-select custom-select-sm mr-15">
-                    <option selected="">Latest Products</option>
-                    <option value="1">CRM</option>
-                    <option value="2">Projects</option>
-                    <option value="3">Statistics</option>
-                </select>
-                <select class="form-control custom-select custom-select-sm mr-15">
-                    <option selected="">USA</option>
-                    <option value="1">USA</option>
-                    <option value="2">India</option>
-                    <option value="3">Australia</option>
-                </select>
-                <select class="form-control custom-select custom-select-sm">
-                    <option selected="">December</option>
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="1">April</option>
-                    <option value="2">May</option>
-                    <option value="3">June</option>
-                    <option value="1">July</option>
-                    <option value="2">August</option>
-                    <option value="3">September</option>
-                    <option value="1">October</option>
-                    <option value="2">November</option>
-                    <option value="3">December</option>
-                </select>
-            </div>
+            
         </div>
         <!-- /Title -->
 
@@ -121,7 +93,7 @@
         </div>
     </div>
     <div class="card-body">
-        <canvas id="penjualanChart" height="100"></canvas>
+        <canvas id="penjualanChart" height="550"></canvas>
     </div>
 </div>
 
@@ -149,6 +121,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false, // Menonaktifkan aspek rasio agar tinggi dapat disesuaikan
                 scales: {
                     x: {
                         title: {
@@ -168,6 +141,7 @@
         });
     });
 </script>
+
 
 
                     </div>
