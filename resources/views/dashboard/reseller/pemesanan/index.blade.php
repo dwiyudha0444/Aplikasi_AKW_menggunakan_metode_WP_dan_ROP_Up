@@ -40,6 +40,7 @@
                                                 <th>#</th>
                                                 <th>Reseller</th>
                                                 <th>Tanggal Pemesanan</th>
+                                                <th>Komentar</th>
                                                 <th>Status Pemesanan</th>
                                                 <th>Total Harga</th>
                                                 <th>Bukti Transfer</th>
@@ -52,6 +53,7 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->user->name }}</td>
                                                     <td>{{ $item->tanggal_pemesanan }}</td>
+                                                    <td>{{ $item->komentar }}</td>
                                                     <td>
                                                         @if ($item->status_pemesanan == 'waiting approvement')
                                                             <span
@@ -70,11 +72,11 @@
                                                     <td>{{ number_format($item->total_harga, 2, ',', '.') }}</td>
                                                     <td>
                                                         <a href="https://wa.me/{{ $item->user->nomer_hp }}?text=Hallo Bunda/Ayah, Admin ingin konfirmasikan bahwa order details:%0A%0AReseller: {{ $item->user->name }}%0ATanggal Pemesanan: {{ $item->tanggal_pemesanan }}%0AStatus Pemesanan: {{ ucfirst($item->status_pemesanan) }}%0ATotal Harga: {{ number_format($item->total_harga, 2, ',', '.') }}%0A%0AAkan di kirimkan setelah produk sudah ready. Karena semua produk yang dipesan adalah Pre-Order (30 hari)%0ATerima kasih"
-                                                           target="_blank" class="btn btn-sm btn-success">
-                                                           Kirim ke WhatsApp
+                                                            target="_blank" class="btn btn-sm btn-success">
+                                                            Kirim ke WhatsApp
                                                         </a>
                                                     </td>
-                                                    
+
                                                     <td>
                                                         <button type="button" class="btn btn-sm btn-primary"
                                                             data-toggle="modal"
@@ -107,31 +109,45 @@
                                                                     <div class="modal-footer">
                                                                         <!-- Cek jika status pemesanan bukan paid atau rejected -->
                                                                         @if ($item->status_pemesanan != 'paid' && $item->status_pemesanan != 'rejected')
-                                                                            <!-- Tombol Konfirmasi -->
-                                                                            <form
-                                                                                action="{{ route('pemesanan.updateStatus', $item->id_pemesanan) }}"
-                                                                                method="POST" style="display:inline;">
-                                                                                @csrf
-                                                                                @method('PATCH')
-                                                                                <input type="hidden"
-                                                                                    name="status_pemesanan" value="paid">
-                                                                                <button type="submit"
-                                                                                    class="btn btn-success">Konfirmasi</button>
-                                                                            </form>
+                                                                            <div class="d-flex flex-column gap-2">
 
-                                                                            <!-- Tombol Tolak -->
-                                                                            <form
-                                                                                action="{{ route('pemesanan.updateStatus', $item->id_pemesanan) }}"
-                                                                                method="POST" style="display:inline;">
-                                                                                @csrf
-                                                                                @method('PATCH')
-                                                                                <input type="hidden"
-                                                                                    name="status_pemesanan"
-                                                                                    value="rejected">
-                                                                                <button type="submit"
-                                                                                    class="btn btn-danger">Tolak</button>
-                                                                            </form>
+                                                                                {{-- Form Penolakan --}}
+                                                                                <form
+                                                                                    action="{{ route('pemesanan.updateStatus', $item->id_pemesanan) }}"
+                                                                                    method="POST" class="mb-2">
+                                                                                    @csrf
+                                                                                    @method('PATCH')
+
+                                                                                    <input type="hidden"
+                                                                                        name="status_pemesanan"
+                                                                                        value="rejected">
+
+                                                                                    <div class="form-group mb-2">
+                                                                                        <textarea name="komentar" class="form-control" placeholder="Masukkan alasan penolakan..." rows="2"></textarea>
+                                                                                    </div>
+
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-danger w-100">Tolak</button>
+                                                                                </form>
+
+                                                                                {{-- Form Konfirmasi --}}
+                                                                                <form
+                                                                                    action="{{ route('pemesanan.updateStatus', $item->id_pemesanan) }}"
+                                                                                    method="POST">
+                                                                                    @csrf
+                                                                                    @method('PATCH')
+
+                                                                                    <input type="hidden"
+                                                                                        name="status_pemesanan"
+                                                                                        value="paid">
+
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-success w-100">Konfirmasi</button>
+                                                                                </form>
+
+                                                                            </div>
                                                                         @endif
+
                                                                     </div>
 
                                                                 </div>

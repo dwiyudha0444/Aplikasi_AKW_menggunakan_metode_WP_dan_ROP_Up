@@ -72,6 +72,7 @@ class PemesananController extends Controller
             'id_user' => 'required|exists:users,id',
             'tanggal_pemesanan' => 'required|date',
             'status_pemesanan' => 'required|string',
+            'komentar' => 'required|string',
             'total_harga' => 'required|numeric',
         ]);
 
@@ -99,6 +100,7 @@ class PemesananController extends Controller
     
         // Memperbarui status pemesanan
         $pemesanan->status_pemesanan = $request->status_pemesanan;
+        $pemesanan->komentar = $request->komentar;
         $pemesanan->save();
     
         // Memperbarui status pengiriman menjadi "Dikemas" untuk semua pengiriman dengan id_pemesanan yang sama

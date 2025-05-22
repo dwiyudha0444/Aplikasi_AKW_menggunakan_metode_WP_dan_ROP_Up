@@ -30,6 +30,7 @@
             <th>Tanggal Transaksi</th>
             <th>Total Pembayaran</th>
             <th>Status Pembayaran</th>
+            <th>Komentar</th>
             <th>Bukti Transfer</th>
         </tr>
     </thead>
@@ -51,6 +52,7 @@
                         <span class="badge bg-secondary">Status Tidak Diketahui</span>
                     @endif
                 </td>
+                <td>{{ $transaction->komentar }}</td>
                 <td>
                     @if ($transaction->image_bukti_tf)
                         <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
