@@ -21,10 +21,10 @@ class PengirimanController extends Controller
         return view('dashboard.reseller.pengiriman.index', compact('id_pengiriman', 'pengiriman'));
     }
 
-    public function diterima(Request $request, $id)
+    public function diterima(Request $request, $id_penilaian)
 {
     // Cari data pengiriman berdasarkan ID
-    $pengiriman = Pengiriman::find($id);
+    $pengiriman = Pengiriman::find($id_penilaian);
 
     // Jika data tidak ditemukan, kembalikan dengan error
     if (!$pengiriman) {
@@ -40,7 +40,7 @@ class PengirimanController extends Controller
 
     // Redirect ke halaman penilaian dengan membawa ID pengiriman dan ID pemesanan
     return redirect()->route('penilaian.index', [
-        'id' => $id, 
+        'id_penilaian' => $id_penilaian, 
         'id_pemesanan' => $id_pemesanan,
         'id_pemesanan_produk' => $id_pemesanan_produk,
     ])->with('success', 'Barang telah diterima, silakan beri penilaian.');

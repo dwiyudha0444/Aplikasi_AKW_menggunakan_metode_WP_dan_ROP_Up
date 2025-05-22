@@ -26,14 +26,10 @@
                     <i class="bi-cart-fill me-1"></i> Cart
                 </a>
 
-                <form action="{{ route('login') }}" method="POST">
-                    @csrf
-                    <button class="btn btn-outline-danger" type="submit">
-                        <i class="bi-box-arrow-right me-1"></i>
-                        Logout
-                    </button>
-                </form>
-
+                <a href="{{ route('login2') }}" class="btn btn-outline-danger">
+                    <i class="bi-box-arrow-right me-1"></i> Logout
+                </a>
+                
             </form>
 
         </div>

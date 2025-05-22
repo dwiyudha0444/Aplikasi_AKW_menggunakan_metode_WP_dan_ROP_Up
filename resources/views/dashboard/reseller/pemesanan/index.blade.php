@@ -69,6 +69,13 @@
                                                     </td>
                                                     <td>{{ number_format($item->total_harga, 2, ',', '.') }}</td>
                                                     <td>
+                                                        <a href="https://wa.me/{{ $item->user->nomer_hp }}?text=Hallo Bunda/Ayah, Admin ingin konfirmasikan bahwa order details:%0A%0AReseller: {{ $item->user->name }}%0ATanggal Pemesanan: {{ $item->tanggal_pemesanan }}%0AStatus Pemesanan: {{ ucfirst($item->status_pemesanan) }}%0ATotal Harga: {{ number_format($item->total_harga, 2, ',', '.') }}%0A%0AAkan di kirimkan setelah produk sudah ready. Karena semua produk yang dipesan adalah Pre-Order (30 hari)%0ATerima kasih"
+                                                           target="_blank" class="btn btn-sm btn-success">
+                                                           Kirim ke WhatsApp
+                                                        </a>
+                                                    </td>
+                                                    
+                                                    <td>
                                                         <button type="button" class="btn btn-sm btn-primary"
                                                             data-toggle="modal"
                                                             data-target="#buktiTfModal-{{ $item->id_pemesanan }}">

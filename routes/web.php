@@ -106,7 +106,7 @@ Route::get('/dashboard_kurir', [KurirController::class, 'index'])->name('dashboa
 Route::get('/dashboard_reseller/pengiriman', [ResellerPengirimanController::class, 'index'])
     ->name('pengiriman_produk');
 
-Route::post('/dashboard_reseller/produk_diterima/{id}', [ResellerPengirimanController::class, 'diterima'])->name('produk.diterima');
+Route::post('/dashboard_reseller/produk_diterima/{id_penilaian}', [ResellerPengirimanController::class, 'diterima'])->name('produk.diterima');
 Route::get('/dashboard_reseller/penilaian/{id_penilaian}/{id_pemesanan}/{id_pemesanan_produk}', 
     [ResellerPengirimanController::class, 'indexPenilaian']
 )->name('penilaian.index');

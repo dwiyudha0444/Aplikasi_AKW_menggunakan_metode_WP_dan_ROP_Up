@@ -41,7 +41,7 @@
                                             <td>{{ $pemesanan->produk->nama }}</td>
                                             <td>{{ $pemesanan->pemesanan->user->name }}</td>
                                             <td>{{ $pemesanan->qty_produk }}</td>
-                                            <td>{{ number_format($pemesanan->produk->harga, 0, ',', '.') }}</td>
+                                            <td>{{ number_format($pemesanan->harga, 0, ',', '.') }}</td>
                                             <td>
                                                 @if ($pemesanan->pemesanan->status_pemesanan == 'waiting approvement')
                                                     <span

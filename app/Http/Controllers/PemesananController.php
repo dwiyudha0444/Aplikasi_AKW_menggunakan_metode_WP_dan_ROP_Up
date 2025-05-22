@@ -119,7 +119,7 @@ class PemesananController extends Controller
             $nomorTujuan = "62" . $nomorTujuan; // Tambahkan kode negara Indonesia
     
             // URL WhatsApp dengan pesan otomatis
-            $url = "https://wa.me/$nomorTujuan?text=Dear%20Reseller,%20pesananmu%20sedang%20dikemas,%20harap%20menunggu%20sekitar%2030%20hari,%20dikarenakan%20ini%20barang%20Pre-Order.%0A%0ATerima%20kasih.";
+            $url = "https://wa.me/6285715180258?text=Dear%20Reseller,%20pesananmu%20sedang%20dikemas,%20harap%20menunggu%20sekitar%2030%20hari,%20dikarenakan%20ini%20barang%20Pre-Order.%0A%0ATerima%20kasih.";
     
             // Redirect dengan pesan sukses + kirim URL ke view
             return redirect()->back()->with([

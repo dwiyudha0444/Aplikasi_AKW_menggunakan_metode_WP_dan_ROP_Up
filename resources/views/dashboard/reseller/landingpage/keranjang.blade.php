@@ -18,7 +18,7 @@
                         @csrf
                         @foreach ($keranjang as $item)
                             <div class="card rounded-3 mb-4 keranjang-item" id="keranjang-{{ $item->id_keranjang }}">
-                                {{ $item->id_produk }}
+                                
                                 <div class="card-body p-4">
                                     <div class="row d-flex align-items-center">
                                         <div class="col-md-2">
@@ -38,10 +38,10 @@
                                                 @endforeach
                                             </select>
                                             
-                                            <input type="text" class="id-stok-input" name="id_stok[{{ $item->id_keranjang }}]"
+                                            <input type="hidden" class="id-stok-input" name="id_stok[{{ $item->id_keranjang }}]"
                                                 value="">
 
-                                                <input type="text" class="harga-input" name="harga[{{ $item->id_keranjang }}]" value="" readonly>
+                                                <input type="hidden" class="harga-input" name="harga[{{ $item->id_keranjang }}]" value="" readonly>
 
                                         </div>
                                         <div class="col-md-2">
@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="col-md-2 text-end">
                                             <p class="total-item">Rp 0</p> <!-- Menampilkan total per item -->
-                                            <input type="text" class="total-item-input"
+                                            <input type="hidden" class="total-item-input"
                                                 name="total_item[{{ $item->id_keranjang }}]" value="0">
                                             <button type="button" class="btn btn-danger hapus-btn"
                                                 data-id="{{ $item->id_keranjang }}">Hapus</button>

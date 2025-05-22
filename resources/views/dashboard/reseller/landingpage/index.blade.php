@@ -6,24 +6,36 @@
             <div class="text-center text-black">
                 <h1 class="display-4 fw-bolder">Catalog Product</h1>
                 <p class="lead fw-normal text-black-50 mb-0">choose our product to shop</p>
-                
+
             </div>
         </div>
     </header>
     <div class="container px-4 px-lg-5 mt-5">
-    <p class="lead fw-normal text-black-50 mb-0 text-center mb-5">lo</p>
+        <p class="lead fw-normal text-black-50 mb-0 text-center mb-5">Untuk mengetahui deskripsi lebih lanjut, harap "add to
+            cart" terlebih dahulu</p>
 
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            
+        <style>
+            .card-img-top {
+                width: 100%;
+                /* Pastikan lebar gambar mengikuti parent */
+                height: 250px;
+                /* Atur tinggi tetap */
+                object-fit: cover;
+                /* Pastikan gambar tidak gepeng */
+                display: block;
+                /* Hindari whitespace di bawah gambar */
+            }
+        </style>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
             @foreach ($products as $product)
-                <div class="col mb-5">
+                <div class="col-md-4 d-flex align-items-stretch">
                     <div class="card h-100">
                         @if ($product->is_sale)
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
                             </div>
                         @endif
-                        <img class="card-img-top" src="{{ $product->image_url }}" alt="{{ $product->nama }}" />
-
+                        <img class="card-img-top img-fluid" src="{{ $product->image_url }}" alt="{{ $product->nama }}" />
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <h5 class="fw-bolder">{{ $product->nama }}</h5>
@@ -49,21 +61,25 @@
                                     Rp{{ number_format($product->harga_min, 0, ',', '.') }} -
                                     Rp{{ number_format($product->harga_max, 0, ',', '.') }}
                                 </p>
+
+                                <p class="fw-bold">
+                                    Stok {{$product->total_jumlah}}
+                                </p>
+                                <button type="button" class="btn btn-outline-dark mt-auto add-to-cart"
+                                    data-id="{{ $product->id_produk }}" data-id-ukuran="{{ $product->id_ukuran ?? '' }}"
+                                    data-stok="1" data-harga="{{ $product->harga }}"
+                                    data-warna="{{ $product->warna ?? '' }}"
+                                    data-model-motif="{{ $product->model_motif ?? '' }}">
+                                    Add to cart
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline-dark mt-auto add-to-cart"
-                        data-id="{{ $product->id_produk }}" data-id-ukuran="{{ $product->id_ukuran ?? '' }}" data-stok="1"
-                        data-harga="{{ $product->harga }}" data-warna="{{ $product->warna ?? '' }}"
-                        data-model-motif="{{ $product->model_motif ?? '' }}">
-                        Add to cart
-                    </button>
-
-
 
                 </div>
+            @endforeach
         </div>
-        @endforeach
+
     </div>
     </div>
 

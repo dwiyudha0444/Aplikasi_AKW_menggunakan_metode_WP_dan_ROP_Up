@@ -10,22 +10,21 @@ use Illuminate\Http\Request;
 class LandingpageController extends Controller
 {
     public function index()
-    {
-        // Ambil semua produk
-        $products = Produk::all();
-    
-        // Tambahkan informasi harga minimum dan maksimum dari stok
-        foreach ($products as $product) {
-            $hargaMin = Stok::where('id_produk', $product->id_produk)->min('harga');
-            $hargaMax = Stok::where('id_produk', $product->id_produk)->max('harga');
-    
-            // Simpan dalam properti tambahan agar bisa digunakan di view
-            $product->harga_min = $hargaMin ?? 0;
-            $product->harga_max = $hargaMax ?? 0;
-        }
-    
-        // Kirim data ke view
-        return view('dashboard.reseller.landingpage.index', compact('products'));
+{
+    // Ambil semua produk
+    $products = Produk::all();
+
+    foreach ($products as $product) {
+        // Harga minimum dan maksimum
+        $product->harga_min = Stok::where('id_produk', $product->id_produk)->min('harga') ?? 0;
+        $product->harga_max = Stok::where('id_produk', $product->id_produk)->max('harga') ?? 0;
+
+        // Total jumlah stok untuk id_produk terkait
+        $product->total_jumlah = Stok::where('id_produk', $product->id_produk)->sum('jumlah') ?? 0;
     }
+
+    return view('dashboard.reseller.landingpage.index', compact('products'));
+}
+
     
 }

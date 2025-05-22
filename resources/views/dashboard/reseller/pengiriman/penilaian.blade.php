@@ -6,8 +6,8 @@
             <h2 class="mb-4 text-center">Penilaian Produk</h2>
             <form action="{{ route('penilaian.store', $id_penilaian) }}" method="POST">
                 @csrf
-                <input type="text" name="id_pemesanan" value="{{ $id_pemesanan }}">
-                <input type="text" name="id_pemesanan_produk" value="{{ $id_pemesanan_produk }}">
+                <input type="hidden" name="id_pemesanan" value="{{ $id_pemesanan }}">
+                <input type="hidden" name="id_pemesanan_produk" value="{{ $id_pemesanan_produk }}">
 
                 <!-- Penilaian Kualitas Produk -->
                 <div class="mb-4">
