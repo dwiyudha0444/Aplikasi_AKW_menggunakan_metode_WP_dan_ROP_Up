@@ -55,7 +55,7 @@
                                                 <th>Harga Produk</th>
                                                 <th>Layanan Pelanggan</th>
                                                 <th>Ulasan Pelanggan</th>
-                                                <th>Fleksibilitas Pembayaran</th>
+                                                {{-- <th>Fleksibilitas Pembayaran</th> --}}
                                                 <th>Komentar</th>
                                                 
                                             </tr>
@@ -70,7 +70,7 @@
                                                     <td>{{ $item->harga_produk }}</td>
                                                     <td>{{ $item->layanan_pelanggan }}</td>
                                                     <td>{{ $item->ulasan_pelanggan }}</td>
-                                                    <td>{{ $item->fleksibilitas_pembayaran }}</td>
+                                                    {{-- <td>{{ $item->fleksibilitas_pembayaran }}</td> --}}
                                                     <td>{{ $item->komentar }}</td>
                                                    
                                                 </tr>

@@ -3,7 +3,7 @@
 @section('content')
     <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="card shadow-sm p-4" style="width: 600px;">
-            <h2 class="mb-4 text-center">Penilaian Produk</h2>
+            <h2 class="mb-4 text-center">Penilaian</h2>
             <form action="{{ route('penilaian.store', $id_penilaian) }}" method="POST">
                 @csrf
                 <input type="hidden" name="id_pemesanan" value="{{ $id_pemesanan }}">
@@ -11,7 +11,7 @@
 
                 <!-- Penilaian Kualitas Produk -->
                 <div class="mb-4">
-                    <label class="form-label">Kualitas Produk</label>
+                    <label class="form-label">Volume Penjualan</label>
                     <div class="radio-group flex flex-wrap gap-2">
                         @for ($i = 1; $i <= 10; $i++)
                             <div class="flex items-center">
@@ -26,7 +26,7 @@
 
                 <!-- Penilaian Harga Produk -->
                 <div class="mb-4">
-                    <label class="form-label">Harga Produk</label>
+                    <label class="form-label">Retur</label>
                     <div class="radio-group flex flex-wrap gap-2">
                         @for ($i = 1; $i <= 10; $i++)
                             <div class="flex items-center">
@@ -41,7 +41,7 @@
 
                 <!-- Penilaian Layanan Pelanggan -->
                 <div class="mb-4">
-                    <label class="form-label">Layanan Pelanggan</label>
+                    <label class="form-label">Kategori</label>
                     <div class="radio-group flex flex-wrap gap-2">
                         @for ($i = 1; $i <= 10; $i++)
                             <div class="flex items-center">
@@ -56,7 +56,7 @@
 
                 <!-- Penilaian Ulasan Pelanggan -->
                 <div class="mb-4">
-                    <label class="form-label">Ulasan Pelanggan</label>
+                    <label class="form-label">Waktu Kemitraan</label>
                     <div class="radio-group flex flex-wrap gap-2">
                         @for ($i = 1; $i <= 10; $i++)
                             <div class="flex items-center">
@@ -70,7 +70,7 @@
                 </div>
 
                 <!-- Penilaian Fleksibilitas Pembayaran -->
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label class="form-label">Fleksibilitas Pembayaran</label>
                     <div class="radio-group">
                         @for ($i = 1; $i <= 3; $i++)
@@ -81,7 +81,8 @@
                                 class="radio-label">{{ $i }}</label>
                         @endfor
                     </div>
-                </div>
+                </div> --}}
+                {{-- <input type="hidden" name="fleksibilitas_pembayaran" value="0"> --}}
 
                 <!-- Komentar -->
                 <div class="mb-3">

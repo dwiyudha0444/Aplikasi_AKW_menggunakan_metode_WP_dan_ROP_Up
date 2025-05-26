@@ -17,12 +17,11 @@ class Penilaian extends Model
     protected $fillable = [
         'id_user',
         'id_pemesanan',
-        'id_pemesanan_produk',
-        'kualitas_produk',
+        'id_pemesanan_produk', 
+        'kualitas_produk', 
         'harga_produk',
         'layanan_pelanggan',
         'ulasan_pelanggan',
-        'fleksibilitas_pembayaran',
         'komentar',
     ];
 

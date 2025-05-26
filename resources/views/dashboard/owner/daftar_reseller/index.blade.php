@@ -46,11 +46,10 @@
                                         <thead class="table-dark">
                                             <tr>
                                                 <th>#</th>
-                                                <th>Kualitas Produk</th>
-                                                <th>Harga Produk</th>
-                                                <th>Layanan Pelanggan</th>
-                                                <th>Ulasan Pelanggan</th>
-                                                <th>Fleksibilitas Pembayaran</th>
+                                                <th>Volume Penjualan</th>
+                                                <th>Retur</th>
+                                                <th>Kategori</th>
+                                                <th>Waktu Kemitraan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -59,11 +58,10 @@
                                                 $grandTotal = 0; // Total semua data
                                             @endphp
                                             <td>{{ $no++ }}</td>
+                                            <td>0,3</td>
                                             <td>0,25</td>
-                                            <td>-0,25</td>
-                                            <td>0,15</td>
+                                            <td>0,25</td>
                                             <td>0,2</td>
-                                            <td>0,15</td>
                                         </tbody>
                                     </table>
                                 </div>
@@ -95,11 +93,11 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Reseller</th>
-                                                <th>Kualitas Produk</th>
-                                                <th>Harga Produk</th>
-                                                <th>Layanan Pelanggan</th>
-                                                <th>Ulasan Pelanggan</th>
-                                                <th>Fleksibilitas Pembayaran</th>
+                                                <th>Volume Penjualan</th>
+                                                <th>Retur</th>
+                                                <th>Kategori</th>
+                                                <th>Waktu Kemitraan</th>
+                                               
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -114,7 +112,7 @@
                                                     <td>{{ $row['harga_produk'] }}</td>
                                                     <td>{{ $row['layanan_pelanggan'] }}</td>
                                                     <td>{{ $row['ulasan_pelanggan'] }}</td>
-                                                    <td>{{ $row['fleksibilitas_pembayaran'] }}</td>
+                                                   
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -139,11 +137,11 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Reseller</th>
-                                                <th>Kualitas Produk</th>
-                                                <th>Harga Produk</th>
-                                                <th>Layanan Pelanggan</th>
-                                                <th>Ulasan Pelanggan</th>
-                                                <th>Fleksibilitas Pembayaran</th>
+                                                <th>Volume Penjualan</th>
+                                                <th>Retur</th>
+                                                <th>Kategori</th>
+                                                <th>Waktu Kemitraan</th>
+                                               
                                                 <th>Total</th>
                                             </tr>
                                         </thead>
@@ -156,11 +154,10 @@
                                                 @php
                                                     // Hitung total untuk baris saat ini
                                                     $rowTotal =
-                                                        pow($row['kualitas_produk'], 0.25) *
-                                                        pow($row['harga_produk'], -0.25) *
-                                                        pow($row['layanan_pelanggan'], 0.15) *
-                                                        pow($row['ulasan_pelanggan'], 0.2) *
-                                                        pow($row['fleksibilitas_pembayaran'], 0.15);
+                                                        pow($row['kualitas_produk'], 0.3) *
+                                                        pow($row['harga_produk'], 0.25) *
+                                                        pow($row['layanan_pelanggan'], 0.25) *
+                                                        pow($row['ulasan_pelanggan'], 0.2) ;
 
                                                     // Tambahkan ke grand total
                                                     $grandTotal += $rowTotal;
@@ -168,12 +165,11 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $users[$row['id_user']] ?? 'Tidak Diketahui' }}</td>
-                                                    <td>{{ number_format(pow($row['kualitas_produk'], 0.25), 2) }}</td>
-                                                    <td>{{ number_format(pow($row['harga_produk'], -0.25), 2) }}</td>
-                                                    <td>{{ number_format(pow($row['layanan_pelanggan'], 0.15), 2) }}</td>
+                                                    <td>{{ number_format(pow($row['kualitas_produk'], 0.3), 2) }}</td>
+                                                    <td>{{ number_format(pow($row['harga_produk'], 0.25), 2) }}</td>
+                                                    <td>{{ number_format(pow($row['layanan_pelanggan'], 0.25), 2) }}</td>
                                                     <td>{{ number_format(pow($row['ulasan_pelanggan'], 0.2), 2) }}</td>
-                                                    <td>{{ number_format(pow($row['fleksibilitas_pembayaran'], 0.15), 2) }}
-                                                    </td>
+                                                    
 
                                                     <td>{{ number_format($rowTotal, 2) }}
                                                     </td> <!-- Tampilkan total untuk baris ini -->
@@ -182,7 +178,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td colspan="7" class="text-end"><strong>Total Semua:</strong></td>
+                                                <td colspan="6" class="text-end"><strong>Total Semua:</strong></td>
                                                 <td><strong>{{ number_format($grandTotal, 2) }}</strong></td>
                                                 <!-- Tampilkan total keseluruhan -->
                                             </tr>
@@ -216,22 +212,20 @@
                                                 // Hitung total keseluruhan
                                                 foreach ($ranking as $row) {
                                                     $grandTotal +=
-                                                        pow($row['kualitas_produk'], 0.25) *
-                                                        pow($row['harga_produk'], -0.25) *
-                                                        pow($row['layanan_pelanggan'], 0.15) *
-                                                        pow($row['ulasan_pelanggan'], 0.2) *
-                                                        pow($row['fleksibilitas_pembayaran'], 0.15);
+                                                        pow($row['kualitas_produk'], 0.3) *
+                                                        pow($row['harga_produk'], 0.25) *
+                                                        pow($row['layanan_pelanggan'], 0.25) *
+                                                        pow($row['ulasan_pelanggan'], 0.2) ;
                                                 }
 
                                                 // Hitung nilai per user sebelum diurutkan
                                                 $rankingData = [];
                                                 foreach ($ranking as $row) {
                                                     $rowTotal =
-                                                        pow($row['kualitas_produk'], 0.25) *
-                                                        pow($row['harga_produk'], -0.25) *
-                                                        pow($row['layanan_pelanggan'], 0.15) *
-                                                        pow($row['ulasan_pelanggan'], 0.2) *
-                                                        pow($row['fleksibilitas_pembayaran'], 0.15);
+                                                        pow($row['kualitas_produk'], 0.3) *
+                                                        pow($row['harga_produk'], 0.25) *
+                                                        pow($row['layanan_pelanggan'], 0.25) *
+                                                        pow($row['ulasan_pelanggan'], 0.2) ;
 
                                                     $finalValue = $grandTotal > 0 ? $rowTotal / $grandTotal : 0;
 
